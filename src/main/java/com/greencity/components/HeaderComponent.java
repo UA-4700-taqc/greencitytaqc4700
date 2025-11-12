@@ -47,7 +47,11 @@ public class HeaderComponent {
      * @return true if header is displayed, false otherwise
      */
     public boolean isHeaderDisplayed() {
-        return header.isDisplayed();
+        try {
+            return header.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     /**
@@ -56,7 +60,11 @@ public class HeaderComponent {
      * @return true if logo is displayed, false otherwise
      */
     public boolean isLogoDisplayed() {
-        return logo.isDisplayed();
+        try {
+            return logo.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     /**
@@ -72,7 +80,11 @@ public class HeaderComponent {
      * @return true if navigation menu is displayed, false otherwise
      */
     public boolean isNavigationMenuDisplayed() {
-        return navigationMenu.isDisplayed();
+        try {
+            return navigationMenu.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     /**
