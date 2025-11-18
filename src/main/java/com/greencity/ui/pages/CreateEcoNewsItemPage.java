@@ -7,160 +7,210 @@ import org.openqa.selenium.support.PageFactory;
 
 public class CreateEcoNewsItemPage extends BasePage {
 
-    public enum NewsTag {
-        NEWS(1), EVENTS(2), EDUCATION(3), INITIATIVES(4), ADVERTISING(5);
-        private final int index;
-        NewsTag(int index) { this.index = index; }
-        public int getIndex() { return index; }
-    }
-
-    @FindBy(xpath = "//h2")
-    private WebElement titleHeader;
-
-    @FindBy(xpath = "//p[contains(@class,'title-description')]")
-    private WebElement titleDescription;
-
-    @FindBy(xpath = "//div[@class='title-block']//h3")
-    private WebElement newsTitleLabel;
-
-    @FindBy(xpath = "//textarea[contains(@class,'ng')]")
-    private WebElement newsTitleInputField;
-
-    @FindBy(xpath = "//div[contains(@class,'tags-block')]")
-    private WebElement tagBlock;
-
-    @FindBy(xpath = "//div[contains(@class,'tags-block')]//h3")
-    private WebElement tagBlockText1;
-
-    @FindBy(xpath = "//div[contains(@class,'tags-block')]//h3/p")
-    private WebElement tagBlockText2;
-
-    @FindBy(xpath = "//app-tags-select//button[1]")
-    private WebElement tagBtnNews;
-
-    @FindBy(xpath = "//app-tags-select//button[2]")
-    private WebElement tagBtnEvents;
-
-    @FindBy(xpath = "//app-tags-select//button[3]")
-    private WebElement tagBtnEducation;
-
-    @FindBy(xpath = "//app-tags-select//button[4]")
-    private WebElement tagBtnInitiatives;
-
-    @FindBy(xpath = "//app-tags-select//button[5]")
-    private WebElement tagBtnAdvertizing;
-
-    @FindBy(xpath = "//div[@class='image-block']//h3")
-    private WebElement imageLabel;
-
-    @FindBy(xpath = "//div[contains(@class,'centered')]")
-    private WebElement imageText;
-
-    @FindBy(xpath = "//label[@for='upload']")
-    private WebElement imageLable;
-
-    @FindBy(xpath = "//input[@id='upload']")
-    private WebElement imageInput;
-
-    @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
-    private WebElement imageUploadCancelBtn;
-
-    @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
-    private WebElement imageUploadSubmitBtn;
-
-    @FindBy(xpath = "//p[contains(@class,'warning')]")
-    private WebElement imageWarning;
-
-    @FindBy(xpath = "//div[@class='source-block']//h3")
-    private WebElement sourceLabel;
-
-    @FindBy(xpath = "//span[contains(@class,'field-info')]")
-    private WebElement sourceComment;
-
-    @FindBy(xpath = "//input[contains(@class,'ng')]")
-    private WebElement sourceInputField;
-
-    @FindBy(xpath = "//div[@class='textarea-wrapper']//h3")
-    private WebElement contentLabel;
-
-    @FindBy(xpath = "//div[@class='textarea-wrapper']//h3/p")
-    private WebElement contentComment;
-
-    @FindBy(xpath = "//div[contains(@class,'ql-toolbar')]")
-    private WebElement contentToolbar;
-
-    @FindBy(xpath = "//div[@class='ql-editor']")
-    private WebElement contentInputTemplate;
-
-    @FindBy(xpath = "//div[@class='ql-editor']/p")
-    private WebElement contentInputField;
-
-    @FindBy(xpath = "//p[contains(@class,'quill-counter')]")
-    private WebElement contentInputWarning;
-
-    @FindBy(xpath = "//div[@class='date']/p[1]/span[1]")
-    private WebElement creationDateLabel;
-
-    @FindBy(xpath = "//div[@class='date']/p[1]/span[2]")
-    private WebElement creationDate;
-
-    @FindBy(xpath = "//div[@class='date']/p[2]/span[1]")
-    private WebElement authorLabel;
-
-    @FindBy(xpath = "//div[@class='date']/p[2]/span[2]")
-    private WebElement author;
-
-    @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
-    private WebElement publishBtn;
-
-    @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
-    private WebElement reviewBtn;
-
-    @FindBy(xpath = "//button[contains(@class,'tertiary-global-button')]")
-    private WebElement exitBtn;
+    public final HeaderSection header;
+    public final TagSection tags;
+    public final ImageSection image;
+    public final ContentSection content;
+    public final MetaSection meta;
+    public final ActionButtonsSection actions;
 
     public CreateEcoNewsItemPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
+        this.header = new HeaderSection(driver);
+        this.tags = new TagSection(driver);
+        this.image = new ImageSection(driver);
+        this.content = new ContentSection(driver);
+        this.meta = new MetaSection(driver);
+        this.actions = new ActionButtonsSection(driver);
     }
 
-    public String getText(WebElement element) {
-        return element.getText().trim();
+    public enum NewsTag {
+        NEWS,
+        EVENTS,
+        EDUCATION,
+        INITIATIVES,
+        ADVERTISING;
     }
 
-    public void clickTag(NewsTag tag) {
-        driver.findElement(org.openqa.selenium.By.xpath("//app-tags-select//button[" + tag.getIndex() + "]")).click();
+    public static class HeaderSection {
+        private final WebDriver driver;
+
+        @FindBy(xpath = "//h2")
+        private WebElement titleHeader;
+
+        @FindBy(xpath = "//p[contains(@class,'title-description')]")
+        private WebElement titleDescription;
+
+        public HeaderSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
+
+        public String getHeader() {
+            return titleHeader.getText().trim();
+        }
+
+        public String getDescription() {
+            return titleDescription.getText().trim();
+        }
     }
 
-    public void clickPublish() { publishBtn.click(); }
-    public void clickReview() { reviewBtn.click(); }
-    public void clickExit() { exitBtn.click(); }
+    public static class TagSection {
+        private final WebDriver driver;
 
-    public String getTitleHeader() { return getText(titleHeader); }
-    public String getTitleDescription() { return getText(titleDescription); }
+        @FindBy(xpath = "//div[contains(@class,'tags-block')]")
+        private WebElement tagsBlock;
 
-    public String getNewsTitleLabel() { return getText(newsTitleLabel); }
+        @FindBy(xpath = "//app-tags-select//button[1]")
+        private WebElement tagNewsBtn;
 
-    public String getTagBlockLabel() { return getText(tagBlockText1); }
-    public String getTagBlockComment() { return getText(tagBlockText2); }
+        @FindBy(xpath = "//app-tags-select//button[2]")
+        private WebElement tagEventsBtn;
 
-    public String getImageLabel() { return getText(imageLabel); }
-    public String getImageWarning() { return getText(imageWarning); }
+        @FindBy(xpath = "//app-tags-select//button[3]")
+        private WebElement tagEducationBtn;
 
-    public String getSourceLabel() { return getText(sourceLabel); }
-    public String getSourceComment() { return getText(sourceComment); }
+        @FindBy(xpath = "//app-tags-select//button[4]")
+        private WebElement tagInitiativesBtn;
 
-    public String getContentLabel() { return getText(contentLabel); }
-    public String getContentComment() { return getText(contentComment); }
-    public String getContentWarning() { return getText(contentInputWarning); }
+        @FindBy(xpath = "//app-tags-select//button[5]")
+        private WebElement tagAdvertisingBtn;
 
-    public String getCreationDateLabel() { return getText(creationDateLabel); }
-    public String getCreationDate() { return getText(creationDate); }
+        public TagSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
 
-    public String getAuthorLabel() { return getText(authorLabel); }
-    public String getAuthor() { return getText(author); }
+        public void selectTag(NewsTag tag) {
+            switch (tag) {
+                case NEWS -> tagNewsBtn.click();
+                case EVENTS -> tagEventsBtn.click();
+                case EDUCATION -> tagEducationBtn.click();
+                case INITIATIVES -> tagInitiativesBtn.click();
+                case ADVERTISING -> tagAdvertisingBtn.click();
+            }
+        }
+    }
 
-    public String getPublishBtnText() { return getText(publishBtn); }
-    public String getReviewBtnText() { return getText(reviewBtn); }
-    public String getExitBtnText() { return getText(exitBtn); }
+    public static class ImageSection {
+        private final WebDriver driver;
+
+        @FindBy(xpath = "//div[@class='image-block']//h3")
+        private WebElement imageLabel;
+
+        @FindBy(xpath = "//label[@for='upload']")
+        private WebElement uploadLabel;
+
+        @FindBy(id = "upload")
+        private WebElement uploadInput;
+
+        @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
+        private WebElement cancelBtn;
+
+        @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
+        private WebElement submitBtn;
+
+        public ImageSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
+
+        public void uploadImage(String filePath) {
+            uploadInput.sendKeys(filePath);
+        }
+
+        public void confirmUpload() {
+            submitBtn.click();
+        }
+
+        public void cancelUpload() {
+            cancelBtn.click();
+        }
+    }
+
+    public static class ContentSection {
+        private final WebDriver driver;
+
+        @FindBy(xpath = "//input[contains(@class,'ng')]")
+        private WebElement sourceInput;
+
+        @FindBy(xpath = "//textarea[@formcontrolname='title']")
+        private WebElement titleInput;
+
+        @FindBy(xpath = "//div[@class='ql-editor']")
+        private WebElement contentInput;
+
+        public ContentSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
+
+        public void enterSource(String text) {
+            sourceInput.clear();
+            sourceInput.sendKeys(text);
+        }
+
+        public void enterTitle(String title) {
+            titleInput.clear();
+            titleInput.sendKeys(title);
+        }
+
+        public void enterContent(String text) {
+            contentInput.sendKeys(text);
+        }
+    }
+
+    public static class MetaSection {
+        private final WebDriver driver;
+
+        @FindBy(xpath = "//div[@class='date']/p[1]/span[2]")
+        private WebElement creationDate;
+
+        @FindBy(xpath = "//div[@class='date']/p[2]/span[2]")
+        private WebElement authorName;
+
+        public MetaSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
+
+        public String getCreationDate() {
+            return creationDate.getText().trim();
+        }
+
+        public String getAuthorName() {
+            return authorName.getText().trim();
+        }
+    }
+
+    public static class ActionButtonsSection {
+        private final WebDriver driver;
+
+        @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
+        private WebElement publishBtn;
+
+        @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
+        private WebElement reviewBtn;
+
+        @FindBy(xpath = "//button[contains(@class,'tertiary-global-button')]")
+        private WebElement exitBtn;
+
+        public ActionButtonsSection(WebDriver driver) {
+            this.driver = driver;
+            PageFactory.initElements(driver, this);
+        }
+
+        public void clickPublish() {
+            publishBtn.click();
+        }
+
+        public void clickReview() {
+            reviewBtn.click();
+        }
+
+        public void clickExit() {
+            exitBtn.click();
+        }
+    }
 }
+
