@@ -9,12 +9,13 @@ import org.testng.annotations.Test;
 
 public class HeaderComponentTest extends BaseTestRunner {
 
+    private static final int PAGE_LOAD_TIMEOUTS = 10;
     private static final int EXPECTED_NAVIGATION_LINKS_COUNT = 6;
 
     @BeforeMethod
     public void ensurePageIsLoaded() {
         driver.navigate().refresh();
-        homePage.waitForPageToLoad(10);
+        homePage.waitForPageToLoad(PAGE_LOAD_TIMEOUTS);
     }
 
     @Test(description = "Verify header logo is displayed")
@@ -77,11 +78,11 @@ public class HeaderComponentTest extends BaseTestRunner {
         Assert.assertTrue(signUpBtn.isDisplayed(), "Sign up button should be displayed");
     }
 
-    @Test(description = "Verify header logo is clickable")
+    @Test(description = "Verify header logo is visible and clickable")
     public void testHeaderLogoIsClickable() {
         HeaderComponent header = homePage.getHeader();
         WebElement logo = header.getHeaderLogo();
-        Assert.assertTrue(logo.isEnabled(), "Header logo should be clickable");
+        Assert.assertTrue(logo.isDisplayed(), "Header logo should be visible and clickable");
         logo.click();
     }
 
