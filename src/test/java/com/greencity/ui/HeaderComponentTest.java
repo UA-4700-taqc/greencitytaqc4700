@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 
 public class HeaderComponentTest extends BaseTestRunner {
 
+    private static final int EXPECTED_NAVIGATION_LINKS_COUNT = 6;
+
     @BeforeMethod
     public void ensurePageIsLoaded() {
         driver.navigate().refresh();
@@ -86,9 +88,8 @@ public class HeaderComponentTest extends BaseTestRunner {
     @Test(description = "Verify navigation links count")
     public void testNavigationLinksCount() {
         HeaderComponent header = homePage.getHeader();
-        int expectedLinksCount = 6;
         int actualLinksCount = header.getNavigationLinks().size();
-        Assert.assertEquals(actualLinksCount, expectedLinksCount, 
-            "Expected " + expectedLinksCount + " navigation links, but found " + actualLinksCount);
+        Assert.assertEquals(actualLinksCount, EXPECTED_NAVIGATION_LINKS_COUNT, 
+            "Expected " + EXPECTED_NAVIGATION_LINKS_COUNT + " navigation links, but found " + actualLinksCount);
     }
 }
