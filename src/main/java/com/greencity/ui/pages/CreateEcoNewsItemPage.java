@@ -32,6 +32,10 @@ public class CreateEcoNewsItemPage extends BasePage {
         ADVERTISING;
     }
 
+    public void visitPage() {
+        driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
+    }
+
     public static class HeaderSection {
         private final WebDriver driver;
 
