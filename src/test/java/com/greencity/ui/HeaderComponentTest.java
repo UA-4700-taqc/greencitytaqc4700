@@ -74,9 +74,8 @@ public class HeaderComponentTest extends BaseTestRunner {
 
     @Test(description = "Verify header logo is visible and clickable")
     public void testHeaderLogoIsClickable() {
-        WebElement logo = header.getHeaderLogo();
-        Assert.assertTrue(logo.isDisplayed(), "Header logo should be visible and clickable");
-        logo.click();
+        Assert.assertTrue(header.getHeaderLogo().isDisplayed(), "Header logo should be visible");
+        header.clickHeaderLogo();
     }
 
     @Test(description = "Verify navigation links count")

@@ -85,4 +85,52 @@ public class HeaderComponent extends BaseComponent {
     public HeaderComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
+
+    public void clickHeaderLogo() {
+        headerLogo.click();
+    }
+
+    public void clickSearchIcon() {
+        searchIcon.click();
+    }
+
+    public void clickLanguageOption() {
+        languageOption.click();
+    }
+
+    public void clickSignIn() {
+        signInButton.click();
+    }
+
+    public void clickSignUp() {
+        signUpButton.click();
+    }
+
+    public void clickBurgerMenu() {
+        burgerMenuButton.click();
+    }
+
+    public void clickEcoNewsLink() {
+        ecoNewsLink.click();
+    }
+
+    public void clickEventsLink() {
+        eventsLink.click();
+    }
+
+    public void clickPlacesLink() {
+        placesLink.click();
+    }
+
+    public void clickAboutUsLink() {
+        aboutUsLink.click();
+    }
+
+    public void clickMySpaceLink() {
+        mySpaceLink.click();
+    }
+
+    public void clickUbsCourierLink() {
+        ubsCourierLink.click();
+    }
 }
