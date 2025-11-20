@@ -95,5 +95,7 @@ public class HeaderComponentTest extends BaseTestRunner {
         ensurePageIsLoaded();
         
         header.clickNavigationLink("places");
+        driver.navigate().back();
+        ensurePageIsLoaded();
     }
 }
