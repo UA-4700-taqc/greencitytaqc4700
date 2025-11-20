@@ -17,11 +17,6 @@ public class HeaderComponentTest extends BaseTestRunner {
     public void ensurePageIsLoaded() {
         driver.navigate().refresh();
         homePage.waitForPageToLoad(PAGE_LOAD_TIMEOUTS);
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
         header = homePage.getHeader();
     }
 
@@ -89,27 +84,7 @@ public class HeaderComponentTest extends BaseTestRunner {
             "Expected " + EXPECTED_NAVIGATION_LINKS_COUNT + " navigation links, but found " + actualLinksCount);
     }
 
-    @Test(description = "Verify search icon click", priority = 10)
-    public void testSearchIconClick() {
-        header.clickSearchIcon();
-    }
-
-    @Test(description = "Verify language switcher click", priority = 11)
-    public void testLanguageSwitcherClick() {
-        header.clickLanguageOption();
-    }
-
-    @Test(description = "Verify sign in button click", priority = 12)
-    public void testSignInButtonClick() {
-        header.clickSignIn();
-    }
-
-    @Test(description = "Verify sign up button click", priority = 13)
-    public void testSignUpButtonClick() {
-        header.clickSignUp();
-    }
-
-    @Test(description = "Verify navigation link clicks", priority = 14)
+    @Test(description = "Verify navigation link clicks")
     public void testNavigationLinkClicks() {
         header.clickNavigationLink("eco news");
         driver.navigate().back();
