@@ -17,6 +17,11 @@ public class HeaderComponentTest extends BaseTestRunner {
     public void ensurePageIsLoaded() {
         driver.navigate().refresh();
         homePage.waitForPageToLoad(PAGE_LOAD_TIMEOUTS);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         header = homePage.getHeader();
     }
 
@@ -72,9 +77,8 @@ public class HeaderComponentTest extends BaseTestRunner {
         Assert.assertTrue(signUpBtn.isDisplayed(), "Sign up button should be displayed");
     }
 
-    @Test(description = "Verify header logo is visible and clickable")
-    public void testHeaderLogoIsClickable() {
-        Assert.assertTrue(header.getHeaderLogo().isDisplayed(), "Header logo should be visible");
+    @Test(description = "Verify header logo is clickable")
+    public void testHeaderLogoClick() {
         header.clickHeaderLogo();
     }
 
@@ -83,5 +87,38 @@ public class HeaderComponentTest extends BaseTestRunner {
         int actualLinksCount = header.getNavigationLinks().size();
         Assert.assertEquals(actualLinksCount, EXPECTED_NAVIGATION_LINKS_COUNT, 
             "Expected " + EXPECTED_NAVIGATION_LINKS_COUNT + " navigation links, but found " + actualLinksCount);
+    }
+
+    @Test(description = "Verify search icon click", priority = 10)
+    public void testSearchIconClick() {
+        header.clickSearchIcon();
+    }
+
+    @Test(description = "Verify language switcher click", priority = 11)
+    public void testLanguageSwitcherClick() {
+        header.clickLanguageOption();
+    }
+
+    @Test(description = "Verify sign in button click", priority = 12)
+    public void testSignInButtonClick() {
+        header.clickSignIn();
+    }
+
+    @Test(description = "Verify sign up button click", priority = 13)
+    public void testSignUpButtonClick() {
+        header.clickSignUp();
+    }
+
+    @Test(description = "Verify navigation link clicks", priority = 14)
+    public void testNavigationLinkClicks() {
+        header.clickNavigationLink("eco news");
+        driver.navigate().back();
+        ensurePageIsLoaded();
+        
+        header.clickNavigationLink("events");
+        driver.navigate().back();
+        ensurePageIsLoaded();
+        
+        header.clickNavigationLink("places");
     }
 }

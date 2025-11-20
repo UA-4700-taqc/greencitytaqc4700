@@ -86,51 +86,50 @@ public class HeaderComponent extends BaseComponent {
         super(driver, rootElement);
     }
 
+    private void clickElement(WebElement element) {
+        waitUntilElementVisible(element);
+        waitUntilElementClickable(element);
+        element.click();
+    }
+
     public void clickHeaderLogo() {
-        headerLogo.click();
+        clickElement(headerLogo);
     }
 
     public void clickSearchIcon() {
-        searchIcon.click();
+        clickElement(searchIcon);
     }
 
     public void clickLanguageOption() {
-        languageOption.click();
+        clickElement(languageOption);
     }
 
     public void clickSignIn() {
-        signInButton.click();
+        clickElement(signInButton);
     }
 
     public void clickSignUp() {
-        signUpButton.click();
+        clickElement(signUpButton);
     }
 
     public void clickBurgerMenu() {
-        burgerMenuButton.click();
+        clickElement(burgerMenuButton);
     }
 
-    public void clickEcoNewsLink() {
-        ecoNewsLink.click();
+    public void clickNavigationLink(String linkName) {
+        WebElement link = getNavigationLinkByName(linkName);
+        clickElement(link);
     }
 
-    public void clickEventsLink() {
-        eventsLink.click();
-    }
-
-    public void clickPlacesLink() {
-        placesLink.click();
-    }
-
-    public void clickAboutUsLink() {
-        aboutUsLink.click();
-    }
-
-    public void clickMySpaceLink() {
-        mySpaceLink.click();
-    }
-
-    public void clickUbsCourierLink() {
-        ubsCourierLink.click();
+    private WebElement getNavigationLinkByName(String linkName) {
+        return switch (linkName.toLowerCase()) {
+            case "eco news", "econews" -> ecoNewsLink;
+            case "events" -> eventsLink;
+            case "places" -> placesLink;
+            case "about us", "aboutus" -> aboutUsLink;
+            case "my space", "myspace" -> mySpaceLink;
+            case "ubs courier", "ubscourier", "ubs" -> ubsCourierLink;
+            default -> throw new IllegalArgumentException("Unknown navigation link: " + linkName);
+        };
     }
 }
