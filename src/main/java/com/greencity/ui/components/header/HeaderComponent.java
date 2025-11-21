@@ -87,7 +87,6 @@ public class HeaderComponent extends BaseComponent {
     }
 
     private void clickElement(WebElement element) {
-        waitUntilElementVisible(element);
         waitUntilElementClickable(element);
         element.click();
     }
