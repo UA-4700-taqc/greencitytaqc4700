@@ -7,6 +7,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
 import java.time.Duration;
@@ -16,6 +17,7 @@ public class BaseTestRunner {
     protected WebDriver driver;
     protected static TestValueProvider testValueProvider;
     protected HomePage homePage;
+    protected WebDriverWait wait;
 
     @BeforeSuite
     public void beforeSuite() {
@@ -35,6 +37,7 @@ public class BaseTestRunner {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(testValueProvider.getImplicitlyWait()));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(testValueProvider.getImplicitlyWait()));
     }
 
 

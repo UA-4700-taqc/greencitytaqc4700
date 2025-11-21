@@ -33,6 +33,7 @@ public abstract class BasePage extends Base {
         super(driver);
         header = new HeaderComponent(driver, headerRoot);
         footer = new FooterComponent(driver, FooterRoot);
+
     }
 
 
