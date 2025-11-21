@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class TagFilterComponent extends BaseComponent{
+public class TagFilterComponent extends BaseComponent {
 
     @FindBy(xpath = ".//span[@class='filter']")
     private WebElement filterByTitle;
