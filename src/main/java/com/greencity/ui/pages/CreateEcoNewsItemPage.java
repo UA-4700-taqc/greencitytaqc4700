@@ -24,16 +24,16 @@ public class CreateEcoNewsItemPage extends BasePage {
         this.actions = new ActionButtonsSection(driver);
     }
 
+    public void visitPage() {
+        driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
+    }
+
     public enum NewsTag {
         NEWS,
         EVENTS,
         EDUCATION,
         INITIATIVES,
-        ADVERTISING;
-    }
-
-    public void visitPage() {
-        driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
+        ADVERTISING
     }
 
     public static class HeaderSection {
