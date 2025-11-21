@@ -8,6 +8,7 @@
     <test name="UITests">
         <classes>
             <class name="com.greencity.ui.testrunners.BaseTestRunner"/>
+            <class name="com.greencity.ui.BaseTest"/>
         </classes>
     </test>
 </suite>
