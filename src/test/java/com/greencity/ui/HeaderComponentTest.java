@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class HeaderComponentTest extends BaseTestRunner {
 
@@ -40,12 +41,14 @@ public class HeaderComponentTest extends BaseTestRunner {
 
     @Test(description = "Verify all navigation links are displayed")
     public void testAllNavigationLinksAreDisplayed() {
-        Assert.assertTrue(header.getEcoNewsLink().isDisplayed(), "Eco news link should be displayed");
-        Assert.assertTrue(header.getEventsLink().isDisplayed(), "Events link should be displayed");
-        Assert.assertTrue(header.getPlacesLink().isDisplayed(), "Places link should be displayed");
-        Assert.assertTrue(header.getAboutUsLink().isDisplayed(), "About us link should be displayed");
-        Assert.assertTrue(header.getMySpaceLink().isDisplayed(), "My space link should be displayed");
-        Assert.assertTrue(header.getUbsCourierLink().isDisplayed(), "UBS courier link should be displayed");
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(header.getEcoNewsLink().isDisplayed(), "Eco news link should be displayed");
+        softAssert.assertTrue(header.getEventsLink().isDisplayed(), "Events link should be displayed");
+        softAssert.assertTrue(header.getPlacesLink().isDisplayed(), "Places link should be displayed");
+        softAssert.assertTrue(header.getAboutUsLink().isDisplayed(), "About us link should be displayed");
+        softAssert.assertTrue(header.getMySpaceLink().isDisplayed(), "My space link should be displayed");
+        softAssert.assertTrue(header.getUbsCourierLink().isDisplayed(), "UBS courier link should be displayed");
+        softAssert.assertAll();
     }
 
     @Test(description = "Verify search icon is displayed")
@@ -86,16 +89,11 @@ public class HeaderComponentTest extends BaseTestRunner {
 
     @Test(description = "Verify navigation link clicks")
     public void testNavigationLinkClicks() {
-        header.clickNavigationLink("eco news");
-        driver.navigate().back();
-        ensurePageIsLoaded();
-        
-        header.clickNavigationLink("events");
-        driver.navigate().back();
-        ensurePageIsLoaded();
-        
-        header.clickNavigationLink("places");
-        driver.navigate().back();
-        ensurePageIsLoaded();
+        String[] linkNames = {"eco news", "events", "places"};
+        for (String linkName : linkNames) {
+            header.clickNavigationLink(linkName);
+            driver.navigate().back();
+            ensurePageIsLoaded();
+        }
     }
 }
