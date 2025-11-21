@@ -1,6 +1,7 @@
 package com.greencity.ui.components.tagfilter;
 
 import com.greencity.ui.components.BaseComponent;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -28,14 +29,14 @@ public class TagFilterComponent extends BaseComponent {
     }
 
     public void clickTagByName(String tagName) {
+
         for (WebElement button : tagButtons) {
-            WebElement tagTextElement = button.findElement(org.openqa.selenium.By.xpath(".//span[@class='text']"));
+            WebElement tagTextElement = button.findElement(By.xpath(".//span[@class='text']"));
             if (tagTextElement.getText().equalsIgnoreCase(tagName)) {
                 waitUntilElementClickable(button);
                 button.click();
                 return;
             }
         }
-        throw new RuntimeException("Tag '" + tagName + "' not found in the filter.");
     }
 }

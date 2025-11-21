@@ -17,7 +17,13 @@ public class NewsPage extends BasePage {
 
     public NewsPage(WebDriver driver) {
         super(driver);
-        this.tagFilterComponent = new TagFilterComponent(driver, tagFilterRoot);
+    }
+
+    public TagFilterComponent getTagFilterComponent() {
+        if (tagFilterComponent == null) {
+            tagFilterComponent = new TagFilterComponent(driver, tagFilterRoot);
+        }
+        return tagFilterComponent;
     }
 
     public NewsPage loadNewsPage() {
