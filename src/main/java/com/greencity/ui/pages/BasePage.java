@@ -26,7 +26,7 @@ public abstract class BasePage extends Base {
     private WebElement headerRoot;
 
 
-//    @FindBy(xpath = "//footer")
+    //    @FindBy(xpath = "//footer")
     private WebElement FooterRoot;
 
     public BasePage(WebDriver driver) {
@@ -42,7 +42,7 @@ public abstract class BasePage extends Base {
     }
 
     public HeaderComponent getHeader() {
-        if(this.header == null){
+        if (this.header == null) {
             this.header = new HeaderComponent(driver, headerRoot);
         }
         return header;
