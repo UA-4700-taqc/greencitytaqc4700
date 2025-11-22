@@ -4,8 +4,36 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import com.greencity.ui.components.createnews.HeaderSection;
+import com.greencity.ui.components.createnews.TagSection;
+import com.greencity.ui.components.createnews.ImageSection;
+import com.greencity.ui.components.createnews.ContentSection;
+import com.greencity.ui.components.createnews.MetaSection;
+import com.greencity.ui.components.createnews.ActionButtonsSection;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CreateEcoNewsItemPage extends BasePage {
+
+    @FindBy(css = ".title")
+    private WebElement headerRoot;
+
+    @FindBy(css = ".tags-block")
+    private WebElement tagsRoot;
+
+    @FindBy(css = ".image-block")
+    private WebElement imageRoot;
+
+    @FindBy(css = ".form-container")
+    private WebElement contentRoot;
+
+    @FindBy(css = ".date")
+    private WebElement metaRoot;
+
+    @FindBy(css = ".submit-buttons")
+    private WebElement actionsRoot;
 
     public final HeaderSection header;
     public final TagSection tags;
@@ -16,205 +44,23 @@ public class CreateEcoNewsItemPage extends BasePage {
 
     public CreateEcoNewsItemPage(WebDriver driver) {
         super(driver);
-        this.header = new HeaderSection(driver);
-        this.tags = new TagSection(driver);
-        this.image = new ImageSection(driver);
-        this.content = new ContentSection(driver);
-        this.meta = new MetaSection(driver);
-        this.actions = new ActionButtonsSection(driver);
+        PageFactory.initElements(driver, this);
+
+        this.header  = new HeaderSection(driver, headerRoot);
+        this.tags    = new TagSection(driver, tagsRoot);
+        this.image   = new ImageSection(driver, imageRoot);
+        this.content = new ContentSection(driver, contentRoot);
+        this.meta    = new MetaSection(driver, metaRoot);
+        this.actions = new ActionButtonsSection(driver, actionsRoot);
     }
 
     public void visitPage() {
+
         driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(headerRoot));
     }
 
-    public enum NewsTag {
-        NEWS,
-        EVENTS,
-        EDUCATION,
-        INITIATIVES,
-        ADVERTISING
-    }
 
-    public static class HeaderSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//h2")
-        private WebElement titleHeader;
-
-        @FindBy(xpath = "//p[contains(@class,'title-description')]")
-        private WebElement titleDescription;
-
-        public HeaderSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public String getHeader() {
-            return titleHeader.getText().trim();
-        }
-
-        public String getDescription() {
-            return titleDescription.getText().trim();
-        }
-    }
-
-    public static class TagSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//div[contains(@class,'tags-block')]")
-        private WebElement tagsBlock;
-
-        @FindBy(xpath = "//app-tags-select//button[1]")
-        private WebElement tagNewsBtn;
-
-        @FindBy(xpath = "//app-tags-select//button[2]")
-        private WebElement tagEventsBtn;
-
-        @FindBy(xpath = "//app-tags-select//button[3]")
-        private WebElement tagEducationBtn;
-
-        @FindBy(xpath = "//app-tags-select//button[4]")
-        private WebElement tagInitiativesBtn;
-
-        @FindBy(xpath = "//app-tags-select//button[5]")
-        private WebElement tagAdvertisingBtn;
-
-        public TagSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public void selectTag(NewsTag tag) {
-            switch (tag) {
-                case NEWS -> tagNewsBtn.click();
-                case EVENTS -> tagEventsBtn.click();
-                case EDUCATION -> tagEducationBtn.click();
-                case INITIATIVES -> tagInitiativesBtn.click();
-                case ADVERTISING -> tagAdvertisingBtn.click();
-            }
-        }
-    }
-
-    public static class ImageSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//div[@class='image-block']//h3")
-        private WebElement imageLabel;
-
-        @FindBy(xpath = "//label[@for='upload']")
-        private WebElement uploadLabel;
-
-        @FindBy(id = "upload")
-        private WebElement uploadInput;
-
-        @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
-        private WebElement cancelBtn;
-
-        @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
-        private WebElement submitBtn;
-
-        public ImageSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public void uploadImage(String filePath) {
-            uploadInput.sendKeys(filePath);
-        }
-
-        public void confirmUpload() {
-            submitBtn.click();
-        }
-
-        public void cancelUpload() {
-            cancelBtn.click();
-        }
-    }
-
-    public static class ContentSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//input[contains(@class,'ng')]")
-        private WebElement sourceInput;
-
-        @FindBy(xpath = "//textarea[@formcontrolname='title']")
-        private WebElement titleInput;
-
-        @FindBy(xpath = "//div[@class='ql-editor']")
-        private WebElement contentInput;
-
-        public ContentSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public void enterSource(String text) {
-            sourceInput.clear();
-            sourceInput.sendKeys(text);
-        }
-
-        public void enterTitle(String title) {
-            titleInput.clear();
-            titleInput.sendKeys(title);
-        }
-
-        public void enterContent(String text) {
-            contentInput.sendKeys(text);
-        }
-    }
-
-    public static class MetaSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//div[@class='date']/p[1]/span[2]")
-        private WebElement creationDate;
-
-        @FindBy(xpath = "//div[@class='date']/p[2]/span[2]")
-        private WebElement authorName;
-
-        public MetaSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public String getCreationDate() {
-            return creationDate.getText().trim();
-        }
-
-        public String getAuthorName() {
-            return authorName.getText().trim();
-        }
-    }
-
-    public static class ActionButtonsSection {
-        private final WebDriver driver;
-
-        @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
-        private WebElement publishBtn;
-
-        @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
-        private WebElement reviewBtn;
-
-        @FindBy(xpath = "//button[contains(@class,'tertiary-global-button')]")
-        private WebElement exitBtn;
-
-        public ActionButtonsSection(WebDriver driver) {
-            this.driver = driver;
-            PageFactory.initElements(driver, this);
-        }
-
-        public void clickPublish() {
-            publishBtn.click();
-        }
-
-        public void clickReview() {
-            reviewBtn.click();
-        }
-
-        public void clickExit() {
-            exitBtn.click();
-        }
-    }
 }
 
