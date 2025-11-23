@@ -74,11 +74,6 @@ public class NewsPage extends BasePage {
         }
     }
 
-    public String getItemsFoundCountText() {
-        waitUntilElementVisible(itemsFoundCounter);
-        return itemsFoundCounter.getText().trim();
-    }
-
     public NewsPage clickTilesViewButton() {
         clickDynamicElement(tilesViewButton);
         return this;
