@@ -8,10 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 
 public class MetaSection extends BaseComponent {
 
-    @FindBy(xpath = "//div[@class='date']/p[1]/span[2]")
+    @FindBy(xpath = ".//div[@class='date']/p[1]/span[2]")
     private WebElement creationDate;
 
-    @FindBy(xpath = "//div[@class='date']/p[2]/span[2]")
+    @FindBy(xpath = ".//div[@class='date']/p[2]/span[2]")
     private WebElement authorName;
 
     public MetaSection(WebDriver driver, WebElement rootElement) {
