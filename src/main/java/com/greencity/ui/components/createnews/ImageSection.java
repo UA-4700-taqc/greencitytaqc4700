@@ -25,7 +25,6 @@ public class ImageSection extends BaseComponent {
 
     public ImageSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public void uploadImage(String filePath) {
