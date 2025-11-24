@@ -16,7 +16,6 @@ public class MetaSection extends BaseComponent {
 
     public MetaSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public String getCreationDate() {
