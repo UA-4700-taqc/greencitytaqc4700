@@ -9,22 +9,22 @@ import com.greencity.ui.enums.NewsTag;
 
 public class TagSection extends BaseComponent {
 
-    @FindBy(xpath = "//div[contains(@class,'tags-block')]")
+    @FindBy(xpath = ".//div[contains(@class,'tags-block')]")
     private WebElement tagsBlock;
 
-    @FindBy(xpath = "//app-tags-select//button[1]")
+    @FindBy(xpath = ".//button[1]")
     private WebElement tagNewsBtn;
 
-    @FindBy(xpath = "//app-tags-select//button[2]")
+    @FindBy(xpath = ".//button[2]")
     private WebElement tagEventsBtn;
 
-    @FindBy(xpath = "//app-tags-select//button[3]")
+    @FindBy(xpath = ".//button[3]")
     private WebElement tagEducationBtn;
 
-    @FindBy(xpath = "//app-tags-select//button[4]")
+    @FindBy(xpath = ".//button[4]")
     private WebElement tagInitiativesBtn;
 
-    @FindBy(xpath = "//app-tags-select//button[5]")
+    @FindBy(xpath = ".//button[5]")
     private WebElement tagAdvertisingBtn;
 
     public TagSection(WebDriver driver, WebElement rootElement) {
