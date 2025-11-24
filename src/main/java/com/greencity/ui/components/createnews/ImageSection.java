@@ -8,19 +8,19 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ImageSection extends BaseComponent {
 
-    @FindBy(xpath = "//div[@class='image-block']//h3")
+    @FindBy(xpath = ".//div[@class='image-block']//h3")
     private WebElement imageLabel;
 
-    @FindBy(xpath = "//label[@for='upload']")
+    @FindBy(xpath = ".//label[@for='upload']")
     private WebElement uploadLabel;
 
     @FindBy(id = "upload")
     private WebElement uploadInput;
 
-    @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
+    @FindBy(xpath = ".//button[contains(@class,'secondary-global-button')]")
     private WebElement cancelBtn;
 
-    @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
+    @FindBy(xpath = ".//button[contains(@class,'primary-global-button')]")
     private WebElement submitBtn;
 
     public ImageSection(WebDriver driver, WebElement rootElement) {
