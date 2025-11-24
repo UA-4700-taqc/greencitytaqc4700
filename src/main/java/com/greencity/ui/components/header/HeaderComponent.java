@@ -91,6 +91,11 @@ public class HeaderComponent extends BaseComponent {
         element.click();
     }
 
+    public void clickEcoNewsLink() {
+        clickElement(ecoNewsLink);
+    }
+
+
     public void clickHeaderLogo() {
         clickElement(headerLogo);
     }
