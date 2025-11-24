@@ -29,7 +29,6 @@ public class TagSection extends BaseComponent {
 
     public TagSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public void selectTag(NewsTag tag) {
