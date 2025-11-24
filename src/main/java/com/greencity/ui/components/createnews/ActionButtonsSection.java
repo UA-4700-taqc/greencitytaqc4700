@@ -8,13 +8,13 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ActionButtonsSection extends BaseComponent {
 
-    @FindBy(xpath = "//button[contains(@class,'primary-global-button')]")
+    @FindBy(xpath = ".//button[contains(@class,'primary-global-button')]")
     private WebElement publishBtn;
 
-    @FindBy(xpath = "//button[contains(@class,'secondary-global-button')]")
+    @FindBy(xpath = ".//button[contains(@class,'secondary-global-button')]")
     private WebElement reviewBtn;
 
-    @FindBy(xpath = "//button[contains(@class,'tertiary-global-button')]")
+    @FindBy(xpath = ".//button[contains(@class,'tertiary-global-button')]")
     private WebElement exitBtn;
 
     public ActionButtonsSection(WebDriver driver, WebElement rootElement) {
