@@ -1,7 +1,6 @@
 package com.greencity.ui.components.createnews;
 
 import com.greencity.ui.components.BaseComponent;
-import com.greencity.ui.pages.CreateEcoNewsItemPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
