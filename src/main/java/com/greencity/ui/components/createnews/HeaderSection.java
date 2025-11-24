@@ -8,10 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 
 public class HeaderSection extends BaseComponent {
 
-    @FindBy(xpath = "//h2")
+    @FindBy(xpath = ".//h2")
     private WebElement titleHeader;
 
-    @FindBy(xpath = "//p[@class='title-description']")
+    @FindBy(xpath = ".//p[@class='title-description']")
     private WebElement titleDescription;
 
     public HeaderSection(WebDriver driver, WebElement rootElement) {
