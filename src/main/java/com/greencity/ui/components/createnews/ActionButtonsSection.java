@@ -19,7 +19,6 @@ public class ActionButtonsSection extends BaseComponent {
 
     public ActionButtonsSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public void clickPublish() {
