@@ -71,7 +71,7 @@ public class HeaderComponent extends BaseComponent {
     private WebElement languageOption;
 
     @Getter
-    @FindBy(className = "header_sign-in-link")
+    @FindBy(css = "[alt='sing in button']")
     private WebElement signInButton;
 
     @Getter
@@ -90,6 +90,11 @@ public class HeaderComponent extends BaseComponent {
         waitUntilElementClickable(element);
         element.click();
     }
+
+    public void clickEcoNewsLink() {
+        clickElement(ecoNewsLink);
+    }
+
 
     public void clickHeaderLogo() {
         clickElement(headerLogo);
