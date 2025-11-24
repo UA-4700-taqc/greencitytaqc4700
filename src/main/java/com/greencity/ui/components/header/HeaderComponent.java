@@ -71,7 +71,7 @@ public class HeaderComponent extends BaseComponent {
     private WebElement languageOption;
 
     @Getter
-    @FindBy(css = "[alt='sing in button']")
+    @FindBy(className = "header_sign-in-link")
     private WebElement signInButton;
 
     @Getter

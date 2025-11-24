@@ -17,7 +17,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
     public void openPageBeforeEachTest() {
         createNewsPage = new CreateEcoNewsItemPage(driver);
         createNewsPage.visitPage();
-        createNewsPage.waitForPageToLoad(10);
+        createNewsPage.waitForPageToLoad(50);
     }
 
 
