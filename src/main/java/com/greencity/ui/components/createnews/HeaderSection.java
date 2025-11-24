@@ -16,7 +16,6 @@ public class HeaderSection extends BaseComponent {
 
     public HeaderSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public String getHeader() {
