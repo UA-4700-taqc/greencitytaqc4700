@@ -8,13 +8,13 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ContentSection extends BaseComponent {
 
-    @FindBy(xpath = "//input[contains(@class,'ng')]")
+    @FindBy(xpath = ".//input[contains(@class,'ng')]")
     private WebElement sourceInput;
 
-    @FindBy(xpath = "//textarea[@formcontrolname='title']")
+    @FindBy(xpath = ".//textarea[@formcontrolname='title']")
     private WebElement titleInput;
 
-    @FindBy(xpath = "//div[@class='ql-editor']")
+    @FindBy(xpath = ".//div[@class='ql-editor']")
     private WebElement contentInput;
 
     public ContentSection(WebDriver driver, WebElement rootElement) {
