@@ -19,7 +19,6 @@ public class ContentSection extends BaseComponent {
 
     public ContentSection(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
-        PageFactory.initElements(driver, this);
     }
 
     public void enterSource(String text) {
