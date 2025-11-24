@@ -44,7 +44,6 @@ public class CreateEcoNewsItemPage extends BasePage {
 
     public CreateEcoNewsItemPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
 
         this.header  = new HeaderSection(driver, headerRoot);
         this.tags    = new TagSection(driver, tagsRoot);
@@ -56,7 +55,7 @@ public class CreateEcoNewsItemPage extends BasePage {
 
     public void visitPage() {
 
-        driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
+        driver.get("/#/greenCity/news/create-news");
         new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOf(headerRoot));
     }
