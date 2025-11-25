@@ -8,22 +8,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 
 import java.time.Duration;
 
 
 public class BaseTestRunner {
-    protected WebDriver driver;
     protected static TestValueProvider testValueProvider;
+    protected WebDriver driver;
     protected HomePage homePage;
-    protected WebDriverWait wait;
 
     @BeforeSuite
     public void beforeSuite() {
         WebDriverManager.chromedriver().setup();
         testValueProvider = new TestValueProvider();
-        initDriver();
     }
 
     @Step("init ChromeDriver")
@@ -37,26 +38,26 @@ public class BaseTestRunner {
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(testValueProvider.getImplicitlyWait()));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(testValueProvider.getImplicitlyWait()));
     }
 
 
     @BeforeClass
     public void beforeClass() {
-        if (driver == null){
+        if (driver == null) {
             initDriver();
         }
         driver.get(testValueProvider.getBaseUIUrl());
         homePage = new HomePage(driver);
     }
 
-    @AfterClass()
+    @AfterClass(alwaysRun = true)
     public void afterClass() {
         if (driver != null) {
             driver.close();
         }
     }
-    @AfterSuite
+
+    @AfterSuite(alwaysRun = true)
     public void afterSuite() {
         if (driver != null) {
             driver.quit();

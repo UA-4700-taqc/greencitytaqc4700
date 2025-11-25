@@ -65,7 +65,7 @@ public class HeaderComponentTest extends BaseTestRunner {
 
     @Test(description = "Verify sign in button is displayed")
     public void testSignInButtonIsDisplayed() {
-        WebElement signInBtn = header.getSignInButton();
+        WebElement signInBtn = header.getSignInButtonIcon();
         Assert.assertTrue(signInBtn.isDisplayed(), "Sign in button should be displayed");
     }
 
