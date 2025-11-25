@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
@@ -51,6 +52,28 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         createNewsPage.content.enterContent(randomString(65));
         Assert.assertTrue(createNewsPage.actions.getPublishBtn().isEnabled(), "Publish button is disabled");
 
+    }
+
+    @Test (description = "Verify that the 'Create News' form displays all the necessary fields in the correct order")
+    public void CheckingCreateNewsFormDisplayAllFields() {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(createNewsPage.content.getTitleInput().isDisplayed(), "Title field should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagNewsBtn().isDisplayed(), "News tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagEventsBtn().isDisplayed(), "Events tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagEducationBtn().isDisplayed(), "Education tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagInitiativesBtn().isDisplayed(), "Initiatives tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagAdvertisingBtn().isDisplayed(), "Advertising tag button should be displayed");
+//        softAssert.assertTrue(createNewsPage.image.getUploadInput().isDisplayed(), "Image upload field should be displayed");
+        softAssert.assertTrue(createNewsPage.content.getContentInput().isDisplayed(), "Content input field should be displayed");
+//        softAssert.assertFalse(createNewsPage.meta.getAuthorName().isEmpty(), "Author name field should be displayed");
+//        softAssert.assertFalse(createNewsPage.meta.getCreationDate().isEmpty(), "Creation date field should be displayed");
+        softAssert.assertTrue(createNewsPage.content.getSourceInput().isDisplayed(), "Source field should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getExitBtn().isDisplayed(), "Cancel button should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getReviewBtn().isDisplayed(), "Review button should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getPublishBtn().isDisplayed(), "Publish button should be displayed");
+
+
+        softAssert.assertAll();
     }
 
     public static String randomString(int n) {

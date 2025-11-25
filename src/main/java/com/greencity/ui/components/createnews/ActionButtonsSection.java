@@ -13,9 +13,11 @@ public class ActionButtonsSection extends BaseComponent {
     @FindBy(xpath = ".//button[contains(@class,'primary-global-button')]")
     private WebElement publishBtn;
 
+    @Getter
     @FindBy(xpath = ".//button[contains(@class,'secondary-global-button')]")
     private WebElement reviewBtn;
 
+    @Getter
     @FindBy(xpath = ".//button[contains(@class,'tertiary-global-button')]")
     private WebElement exitBtn;
 
