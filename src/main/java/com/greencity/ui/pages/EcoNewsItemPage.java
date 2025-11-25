@@ -175,20 +175,18 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public void waitForCommentsUpdated() {
-        int oldCount = Integer.parseInt(totalCommentsCountLabel.getText().trim());
+        int commentsCount = Integer.parseInt(totalCommentsCountLabel.getText().trim());
+        if (commentsCount == 0) {
+            new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(COMMENTS_SELECTOR));
+            return;
+        }
+
+        var list = getCommentRoots();
+        var firstElement = list.getFirst();
 
         new WebDriverWait(driver, Duration.ofSeconds(5))
-                .ignoring(StaleElementReferenceException.class)
-                .until(d -> {
-                    try {
-                        int newCount = Integer.parseInt(
-                                d.findElement(COMMENTS_COUNTER).getText().trim()
-                        );
-                        return newCount > oldCount;
-                    } catch (StaleElementReferenceException e) {
-                        return false;
-                    }
-                });
+                .until(ExpectedConditions.stalenessOf(firstElement));
     }
 
     public void waitForCommentsUpdatedDeletion() {

@@ -36,6 +36,7 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonEnabled());
 
         ecoNewsItemPage.getCommentInput().clear();
+        ecoNewsItemPage.getCommentInput().sendKeys(" ");
         ecoNewsItemPage.waitSubmitCommentButtonDisabled();
         Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled());
 
@@ -102,5 +103,23 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         String newFirstCommentText = newFirstComment.getCommentBodyText();
 
         Assert.assertNotEquals(newFirstCommentText, oldFirstCommentText);
+    }
+
+    @Test(description = "[Test Case] 18 - Validate the state and logic of all UI elements from the delete feature.")
+    public void testAddCommentAndDelete() {
+        String uniqueTimestamp = System.currentTimeMillis() + "";
+        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
+
+        var comment = ecoNewsItemPage.getFirstComment();
+        var modal = comment.clickDeleteCommentButton();
+        var modalMessage = modal.getMessage();
+        Assert.assertEquals(modalMessage, "Ви дійсно бажаєте видалити коментар?");
+        modal.cancel();
+
+        Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp);
+
+        ecoNewsItemPage = ecoNewsItemPage.deleteComment(comment);
+
+        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp);
     }
 }
