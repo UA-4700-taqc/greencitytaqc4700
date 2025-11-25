@@ -72,7 +72,11 @@ public class HeaderComponent extends BaseComponent {
 
     @Getter
     @FindBy(css = "[alt='sing in button']")
-    private WebElement signInButton;
+    private WebElement signInButtonIcon;
+
+    @Getter
+    @FindBy(className = "header_sign-in-link")
+    private WebElement signInButtonLink;
 
     @Getter
     @FindBy(className = "header_sign-up-link")
@@ -109,7 +113,13 @@ public class HeaderComponent extends BaseComponent {
     }
 
     public void clickSignIn() {
-        clickElement(signInButton);
+        if(signInButtonIcon.isDisplayed()){
+            clickElement(signInButtonIcon);
+            return;
+        }
+        if(signInButtonLink.isDisplayed()){
+            clickElement(signInButtonLink);
+        }
     }
 
     public void clickSignUp() {

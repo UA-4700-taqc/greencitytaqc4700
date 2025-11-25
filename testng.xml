@@ -7,8 +7,10 @@
     </listeners>
     <test name="UITests">
         <classes>
-            <class name="com.greencity.ui.testrunners.BaseTestRunner"/>
-            <class name="com.greencity.ui.BaseTest"/>
+            <class name="com.greencity.ui.NewsPageTest"/>
+            <class name="com.greencity.ui.CreateEcoNewsItemPageTest"/>
+            <class name="com.greencity.ui.HeaderComponentTest"/>
+            <class name="com.greencity.ui.TestEcoNewsItemPage"/>
         </classes>
     </test>
 </suite>
