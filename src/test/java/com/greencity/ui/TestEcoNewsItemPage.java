@@ -84,4 +84,23 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertEquals(firstComment.getCommentBodyText(), uniqueTimestamp);
 //        Assert.assertEquals(ecoNewsItemPage.getCommentsCount(), commentsCountBefore + 1);
     }
+
+    @Test(description = "Add 2 new comments, delete one of them, verify successful deletion.")
+    public void testAddCommentDeletion() {
+        // add 2 comments
+        String uniqueTimestamp = System.currentTimeMillis() + "";
+        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
+        uniqueTimestamp = System.currentTimeMillis() + "";
+        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
+
+        var oldFirstComment = ecoNewsItemPage.getFirstComment();
+        String oldFirstCommentText = oldFirstComment.getCommentBodyText();
+
+        ecoNewsItemPage = ecoNewsItemPage.deleteComment(oldFirstComment);
+
+        var newFirstComment = ecoNewsItemPage.getFirstComment();
+        String newFirstCommentText = newFirstComment.getCommentBodyText();
+
+        Assert.assertNotEquals(newFirstCommentText, oldFirstCommentText);
+    }
 }

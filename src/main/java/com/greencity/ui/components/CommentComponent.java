@@ -35,6 +35,9 @@ public class CommentComponent extends BaseComponent {
     @FindBy(css = "primary-global-button__reply")
     private WebElement sendReplyButton;
 
+    @FindBy(css = "button.cta-btn.delete")
+    private WebElement deleteCommentButton;
+
     public CommentComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
@@ -82,5 +85,10 @@ public class CommentComponent extends BaseComponent {
 
     public void clickSendReplyButton() {
         sendReplyButton.click();
+    }
+
+    public InformationModal clickDeleteCommentButton() {
+        deleteCommentButton.click();
+        return new InformationModal(driver);
     }
 }
