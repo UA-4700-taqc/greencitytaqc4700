@@ -30,8 +30,16 @@ public class HomePageTest extends BaseTest{
 
         NewsPage newsPage = homePage.clickReadAllNewsButton();
 
+        //Ensure that a new page with a list of news articles is opened.
         Assert.assertTrue(driver.getCurrentUrl().contains("/news"),
                 "Verification failed: Clicking 'Read all news' did not navigate to the news page.");
+
+        //  Verify that the articles are sorted by publishing date in descending order (newest articles appear first).
+        boolean isSortedDescending = newsPage.areArticlesSortedByDateDescending();
+
+        Assert.assertTrue(isSortedDescending,
+                "Verification failed: News articles are not sorted by publishing date in descending order (newest first).");
+
 
     }
 }

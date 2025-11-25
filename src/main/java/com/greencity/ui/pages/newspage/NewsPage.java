@@ -7,6 +7,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.By;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsPage extends BasePage {
@@ -43,6 +47,9 @@ public class NewsPage extends BasePage {
     @FindBy(xpath = "//ul[@aria-label='news list']")
     private WebElement newsListContainer;
 
+    private final By NEWS_ITEM_DATE_LOCATOR = By.xpath(".//p[contains(@class, 'user-data-text-date')]//span");
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+
     public NewsPage(WebDriver driver) {
         super(driver);
     }
@@ -74,6 +81,7 @@ public class NewsPage extends BasePage {
         }
     }
 
+
     public NewsPage clickTilesViewButton() {
         clickDynamicElement(tilesViewButton);
         return this;
@@ -87,6 +95,34 @@ public class NewsPage extends BasePage {
     public List<WebElement> getNewsItems() {
         waitUntilElementVisible(newsListContainer);
         return newsListContainer.findElements(By.xpath("./li"));
+    }
+
+    public List<LocalDate> getArticleDates() {
+        List<LocalDate> dates = new ArrayList<>();
+        List<WebElement> articles = getNewsItems();
+
+        for (WebElement article : articles) {
+            try {
+                WebElement dateElement = article.findElement(NEWS_ITEM_DATE_LOCATOR);
+                String dateText = dateElement.getText().trim();
+            } catch (Exception e) {
+                System.err.println("Could not parse date for an article. Error: " + e.getMessage());
+            }
+        }
+        return dates;
+    }
+
+    public boolean areArticlesSortedByDateDescending() {
+        List<LocalDate> dates = getArticleDates();
+        if (dates.size() <= 1) {
+            return true;
+        }
+        for (int i = 0; i < dates.size() - 1; i++) {
+            if (dates.get(i).isBefore(dates.get(i + 1))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public NewsPage clickSearchButton() {
