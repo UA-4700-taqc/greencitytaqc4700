@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class NewsPage extends BasePage {
 
@@ -48,7 +49,7 @@ public class NewsPage extends BasePage {
     private WebElement newsListContainer;
 
     private final By NEWS_ITEM_DATE_LOCATOR = By.xpath(".//p[contains(@class, 'user-data-text-date')]//span");
-    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH);
 
     public NewsPage(WebDriver driver) {
         super(driver);
@@ -105,6 +106,8 @@ public class NewsPage extends BasePage {
             try {
                 WebElement dateElement = article.findElement(NEWS_ITEM_DATE_LOCATOR);
                 String dateText = dateElement.getText().trim();
+                LocalDate date = LocalDate.parse(dateText, DATE_FORMATTER);
+                dates.add(date);
             } catch (Exception e) {
                 System.err.println("Could not parse date for an article. Error: " + e.getMessage());
             }
