@@ -48,7 +48,7 @@ public class NewsPage extends BasePage {
     private WebElement newsListContainer;
 
     private final By NEWS_ITEM_DATE_LOCATOR = By.xpath(".//p[contains(@class, 'user-data-text-date')]//span");
-    private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd, yyyy");
 
     public NewsPage(WebDriver driver) {
         super(driver);
