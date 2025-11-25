@@ -1,5 +1,6 @@
 package com.greencity.ui.pages.homepage;
 
+import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.pages.BasePage;
 import com.greencity.ui.pages.newspage.NewsPage;
 import org.openqa.selenium.WebDriver;
@@ -7,8 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage {
-
-
 
     @FindBy(xpath = "//section[@id='events']")
     private WebElement ecoNewsSection;
