@@ -3,6 +3,7 @@ package com.greencity.ui.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import com.greencity.ui.components.createnews.HeaderSection;
 import com.greencity.ui.components.createnews.TagSection;
 import com.greencity.ui.components.createnews.ImageSection;
@@ -12,6 +13,7 @@ import com.greencity.ui.components.createnews.ActionButtonsSection;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.URL;
 import java.time.Duration;
 
 public class CreateEcoNewsItemPage extends BasePage {
@@ -53,10 +55,13 @@ public class CreateEcoNewsItemPage extends BasePage {
     }
 
     public void visitPage() {
-
-        driver.get("https://www.greencity.cx.ua/#/greenCity/news/create-news");
-
-        new WebDriverWait(driver, Duration.ofSeconds(50))
+        try {
+            String host = new URL(driver.getCurrentUrl()).getHost();
+            driver.get("https://" + host + "/#/greenCity/news/create-news");
+        } catch (Exception e) {
+            return;
+        }
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOf(headerRoot));
     }
 

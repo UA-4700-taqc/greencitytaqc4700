@@ -2,6 +2,7 @@ package com.greencity.ui.pages;
 
 import com.greencity.ui.components.CommentComponent;
 import com.greencity.ui.components.EcoNewsItemComponent;
+import com.greencity.ui.components.InformationModal;
 import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.utils.NewsTag;
 import lombok.Getter;
@@ -65,6 +66,16 @@ public class EcoNewsItemPage extends BasePage {
     @Getter
     @FindBy(css = "button.primary-global-button")
     private WebElement submitCommentButton;
+
+    private static final By COMMENTS_SELECTOR =
+            By.cssSelector("app-comments-list div.comment-body-wrapper");
+
+    private static final By COMMENTS_COUNTER =
+            By.cssSelector("span#total-count");
+
+    private List<WebElement> getCommentRoots() {
+        return driver.findElements(COMMENTS_SELECTOR);
+    }
 
     public EcoNewsItemPage(WebDriver driver) {
         super(driver);
@@ -164,8 +175,6 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public void waitForCommentsUpdated() {
-        By counterSelector = By.cssSelector("span#total-count");
-
         int oldCount = Integer.parseInt(totalCommentsCountLabel.getText().trim());
 
         new WebDriverWait(driver, Duration.ofSeconds(5))
@@ -173,7 +182,7 @@ public class EcoNewsItemPage extends BasePage {
                 .until(d -> {
                     try {
                         int newCount = Integer.parseInt(
-                                d.findElement(counterSelector).getText().trim()
+                                d.findElement(COMMENTS_COUNTER).getText().trim()
                         );
                         return newCount > oldCount;
                     } catch (StaleElementReferenceException e) {
@@ -182,20 +191,35 @@ public class EcoNewsItemPage extends BasePage {
                 });
     }
 
+    public void waitForCommentsUpdatedDeletion() {
+        var list = getCommentRoots();
+        var firstElement = list.getFirst();
+
+        new WebDriverWait(driver, Duration.ofSeconds(5))
+                .until(ExpectedConditions.stalenessOf(firstElement));
+    }
+
     public List<CommentComponent> getComments() {
-        return driver.findElements(By.cssSelector("app-comments-list div.comment-body-wrapper"))
+        var commentsRoots = getCommentRoots();
+        return commentsRoots
                 .stream()
                 .map(root -> new CommentComponent(driver, root))
                 .collect(Collectors.toList());
     }
 
     public CommentComponent getFirstComment() {
-        List<WebElement> list =
-                driver.findElements(By.cssSelector("app-comments-list div.comment-body-wrapper"));
-
+        List<CommentComponent> list = getComments();
         if (list.isEmpty()) return null;
 
-        return new CommentComponent(driver, list.getFirst());
+        return list.getFirst();
     }
 
+    public EcoNewsItemPage deleteComment(CommentComponent comment) {
+        InformationModal modal = comment.clickDeleteCommentButton();
+
+        modal.confirm();
+
+        waitForCommentsUpdatedDeletion();
+        return this;
+    }
 }
