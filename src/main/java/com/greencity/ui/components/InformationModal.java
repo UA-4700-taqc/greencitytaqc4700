@@ -1,5 +1,6 @@
 package com.greencity.ui.components;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,9 +16,11 @@ public class InformationModal {
     @FindBy(css = "mat-dialog-container")
     private WebElement modalRoot;
 
+    @Getter
     @FindBy(css = "button.m-btn.primary-global-button")
     private WebElement confirmButton;
 
+    @Getter
     @FindBy(css = "button.m-btn.secondary-global-button")
     private WebElement cancelButton;
 

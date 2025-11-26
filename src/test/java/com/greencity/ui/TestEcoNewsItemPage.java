@@ -9,19 +9,20 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class TestEcoNewsItemPage extends TestRunnerWithUser {
 
     private EcoNewsItemPage ecoNewsItemPage;
+    private static final String newsIdentifier = "news/149";
 
     @BeforeMethod
     public void visitPage() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        driver.get("https://www.greencity.cx.ua/#/greenCity/news/149");
+        if (testValueProvider.getBaseUIUrl().endsWith("/"))
+            driver.get(testValueProvider.getBaseUIUrl() + newsIdentifier);
+        else
+            driver.get(testValueProvider.getBaseUIUrl() + "/" + newsIdentifier);
+
         ecoNewsItemPage = new EcoNewsItemPage(driver);
     }
 
@@ -77,13 +78,14 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
     public void testCommentCountLabel() {
         String uniqueTimestamp = System.currentTimeMillis() + "";
         int commentsCountBefore = ecoNewsItemPage.getCommentsCount();
-
         ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
 
         var firstComment = ecoNewsItemPage.getFirstComment();
 
         Assert.assertEquals(firstComment.getCommentBodyText(), uniqueTimestamp);
-//        Assert.assertEquals(ecoNewsItemPage.getCommentsCount(), commentsCountBefore + 1);
+
+        int commentsCountAfter = ecoNewsItemPage.getCommentsCount();
+        Assert.assertEquals(commentsCountAfter, commentsCountBefore + 1);
     }
 
     @Test(description = "Add 2 new comments, delete one of them, verify successful deletion.")
@@ -105,8 +107,23 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertNotEquals(newFirstCommentText, oldFirstCommentText);
     }
 
-    @Test(description = "[Test Case] 18 - Validate the state and logic of all UI elements from the delete feature.")
-    public void testAddCommentAndDelete() {
+    @Test(description = "[Test Case] 29 - Verify Visual Display of a Saved Comment.")
+    public void testCommentComponentElementsVisibility() {
+        var comment = ecoNewsItemPage.addComment(System.currentTimeMillis() + "").getFirstComment();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(comment.getCommentBody().isDisplayed(), "Comment text should be displayed");
+        softAssert.assertTrue(comment.getAuthorName().isDisplayed(), "Author name should be displayed");
+        softAssert.assertTrue(comment.getProfileAvatar().isDisplayed(), "Profile avatar should be displayed");
+        softAssert.assertTrue(comment.getCommentDate().isDisplayed(), "Comment date should be displayed");
+        softAssert.assertTrue(comment.getEditCommentButton().isDisplayed(), "Edit comment button should be displayed");
+        softAssert.assertTrue(comment.getDeleteCommentButton().isDisplayed(), "Delete comment button should be displayed");
+        softAssert.assertTrue(comment.getReplyCommentButton().isDisplayed(), "Reply comment button should be displayed");
+        softAssert.assertAll();
+    }
+
+    @Test(description = "[Test Case] 20 - Verify confirmation modal on delete with Yes and No buttons.")
+    public void testCommentDeleteConfirmationModal() {
         String uniqueTimestamp = System.currentTimeMillis() + "";
         ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
 
@@ -114,12 +131,37 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         var modal = comment.clickDeleteCommentButton();
         var modalMessage = modal.getMessage();
         Assert.assertEquals(modalMessage, "Ви дійсно бажаєте видалити коментар?");
+        Assert.assertTrue(modal.getConfirmButton().isDisplayed(), "Confirm button should be displayed.");
+        Assert.assertTrue(modal.getCancelButton().isDisplayed(), "Cancel button should be displayed.");
         modal.cancel();
 
-        Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp);
+        Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
+                "The comment should not have been deleted.");
 
         ecoNewsItemPage = ecoNewsItemPage.deleteComment(comment);
 
-        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp);
+        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
+                "The comment should have been deleted.");
+    }
+
+    @Test(description = "[Test Case] 28 - Add Multiple Comments and Verify Order and Count.")
+    public void testAddCommentsOrderAndCount() {
+        String firstMessage = "test message - 1";
+        String secondMessage = "test message - 2";
+        String thirdMessage = "test message - 3";
+
+        int commentsCountBefore = ecoNewsItemPage.getCommentsCount();
+
+        var comments = ecoNewsItemPage.addComment(firstMessage)
+                .addComment(secondMessage)
+                .addComment(thirdMessage)
+                .getComments();
+
+        Assert.assertEquals(comments.get(0).getCommentBodyText(), thirdMessage);
+        Assert.assertEquals(comments.get(1).getCommentBodyText(), secondMessage);
+        Assert.assertEquals(comments.get(2).getCommentBodyText(), firstMessage);
+
+        Assert.assertEquals(ecoNewsItemPage.getCommentsCount(), commentsCountBefore + 3,
+                "Comments count should be : " + commentsCountBefore + 3);
     }
 }
