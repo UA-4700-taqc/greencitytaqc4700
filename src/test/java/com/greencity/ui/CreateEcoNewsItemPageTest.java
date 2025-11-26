@@ -103,6 +103,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertEquals(createNewsPagePreview.getContent(),itemContent, "Content should be same");
         softAssert.assertEquals(createNewsPagePreview.getSource(),itemSource, "Source should be same");
         softAssert.assertTrue(createNewsPagePreview.getBackToEditingButton().isDisplayed(), "Back to edit link should be displayed");
+        softAssert.assertEquals(createNewsPagePreview.getLink(),"https://www.greencity.cx.ua/#/greenCity/news/create-news", "Link should be same");
         softAssert.assertAll();
 
 

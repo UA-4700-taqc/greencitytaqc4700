@@ -59,6 +59,10 @@ public class CreateEcoNewsPreviewPage extends BasePage {
         return sourceText.getText().trim();
     }
 
+    public  String getLink() {
+        return backToEditingButton.getAttribute("href");
+    }
+
     public CreateEcoNewsItemPage clickBackToReview() {
 
         backToEditingButton.click();
