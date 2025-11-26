@@ -102,7 +102,11 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertEquals(createNewsPagePreview.getAuthor().replaceFirst("^(автор |author )", "").trim(),itemAuthor, "Author should be same");
         softAssert.assertEquals(createNewsPagePreview.getContent(),itemContent, "Content should be same");
         softAssert.assertEquals(createNewsPagePreview.getSource(),itemSource, "Source should be same");
+        softAssert.assertTrue(createNewsPagePreview.getBackToEditingButton().isDisplayed(), "Back to edit link should be displayed");
         softAssert.assertAll();
+
+
+
     }
 
     public static String randomString(int n) {

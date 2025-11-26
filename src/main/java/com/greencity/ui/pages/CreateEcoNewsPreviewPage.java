@@ -1,19 +1,10 @@
 package com.greencity.ui.pages;
 
-import com.google.j2objc.annotations.Weak;
-import org.openqa.selenium.By;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class CreateEcoNewsPreviewPage extends BasePage {
 
@@ -34,6 +25,10 @@ public class CreateEcoNewsPreviewPage extends BasePage {
 
     @FindBy(css = ".source-text.word-wrap")
     private WebElement sourceText;
+
+    @Getter
+    @FindBy(className = "button-link")
+    private WebElement backToEditingButton;
 
     public CreateEcoNewsPreviewPage(WebDriver driver) {
         super(driver);
@@ -62,5 +57,11 @@ public class CreateEcoNewsPreviewPage extends BasePage {
 
     public String getSource() {
         return sourceText.getText().trim();
+    }
+
+    public CreateEcoNewsItemPage clickBackToReview() {
+
+        backToEditingButton.click();
+        return new CreateEcoNewsItemPage(driver);
     }
 }
