@@ -63,10 +63,12 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertTrue(createNewsPage.tags.getTagEducationBtn().isDisplayed(), "Education tag button should be displayed");
         softAssert.assertTrue(createNewsPage.tags.getTagInitiativesBtn().isDisplayed(), "Initiatives tag button should be displayed");
         softAssert.assertTrue(createNewsPage.tags.getTagAdvertisingBtn().isDisplayed(), "Advertising tag button should be displayed");
-//        softAssert.assertTrue(createNewsPage.image.getUploadInput().isDisplayed(), "Image upload field should be displayed");
+        softAssert.assertTrue(createNewsPage.getImageRoot().isDisplayed(), "Image upload field should be displayed");
         softAssert.assertTrue(createNewsPage.content.getContentInput().isDisplayed(), "Content input field should be displayed");
-//        softAssert.assertFalse(createNewsPage.meta.getAuthorName().isEmpty(), "Author name field should be displayed");
-//        softAssert.assertFalse(createNewsPage.meta.getCreationDate().isEmpty(), "Creation date field should be displayed");
+        softAssert.assertFalse(createNewsPage.meta.getName().isEmpty(), "Author name field should be filled in");
+        softAssert.assertEquals(createNewsPage.meta.getAuthorName().getTagName(), "span", "Author name should not be an editable input");
+        softAssert.assertFalse(createNewsPage.meta.getDate().isEmpty(), "Creation date field should be filled in");
+        softAssert.assertEquals(createNewsPage.meta.getAuthorName().getTagName(), "span", "Creation date should not be an editable input");
         softAssert.assertTrue(createNewsPage.content.getSourceInput().isDisplayed(), "Source field should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getExitBtn().isDisplayed(), "Cancel button should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getReviewBtn().isDisplayed(), "Review button should be displayed");
