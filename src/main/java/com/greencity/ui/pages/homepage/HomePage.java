@@ -1,6 +1,5 @@
 package com.greencity.ui.pages.homepage;
 
-import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.pages.BasePage;
 import com.greencity.ui.pages.newspage.NewsPage;
 import org.openqa.selenium.WebDriver;

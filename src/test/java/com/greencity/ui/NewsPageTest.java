@@ -1,12 +1,12 @@
-package com.greencity.ui.testrunners;
+package com.greencity.ui;
 
-import com.greencity.ui.BaseTest;
 import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.components.tagfilter.enums.TagFilter;
+import com.greencity.ui.testrunners.BaseTestRunner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class NewsPageTest extends BaseTest {
+public class NewsPageTest extends BaseTestRunner {
 
 
     @Test(description = "Verification of correct news filtering by tag 'Events'")

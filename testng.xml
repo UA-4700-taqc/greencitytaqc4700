@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="GreenCitySuite">
+<suite name="GreenCitySuite" parallel="classes" thread-count="4">
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg" />
     </listeners>
     <test name="UITests">
         <classes>
-            <class name="com.greencity.ui.testrunners.BaseTestRunner"/>
-            <class name="com.greencity.ui.BaseTest"/>
+            <class name="com.greencity.ui.NewsPageTest"/>
+            <class name="com.greencity.ui.CreateEcoNewsItemPageTest"/>
+            <class name="com.greencity.ui.HeaderComponentTest"/>
+            <class name="com.greencity.ui.TestEcoNewsItemPage"/>
         </classes>
     </test>
 </suite>

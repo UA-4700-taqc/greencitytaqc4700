@@ -25,7 +25,6 @@ public abstract class BasePage extends Base {
     @FindBy(xpath = "//app-header")
     private WebElement headerRoot;
 
-
     //    @FindBy(xpath = "//footer")
     private WebElement FooterRoot;
 
