@@ -1,6 +1,7 @@
 package com.greencity.ui.components.createnews;
 
 import com.greencity.ui.components.BaseComponent;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,7 @@ public class ImageSection extends BaseComponent {
     @FindBy(xpath = ".//label[@for='upload']")
     private WebElement uploadLabel;
 
+    @Getter
     @FindBy(id = "upload")
     private WebElement uploadInput;
 

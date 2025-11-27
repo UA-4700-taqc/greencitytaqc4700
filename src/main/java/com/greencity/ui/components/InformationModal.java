@@ -1,5 +1,6 @@
 package com.greencity.ui.components;
 
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,11 +16,16 @@ public class InformationModal {
     @FindBy(css = "mat-dialog-container")
     private WebElement modalRoot;
 
+    @Getter
     @FindBy(css = "button.m-btn.primary-global-button")
     private WebElement confirmButton;
 
+    @Getter
     @FindBy(css = "button.m-btn.secondary-global-button")
     private WebElement cancelButton;
+
+    @FindBy(css = "div.warning-title")
+    private WebElement message;
 
     public InformationModal(WebDriver driver) {
         this.driver = driver;
@@ -30,6 +36,10 @@ public class InformationModal {
     private void waitUntilVisible() {
         new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOf(modalRoot));
+    }
+
+    public String getMessage() {
+        return message.getText();
     }
 
     public void confirm() {

@@ -1,19 +1,23 @@
 package com.greencity.ui.components.createnews;
 
 import com.greencity.ui.components.BaseComponent;
+import com.greencity.ui.pages.CreateEcoNewsPreviewPage;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class ActionButtonsSection extends BaseComponent {
 
+    @Getter
     @FindBy(xpath = ".//button[contains(@class,'primary-global-button')]")
     private WebElement publishBtn;
 
+    @Getter
     @FindBy(xpath = ".//button[contains(@class,'secondary-global-button')]")
     private WebElement reviewBtn;
 
+    @Getter
     @FindBy(xpath = ".//button[contains(@class,'tertiary-global-button')]")
     private WebElement exitBtn;
 
@@ -25,8 +29,10 @@ public class ActionButtonsSection extends BaseComponent {
         publishBtn.click();
     }
 
-    public void clickReview() {
+    public CreateEcoNewsPreviewPage clickReview() {
+
         reviewBtn.click();
+        return new CreateEcoNewsPreviewPage(driver);
     }
 
     public void clickExit() {
