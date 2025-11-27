@@ -15,8 +15,8 @@ public class SubscriptionSectionTest extends BaseTestRunner {
 
         Assert.assertTrue(subscriptionSection.isSectionDisplayed(), "The subscription section should be visible after scrolling.");
 
-        String expectedTittle = "Receive interesting news";
-        Assert.assertEquals(subscriptionSection.getSectionTitleText(),expectedTittle, "The text of the subscription section heading does not match what is expected.");
+        String expectedTitle = "Receive interesting news";
+        Assert.assertEquals(subscriptionSection.getSectionTitleText(), expectedTitle, "The text of the subscription section heading does not match what is expected.");
 
         Assert.assertTrue(subscriptionSection.getQrCodeImage(), "The QR code for the mobile version should be displayed.");
 
