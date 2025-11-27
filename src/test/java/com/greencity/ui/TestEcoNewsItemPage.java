@@ -1,11 +1,9 @@
 package com.greencity.ui;
 
-import com.greencity.ui.components.CommentComponent;
 import com.greencity.ui.components.EcoNewsItemComponent;
 import com.greencity.ui.pages.EcoNewsItemPage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
 import com.greencity.ui.utils.NewsTag;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

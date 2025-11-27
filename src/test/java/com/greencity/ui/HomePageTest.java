@@ -1,11 +1,12 @@
 package com.greencity.ui;
 
 import com.greencity.ui.pages.newspage.NewsPage;
+import com.greencity.ui.testrunners.BaseTestRunner;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.openqa.selenium.WebElement;
 
-public class HomePageTest extends BaseTest{
+public class HomePageTest extends BaseTestRunner {
 
     @Test(description = "[Case#44]Verify Eco News section display and 'Read all news' button functionality for unregistered user.")
     public void verifyEcoNewsSectionAndNavigation() {

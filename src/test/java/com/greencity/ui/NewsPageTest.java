@@ -1,7 +1,7 @@
 package com.greencity.ui;
 
-import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.components.tagfilter.enums.TagFilter;
+import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.testrunners.BaseTestRunner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
