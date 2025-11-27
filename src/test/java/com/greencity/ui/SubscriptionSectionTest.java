@@ -10,7 +10,6 @@ public class SubscriptionSectionTest extends BaseTestRunner {
     @Test(description = "Verify section visibility and static elements")
     public void verifySubscriptionSectionVisibilityAndElements() {
 
-        HomePage homePage = new HomePage(driver);
         SubscriptionSectionComponent subscriptionSection = new SubscriptionSectionComponent(driver);
         subscriptionSection.scrollToSection();
 
