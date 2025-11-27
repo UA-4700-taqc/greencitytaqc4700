@@ -1,7 +1,7 @@
 package com.greencity.ui;
 
 import com.greencity.ui.components.SubscriptionSectionComponent;
-import com.greencity.ui.pages.homepage.HomePage;
+import com.greencity.ui.testrunners.BaseTestRunner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -18,7 +18,7 @@ public class SubscriptionSectionTest extends BaseTestRunner {
         String expectedTitle = "Receive interesting news";
         Assert.assertEquals(subscriptionSection.getSectionTitleText(), expectedTitle, "The text of the subscription section heading does not match what is expected.");
 
-        Assert.assertTrue(subscriptionSection.getQrCodeImage(), "The QR code for the mobile version should be displayed.");
+        Assert.assertTrue(subscriptionSection.isQrCodeImageDisplayed(), "The QR code for the mobile version should be displayed.");
 
         String expectedInfoText = "Subscribe for our newsletter and always be up to date with news and updates";
         Assert.assertEquals(subscriptionSection.getInfoText(), expectedInfoText, "The informational text of the section does not meet expectations.");
