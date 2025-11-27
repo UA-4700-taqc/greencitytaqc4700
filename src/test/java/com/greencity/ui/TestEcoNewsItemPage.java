@@ -162,6 +162,6 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertEquals(comments.get(2).getCommentBodyText(), firstMessage);
 
         Assert.assertEquals(ecoNewsItemPage.getCommentsCount(), commentsCountBefore + 3,
-                "Comments count should be : " + commentsCountBefore + 3);
+                "Comments count should be: " + commentsCountBefore + 3);
     }
 }
