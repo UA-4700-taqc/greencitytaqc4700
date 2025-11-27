@@ -26,6 +26,6 @@ public class SubscriptionSectionTest extends BaseTestRunner {
         String expectedPlaceholder = "Enter your email";
         Assert.assertEquals(subscriptionSection.getEmailInputPlaceholder(), expectedPlaceholder, "The email field placeholder does not match the expected one.");
 
-        Assert.assertTrue(subscriptionSection.getSubscribeButton().isDisplayed());
+        Assert.assertTrue(subscriptionSection.getSubscribeButton().isDisplayed(), "The subscribe button should be displayed.");
     }
 }
