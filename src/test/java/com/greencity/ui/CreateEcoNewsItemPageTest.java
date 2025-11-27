@@ -17,6 +17,11 @@ import java.util.Locale;
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
 
+    private static final String[] DATE_FORMATS = {"MMM dd, yyyy",        // Nov 26, 2025
+            "LLL dd, yyyy 'р.'",   // лист. 26, 2025 р.
+            "dd.MM.yyyy",          // 26.11.2025
+            "yyyy-MM-dd"           // 2025-11-26
+    };
     private CreateEcoNewsItemPage createNewsPage;
 
     public static String randomString(int n) {
@@ -28,6 +33,28 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
             sb.append(chars.charAt(random.nextInt(chars.length())));
         }
         return sb.toString();
+    }
+
+    public static boolean areDatesEqual(String date1, String date2) {
+        try {
+            Date d1 = parseDate(date1);
+            Date d2 = parseDate(date2);
+            if (d1 == null || d2 == null) return false;
+            return d1.equals(d2);
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private static Date parseDate(String date) throws ParseException {
+        for (String format : DATE_FORMATS) {
+            try {
+                Locale locale = format.contains("LLL") ? new Locale("uk") : Locale.ENGLISH;
+                return new SimpleDateFormat(format, locale).parse(date);
+            } catch (ParseException ignored) {
+            }
+        }
+        return null;
     }
 
     @BeforeMethod
@@ -69,7 +96,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
     }
 
-    @Test (description = "Verify that the 'Create News' form displays all the necessary fields in the correct order")
+    @Test(description = "Verify that the 'Create News' form displays all the necessary fields in the correct order")
     public void CheckingCreateNewsFormDisplayAllFields() {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(createNewsPage.content.getTitleInput().isDisplayed(), "Title field should be displayed");
@@ -91,8 +118,8 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertAll();
     }
 
-    @Test (description = "Verify that the user can preview news content after entering valid data and that the preview matches the input")
-    public void BasicPreviewFunctionality() throws ParseException {
+    @Test(description = "Verify that the user can preview news content after entering valid data and that the preview matches the input")
+    public void BasicPreviewFunctionality() {
         String itemTitle = randomString(10);
         String itemContent = randomString(50);
         String itemSource = "https://" + randomString(7);
@@ -106,56 +133,16 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         CreateEcoNewsPreviewPage createNewsPagePreview = new CreateEcoNewsPreviewPage(driver);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(createNewsPagePreview.getTitle(),itemTitle, "Title should be same");
-        softAssert.assertTrue(areDatesEqual(createNewsPagePreview.getDate(),itemDate), "Date should be same");
-        softAssert.assertEquals(createNewsPagePreview.getAuthor().replaceFirst("^(автор |author )", "").trim(),itemAuthor, "Author should be same");
-        softAssert.assertEquals(createNewsPagePreview.getContent(),itemContent, "Content should be same");
-        softAssert.assertEquals(createNewsPagePreview.getSource(),itemSource, "Source should be same");
+        softAssert.assertEquals(createNewsPagePreview.getTitle(), itemTitle, "Title should be same");
+        softAssert.assertTrue(areDatesEqual(createNewsPagePreview.getDate(), itemDate), "Date should be same");
+        softAssert.assertEquals(createNewsPagePreview.getAuthor().replaceFirst("^(автор |author )", "").trim(), itemAuthor, "Author should be same");
+        softAssert.assertEquals(createNewsPagePreview.getContent(), itemContent, "Content should be same");
+        softAssert.assertEquals(createNewsPagePreview.getSource(), itemSource, "Source should be same");
         softAssert.assertTrue(createNewsPagePreview.getBackToEditingButton().isDisplayed(), "Back to edit link should be displayed");
-        softAssert.assertEquals(createNewsPagePreview.getLink(),"https://www.greencity.cx.ua/#/greenCity/news/create-news", "Link should be same");
+        softAssert.assertEquals(createNewsPagePreview.getLink(), "https://www.greencity.cx.ua/#/greenCity/news/create-news", "Link should be same");
         softAssert.assertAll();
 
 
-
-    }
-
-    public static String randomString(int n) {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder(n);
-        java.util.Random random = new java.util.Random();
-
-        for (int i = 0; i < n; i++) {
-            sb.append(chars.charAt(random.nextInt(chars.length())));
-        }
-        return sb.toString();
-    }
-
-    private static final String[] DATE_FORMATS = {
-            "MMM dd, yyyy",        // Nov 26, 2025
-            "LLL dd, yyyy 'р.'",   // лист. 26, 2025 р.
-            "dd.MM.yyyy",          // 26.11.2025
-            "yyyy-MM-dd"           // 2025-11-26
-    };
-
-    public static boolean areDatesEqual(String date1, String date2) {
-        try {
-            Date d1 = parseDate(date1);
-            Date d2 = parseDate(date2);
-            if (d1 == null || d2 == null) return false;
-            return d1.equals(d2);
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    private static Date parseDate(String date) throws ParseException {
-        for (String format : DATE_FORMATS) {
-            try {
-                Locale locale = format.contains("LLL") ? new Locale("uk") : Locale.ENGLISH;
-                return new SimpleDateFormat(format, locale).parse(date);
-            } catch (ParseException ignored) {}
-        }
-        return null;
     }
 
 }
