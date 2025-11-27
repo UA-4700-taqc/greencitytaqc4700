@@ -43,7 +43,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         Assert.assertEquals(createNewsPage.content.getTitleInput().getAttribute("value").length(),171, "Text size  isn`t truncated");
         Assert.assertTrue(createNewsPage.content.getTitleSymbolCount().getAttribute("class").contains("warning"), "Text counter isn't red");
         createNewsPage.content.enterTitle("Test News");
-        Assert.assertEquals(createNewsPage.content.getTitleInput().getAttribute("value").length(),9, "Text size  isn`t counted right");
+        Assert.assertEquals(createNewsPage.content.getTitleInput().getAttribute("value").length(),9, "Text size isn't counted right");
         Assert.assertFalse(createNewsPage.content.getTitleSymbolCount().getAttribute("class").contains("warning"), "Text counter is red");
         Assert.assertFalse(createNewsPage.actions.getPublishBtn().isEnabled(), "Publish button should be disabled");
         createNewsPage.tags.selectTag(NewsTag.getRandomTag());
