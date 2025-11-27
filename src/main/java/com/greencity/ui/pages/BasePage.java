@@ -56,5 +56,10 @@ public abstract class BasePage extends Base {
         return wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
+    public void scrollIntoView(WebElement element) {
+        Objects.requireNonNull(threadJs).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
+        waitUntilElementVisible(element);
+    }
+
 
 }

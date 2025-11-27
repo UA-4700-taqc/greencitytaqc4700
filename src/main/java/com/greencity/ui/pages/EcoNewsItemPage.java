@@ -70,9 +70,6 @@ public class EcoNewsItemPage extends BasePage {
     private static final By COMMENTS_SELECTOR =
             By.cssSelector("app-comments-list div.comment-body-wrapper");
 
-    private static final By COMMENTS_COUNTER =
-            By.cssSelector("span#total-count");
-
     private List<WebElement> getCommentRoots() {
         return driver.findElements(COMMENTS_SELECTOR);
     }
@@ -108,8 +105,7 @@ public class EcoNewsItemPage extends BasePage {
     public EcoNewsItemPage clickLike() {
         String initialLikesCount = likesCount.getText().trim();
         likeButton.click();
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
+        wait.until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
         return this;
     }
 
@@ -138,6 +134,11 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public int getCommentsCount() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(2))
+                    .until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
+        } catch (TimeoutException ignored) {}
+
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
     }
 
@@ -150,13 +151,11 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public void waitSubmitCommentButtonEnabled() {
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.elementToBeClickable(submitCommentButton));
+        waitUntilElementClickable(submitCommentButton);
     }
 
     public void waitSubmitCommentButtonDisabled() {
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(driver -> !(submitCommentButton.isEnabled()));
+        waitUntilElementDisabled(submitCommentButton);
     }
 
     public void typeComment(String text) {
@@ -175,28 +174,23 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public void waitForCommentsUpdated() {
-        int oldCount = Integer.parseInt(totalCommentsCountLabel.getText().trim());
+        int commentsCount = Integer.parseInt(totalCommentsCountLabel.getText().trim());
+        if (commentsCount == 0) {
+            waitUntilVisibilityOfElementLocated(COMMENTS_SELECTOR);
+            return;
+        }
 
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .ignoring(StaleElementReferenceException.class)
-                .until(d -> {
-                    try {
-                        int newCount = Integer.parseInt(
-                                d.findElement(COMMENTS_COUNTER).getText().trim()
-                        );
-                        return newCount > oldCount;
-                    } catch (StaleElementReferenceException e) {
-                        return false;
-                    }
-                });
+        var list = getCommentRoots();
+        var firstElement = list.getFirst();
+
+        waitUntilElementStaleness(firstElement);
     }
 
     public void waitForCommentsUpdatedDeletion() {
         var list = getCommentRoots();
         var firstElement = list.getFirst();
 
-        new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.stalenessOf(firstElement));
+        waitUntilElementStaleness(firstElement);
     }
 
     public List<CommentComponent> getComments() {
