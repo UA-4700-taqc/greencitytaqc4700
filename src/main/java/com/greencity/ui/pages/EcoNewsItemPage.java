@@ -140,7 +140,6 @@ public class EcoNewsItemPage extends BasePage {
         } catch (TimeoutException ignored) {}
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
-
     }
 
     public boolean isSubmitCommentButtonEnabled() {
