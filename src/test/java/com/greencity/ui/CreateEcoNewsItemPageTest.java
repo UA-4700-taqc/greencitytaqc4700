@@ -38,7 +38,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         createNewsPage.content.enterSource(randomString(0));
         Assert.assertTrue(createNewsPage.content.getTitleInput().getCssValue("border-color").contains("255, 0, 0"), "Title input border is not red");
         Assert.assertFalse(createNewsPage.actions.getPublishBtn().isEnabled(), "Publish button should be disabled");
-        Assert.assertEquals(createNewsPage.content.getTitleSymbolCount().getText(),"0/170", "Some symbols has been already entered");
+        Assert.assertEquals(createNewsPage.content.getTitleSymbolCount().getText(),"0/170", "Some symbols have been already entered");
         createNewsPage.content.enterTitle(randomString(171));
         Assert.assertEquals(createNewsPage.content.getTitleInput().getAttribute("value").length(),171, "Text size  isn`t truncated");
         Assert.assertTrue(createNewsPage.content.getTitleSymbolCount().getAttribute("class").contains("warning"), "Text counter isn't red");
