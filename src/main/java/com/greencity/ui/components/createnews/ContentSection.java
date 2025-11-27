@@ -21,6 +21,7 @@ public class ContentSection extends BaseComponent {
     @FindBy(xpath = ".//span[contains(@class,'field-info')]")
     private WebElement titleSymbolCount;
 
+    @Getter
     @FindBy(xpath = ".//quill-editor//*[contains(@class, 'ql-editor')]")
     private WebElement contentInput;
 

@@ -6,6 +6,7 @@ import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
@@ -60,5 +61,40 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         createNewsPage.content.enterContent(randomString(65));
         Assert.assertTrue(createNewsPage.actions.getPublishBtn().isEnabled(), "Publish button is disabled");
 
+    }
+
+    @Test (description = "Verify that the 'Create News' form displays all the necessary fields in the correct order")
+    public void CheckingCreateNewsFormDisplayAllFields() {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(createNewsPage.content.getTitleInput().isDisplayed(), "Title field should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagNewsBtn().isDisplayed(), "News tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagEventsBtn().isDisplayed(), "Events tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagEducationBtn().isDisplayed(), "Education tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagInitiativesBtn().isDisplayed(), "Initiatives tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.tags.getTagAdvertisingBtn().isDisplayed(), "Advertising tag button should be displayed");
+        softAssert.assertTrue(createNewsPage.getImageRoot().isDisplayed(), "Image upload field should be displayed");
+        softAssert.assertTrue(createNewsPage.content.getContentInput().isDisplayed(), "Content input field should be displayed");
+        softAssert.assertFalse(createNewsPage.meta.getName().isEmpty(), "Author name field should be filled in");
+        softAssert.assertEquals(createNewsPage.meta.getAuthorName().getTagName(), "span", "Author name should not be an editable input");
+        softAssert.assertFalse(createNewsPage.meta.getDate().isEmpty(), "Creation date field should be filled in");
+        softAssert.assertEquals(createNewsPage.meta.getAuthorName().getTagName(), "span", "Creation date should not be an editable input");
+        softAssert.assertTrue(createNewsPage.content.getSourceInput().isDisplayed(), "Source field should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getExitBtn().isDisplayed(), "Cancel button should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getReviewBtn().isDisplayed(), "Review button should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getPublishBtn().isDisplayed(), "Publish button should be displayed");
+
+
+        softAssert.assertAll();
+    }
+
+    public static String randomString(int n) {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder(n);
+        java.util.Random random = new java.util.Random();
+
+        for (int i = 0; i < n; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
 }

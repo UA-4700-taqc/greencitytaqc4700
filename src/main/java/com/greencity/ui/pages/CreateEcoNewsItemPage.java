@@ -1,6 +1,7 @@
 package com.greencity.ui.pages;
 
 import com.greencity.ui.components.createnews.*;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,6 +23,7 @@ public class CreateEcoNewsItemPage extends BasePage {
     private WebElement headerRoot;
     @FindBy(css = ".tags-block")
     private WebElement tagsRoot;
+    @Getter
     @FindBy(css = ".image-block")
     private WebElement imageRoot;
     @FindBy(css = ".form-container")
