@@ -40,8 +40,6 @@ public class ContentSection extends BaseComponent {
 
     public void enterContent(String text) {
         wait.until(ExpectedConditions.elementToBeClickable(contentInput));
-//        threadJs.executeScript("arguments[0].innerHTML = arguments[1];", contentInput, text);
-//        actions.moveToElement(contentInput).click().sendKeys(Keys.ENTER).perform();
         contentInput.sendKeys(text);
     }
 }
