@@ -2,10 +2,13 @@ package com.greencity.ui.components.header;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
 import java.util.List;
 
 public class HeaderComponent extends BaseComponent {
@@ -86,6 +89,9 @@ public class HeaderComponent extends BaseComponent {
     @FindBy(className = "header_burger-btn")
     private WebElement burgerMenuButton;
 
+
+    private final String SEARCH_ROOT_TAG = "app-search-popup";
+
     public HeaderComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
@@ -104,7 +110,7 @@ public class HeaderComponent extends BaseComponent {
         clickElement(headerLogo);
     }
 
-    public void clickSearchIcon() {
+    public HeaderSearchComponent clickSearchIcon() {
         waitUntilElementClickable(searchIcon);
         try {
             searchIcon.click();
@@ -112,6 +118,10 @@ public class HeaderComponent extends BaseComponent {
             // Fallback to JavaScript click if element is intercepted
             clickDynamicElement(searchIcon);
         }
+        WebElement searchRoot = getWait(5).until(
+                ExpectedConditions.presenceOfElementLocated(By.tagName(SEARCH_ROOT_TAG))
+        );
+        return new HeaderSearchComponent(driver, searchRoot);
     }
 
     public void clickLanguageOption() {

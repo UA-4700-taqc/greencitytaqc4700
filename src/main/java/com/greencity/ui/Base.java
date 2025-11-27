@@ -27,6 +27,10 @@ public abstract class Base {
         PageFactory.initElements(this.driver, this);
     }
 
+    protected WebDriverWait getWait(long seconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    }
+
     @Step("Scroll to the element")
     public void scrollToElement(WebElement element) {
         actions.moveToElement(element).perform();

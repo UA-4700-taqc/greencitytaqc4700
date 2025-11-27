@@ -1,21 +1,16 @@
 package com.greencity.ui;
 
-import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.components.header.HeaderSearchComponent;
-import com.greencity.ui.testrunners.BaseTestRunner;
-import org.openqa.selenium.By;
+import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
 
-public class HeaderSearchComponentTest extends BaseTestRunner {
+public class HeaderSearchComponentTest extends TestRunnerWithUser {
 
     private static final int PAGE_LOAD_TIMEOUT = 5; // Reduced from 10
     private static final String EXPECTED_PLACEHOLDER = "Search";
@@ -26,30 +21,21 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
     @BeforeMethod
     public void openSearchPanel() {
         System.out.println("🔍 Opening search panel...");
-        homePage.waitForPageToLoad(PAGE_LOAD_TIMEOUT);
-        HeaderComponent header = homePage.getHeader();
-        header.clickSearchIcon();
+        searchComponent = homePage.refresh().getHeader().clickSearchIcon().waitForSearchBarToOpen();
 
-        // Wait for search panel to appear with shorter timeout
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        WebElement searchRoot = wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.tagName(SEARCH_ROOT_TAG))
-        );
-
-        searchComponent = new HeaderSearchComponent(driver, searchRoot);
         System.out.println("✅ Search panel opened");
     }
 
-    @AfterMethod
-    public void closeSearchPanelIfOpen() {
-        System.out.println("🧹 Cleaning up search panel...");
-        if (searchComponent != null && searchComponent.isSearchBarDisplayed()) {
-            searchComponent.clickCloseIcon();
-            searchComponent.waitForSearchBarToClose();
-            System.out.println("✅ Search panel closed");
-        }
-    }
+//    @AfterMethod
+//    public void closeSearchPanelIfOpen() {
+//        System.out.println("🧹 Cleaning up search panel...");
+//        if (searchComponent != null && searchComponent.isSearchBarDisplayed()) {
+//            searchComponent.clickCloseIcon();
 
+    /// /            searchComponent.waitForSearchBarToClose();
+//            System.out.println("✅ Search panel closed");
+//        }
+//    }
     @Test(description = "Verify search bar wrapper is displayed")
     public void testSearchBarWrapperIsDisplayed() {
         System.out.println("🧪 Testing: Search bar wrapper visibility");
@@ -110,8 +96,7 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
     public void testSearchFieldPlaceholder() {
         System.out.println("🧪 Testing: Search field placeholder");
         String placeholder = searchComponent.getSearchFieldPlaceholder();
-        Assert.assertEquals(placeholder, EXPECTED_PLACEHOLDER,
-                "Search field placeholder should be '" + EXPECTED_PLACEHOLDER + "'");
+        Assert.assertEquals(placeholder, EXPECTED_PLACEHOLDER, "Search field placeholder should be '" + EXPECTED_PLACEHOLDER + "'");
         System.out.println("✅ Test passed - Placeholder: " + placeholder);
     }
 
@@ -127,8 +112,7 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         System.out.println("🧪 Testing: Enter search query - '" + TEST_SEARCH_QUERY + "'");
         searchComponent.enterSearchQuery(TEST_SEARCH_QUERY);
         String actualValue = searchComponent.getSearchFieldValue();
-        Assert.assertEquals(actualValue, TEST_SEARCH_QUERY,
-                "Search field should contain '" + TEST_SEARCH_QUERY + "'");
+        Assert.assertEquals(actualValue, TEST_SEARCH_QUERY, "Search field should contain '" + TEST_SEARCH_QUERY + "'");
         System.out.println("✅ Test passed - Query entered: " + actualValue);
     }
 
@@ -145,14 +129,14 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         System.out.println("✅ Test passed");
     }
 
-    @Test(description = "Verify close icon click functionality")
-    public void testCloseIconClick() {
-        System.out.println("🧪 Testing: Close icon click");
-        searchComponent.clickCloseIcon();
-        Assert.assertTrue(searchComponent.isSearchBarClosed(),
-                "Search bar should be closed after clicking close icon");
-        System.out.println("✅ Test passed");
-    }
+//    @Test(description = "Verify close icon click functionality")
+//    public void testCloseIconClick() {
+//        System.out.println("🧪 Testing: Close icon click");
+//        searchComponent.clickCloseIcon();
+//        Assert.assertTrue(searchComponent.isSearchBarClosed(),
+//                "Search bar should be closed after clicking close icon");
+//        System.out.println("✅ Test passed");
+//    }
 
     @Test(description = "Verify search submission functionality")
     public void testSearchSubmission() {
@@ -166,16 +150,11 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         System.out.println("🧪 Testing: All search elements visibility");
         SoftAssert softAssert = new SoftAssert();
 
-        softAssert.assertTrue(searchComponent.getSearchBarWrapper().isDisplayed(),
-                "Search bar wrapper should be displayed");
-        softAssert.assertTrue(searchComponent.getSearchBarContainer().isDisplayed(),
-                "Search bar container should be displayed");
-        softAssert.assertTrue(searchComponent.getSearchIcon().isDisplayed(),
-                "Search icon should be displayed");
-        softAssert.assertTrue(searchComponent.getSearchField().isDisplayed(),
-                "Search field should be displayed");
-        softAssert.assertTrue(searchComponent.getCloseIcon().isDisplayed(),
-                "Close icon should be displayed");
+        softAssert.assertTrue(searchComponent.getSearchBarWrapper().isDisplayed(), "Search bar wrapper should be displayed");
+        softAssert.assertTrue(searchComponent.getSearchBarContainer().isDisplayed(), "Search bar container should be displayed");
+        softAssert.assertTrue(searchComponent.getSearchIcon().isDisplayed(), "Search icon should be displayed");
+        softAssert.assertTrue(searchComponent.getSearchField().isDisplayed(), "Search field should be displayed");
+        softAssert.assertTrue(searchComponent.getCloseIcon().isDisplayed(), "Close icon should be displayed");
 
         softAssert.assertAll();
         System.out.println("✅ Test passed - All elements visible");

@@ -1,4 +1,3 @@
-
 package com.greencity.ui.components.header;
 
 import com.greencity.ui.components.BaseComponent;
@@ -8,9 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class HeaderSearchComponent extends BaseComponent {
 
@@ -51,9 +47,13 @@ public class HeaderSearchComponent extends BaseComponent {
      * Uses a shorter timeout for faster test execution.
      */
     public void waitForSearchBarToClose() {
-        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        shortWait.until(ExpectedConditions.invisibilityOf(searchBarWrapper));
+        getWait(3).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
     }
+    public HeaderSearchComponent waitForSearchBarToOpen() {
+        waitUntilElementVisible(searchBarWrapper);
+        return this;
+    }
+
 
     public void enterSearchQuery(String query) {
         if (query == null || query.trim().isEmpty()) {
@@ -82,6 +82,7 @@ public class HeaderSearchComponent extends BaseComponent {
     public void clickCloseIcon() {
         waitUntilElementClickable(closeIcon);
         closeIcon.click();
+        waitForSearchBarToClose();
     }
 
     public String getSearchFieldPlaceholder() {
@@ -112,8 +113,7 @@ public class HeaderSearchComponent extends BaseComponent {
      * Returns immediately based on current state.
      */
     public boolean isSearchBarClosed() {
-        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        return shortWait.until(ExpectedConditions.invisibilityOf(searchBarWrapper));
+        return getWait(2).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
     }
 
     /**
