@@ -78,13 +78,26 @@ public class HeaderSearchComponent extends BaseComponent {
     }
 
     public boolean isSearchBarDisplayed() {
-        waitUntilElementVisible(searchBarWrapper);
-        return searchBarWrapper.isDisplayed();
+        try {
+            waitUntilElementVisible(searchBarWrapper);
+            return searchBarWrapper.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isSearchFieldEmpty() {
         String value = getSearchFieldValue();
         return value == null || value.isEmpty();
+    }
+    
+    public boolean isSearchBarClosed() {
+        try {
+            waitUntilElementInvisible(searchBarWrapper);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isSearchContentVisible() {

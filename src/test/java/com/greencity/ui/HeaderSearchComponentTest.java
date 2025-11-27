@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -15,17 +16,29 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
     private static final int PAGE_LOAD_TIMEOUTS = 10;
     private static final String EXPECTED_PLACEHOLDER = "Search";
     private static final String TEST_SEARCH_QUERY = "eco friendly";
-    private HeaderComponent header;
+    private static final String SEARCH_ROOT_TAG = "app-search-popup";
     private HeaderSearchComponent searchComponent;
 
     @BeforeMethod
-    public void ensurePageIsLoaded() {
-        driver.navigate().refresh();
+    public void openSearchPanel() {
         homePage.waitForPageToLoad(PAGE_LOAD_TIMEOUTS);
-        header = homePage.getHeader();
+        HeaderComponent header = homePage.getHeader();
         header.clickSearchIcon();
-        WebElement searchRoot = driver.findElement(By.tagName("section"));
+        WebElement searchRoot = driver.findElement(By.tagName(SEARCH_ROOT_TAG));
         searchComponent = new HeaderSearchComponent(driver, searchRoot);
+    }
+
+    @AfterMethod
+    public void closeSearchPanelIfOpen() {
+        try {
+            if (searchComponent != null && searchComponent.isSearchBarDisplayed()) {
+                searchComponent.clickCloseIcon();
+                // Wait for the panel to close completely
+                driver.manage().timeouts().implicitlyWait(java.time.Duration.ofMillis(500));
+            }
+        } catch (Exception e) {
+            // Search panel already closed or not accessible
+        }
     }
 
     @Test(description = "Verify search bar wrapper is displayed")
@@ -97,14 +110,10 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         Assert.assertTrue(searchComponent.isSearchFieldEmpty(), "Search field should be empty after clear");
     }
 
-    @Test(description = "Verify search bar is displayed")
-    public void testIsSearchBarDisplayed() {
-        Assert.assertTrue(searchComponent.isSearchBarDisplayed(), "Search bar should be displayed");
-    }
-
     @Test(description = "Verify close icon click functionality")
     public void testCloseIconClick() {
         searchComponent.clickCloseIcon();
+        Assert.assertTrue(searchComponent.isSearchBarClosed(), "Search bar should be closed after clicking close icon");
     }
 
     @Test(description = "Verify search submission functionality")
@@ -135,5 +144,12 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         
         searchComponent.clearSearchField();
         Assert.assertTrue(searchComponent.isSearchFieldEmpty(), "Search field should be empty after clear");
+    }
+
+    @Test(description = "Verify search content is visible after entering query")
+    public void testSearchContentVisibility() {
+        searchComponent.enterSearchQuery(TEST_SEARCH_QUERY);
+        boolean isContentVisible = searchComponent.isSearchContentVisible();
+        Assert.assertTrue(isContentVisible, "Search content wrapper should be visible after entering query");
     }
 }

@@ -105,7 +105,13 @@ public class HeaderComponent extends BaseComponent {
     }
 
     public void clickSearchIcon() {
-        clickElement(searchIcon);
+        waitUntilElementClickable(searchIcon);
+        try {
+            searchIcon.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            // Fallback to JavaScript click if element is intercepted
+            clickDynamicElement(searchIcon);
+        }
     }
 
     public void clickLanguageOption() {
