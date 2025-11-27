@@ -3,7 +3,6 @@ package com.greencity.ui;
 import com.greencity.ui.enums.NewsTag;
 import com.greencity.ui.pages.CreateEcoNewsItemPage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
