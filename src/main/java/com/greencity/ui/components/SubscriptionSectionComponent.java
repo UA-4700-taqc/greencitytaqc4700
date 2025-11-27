@@ -47,7 +47,7 @@ public class SubscriptionSectionComponent extends BasePage {
         return sectionTitle.getText().trim();
     }
 
-    public boolean getQrCodeImage() {
+    public boolean isQrCodeImageDisplayed() {
         waitUntilElementVisible(qrCodeImage);
         return qrCodeImage.isDisplayed();
     }
