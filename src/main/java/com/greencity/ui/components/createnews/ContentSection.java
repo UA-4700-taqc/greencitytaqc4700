@@ -2,7 +2,6 @@ package com.greencity.ui.components.createnews;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,8 +41,6 @@ public class ContentSection extends BaseComponent {
 
     public void enterContent(String text) {
         wait.until(ExpectedConditions.elementToBeClickable(contentInput));
-//        threadJs.executeScript("arguments[0].innerHTML = arguments[1];", contentInput, text);
-//        actions.moveToElement(contentInput).click().sendKeys(Keys.ENTER).perform();
         contentInput.sendKeys(text);
     }
 }

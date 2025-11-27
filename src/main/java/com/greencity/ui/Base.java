@@ -122,4 +122,24 @@ public abstract class Base {
     public void waitUntilPageLouder() {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
     }
+
+    public void waitUntilVisibilityOfElementLocated(By selector) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+    }
+
+    public void waitUntilInvisibilityOfElementLocated(By selector) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(selector));
+    }
+
+    public void waitUntilElementEnabled(WebElement element) {
+        wait.until(driver -> (element.isEnabled()));
+    }
+
+    public void waitUntilElementDisabled(WebElement element) {
+        wait.until(driver -> !(element.isEnabled()));
+    }
+
+    public void waitUntilElementStaleness(WebElement element) {
+        wait.until(ExpectedConditions.stalenessOf(element));
+    }
 }
