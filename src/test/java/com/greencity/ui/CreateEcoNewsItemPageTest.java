@@ -2,11 +2,17 @@ package com.greencity.ui;
 
 import com.greencity.ui.enums.NewsTag;
 import com.greencity.ui.pages.CreateEcoNewsItemPage;
+import com.greencity.ui.pages.CreateEcoNewsPreviewPage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
@@ -82,9 +88,35 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertTrue(createNewsPage.actions.getExitBtn().isDisplayed(), "Cancel button should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getReviewBtn().isDisplayed(), "Review button should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getPublishBtn().isDisplayed(), "Publish button should be displayed");
-
-
         softAssert.assertAll();
+    }
+
+    @Test (description = "Verify that the user can preview news content after entering valid data and that the preview matches the input")
+    public void BasicPreviewFunctionality() throws ParseException {
+        String itemTitle = randomString(10);
+        String itemContent = randomString(50);
+        String itemSource = "https://" + randomString(7);
+
+        createNewsPage.content.enterTitle(itemTitle);
+        createNewsPage.content.enterContent(itemContent);
+        createNewsPage.content.enterSource(itemSource);
+        String itemAuthor = createNewsPage.meta.getName();
+        String itemDate = createNewsPage.meta.getDate();
+        createNewsPage.actions.clickReview();
+        CreateEcoNewsPreviewPage createNewsPagePreview = new CreateEcoNewsPreviewPage(driver);
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(createNewsPagePreview.getTitle(),itemTitle, "Title should be same");
+        softAssert.assertTrue(areDatesEqual(createNewsPagePreview.getDate(),itemDate), "Date should be same");
+        softAssert.assertEquals(createNewsPagePreview.getAuthor().replaceFirst("^(автор |author )", "").trim(),itemAuthor, "Author should be same");
+        softAssert.assertEquals(createNewsPagePreview.getContent(),itemContent, "Content should be same");
+        softAssert.assertEquals(createNewsPagePreview.getSource(),itemSource, "Source should be same");
+        softAssert.assertTrue(createNewsPagePreview.getBackToEditingButton().isDisplayed(), "Back to edit link should be displayed");
+        softAssert.assertEquals(createNewsPagePreview.getLink(),"https://www.greencity.cx.ua/#/greenCity/news/create-news", "Link should be same");
+        softAssert.assertAll();
+
+
+
     }
 
     public static String randomString(int n) {
@@ -97,4 +129,33 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         }
         return sb.toString();
     }
+
+    private static final String[] DATE_FORMATS = {
+            "MMM dd, yyyy",        // Nov 26, 2025
+            "LLL dd, yyyy 'р.'",   // лист. 26, 2025 р.
+            "dd.MM.yyyy",          // 26.11.2025
+            "yyyy-MM-dd"           // 2025-11-26
+    };
+
+    public static boolean areDatesEqual(String date1, String date2) {
+        try {
+            Date d1 = parseDate(date1);
+            Date d2 = parseDate(date2);
+            if (d1 == null || d2 == null) return false;
+            return d1.equals(d2);
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    private static Date parseDate(String date) throws ParseException {
+        for (String format : DATE_FORMATS) {
+            try {
+                Locale locale = format.contains("LLL") ? new Locale("uk") : Locale.ENGLISH;
+                return new SimpleDateFormat(format, locale).parse(date);
+            } catch (ParseException ignored) {}
+        }
+        return null;
+    }
+
 }

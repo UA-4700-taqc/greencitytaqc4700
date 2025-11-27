@@ -1,11 +1,11 @@
 package com.greencity.ui.components.createnews;
 
 import com.greencity.ui.components.BaseComponent;
+import com.greencity.ui.pages.CreateEcoNewsPreviewPage;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class ActionButtonsSection extends BaseComponent {
 
@@ -29,8 +29,10 @@ public class ActionButtonsSection extends BaseComponent {
         publishBtn.click();
     }
 
-    public void clickReview() {
+    public CreateEcoNewsPreviewPage clickReview() {
+
         reviewBtn.click();
+        return new CreateEcoNewsPreviewPage(driver);
     }
 
     public void clickExit() {
