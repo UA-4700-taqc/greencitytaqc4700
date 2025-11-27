@@ -12,7 +12,7 @@ public class CreateEcoNewsPreviewPage extends BasePage {
     private WebElement newsTitle;
 
     @FindBy(className = "news-info-date")
-    private  WebElement newsDate;
+    private WebElement newsDate;
 
     @FindBy(className = "news-info-author")
     private WebElement newsAuthor;
@@ -59,7 +59,7 @@ public class CreateEcoNewsPreviewPage extends BasePage {
         return sourceText.getText().trim();
     }
 
-    public  String getLink() {
+    public String getLink() {
         return backToEditingButton.getAttribute("href");
     }
 
