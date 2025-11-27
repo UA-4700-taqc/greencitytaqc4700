@@ -1,3 +1,4 @@
+
 package com.greencity.ui.components.header;
 
 import com.greencity.ui.components.BaseComponent;
@@ -6,6 +7,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HeaderSearchComponent extends BaseComponent {
 
@@ -41,11 +46,19 @@ public class HeaderSearchComponent extends BaseComponent {
         super(driver, rootElement);
     }
 
+    /**
+     * Waits for the search bar to close completely.
+     * Uses a shorter timeout for faster test execution.
+     */
     public void waitForSearchBarToClose() {
-        waitUntilElementInvisible(searchBarWrapper);
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        shortWait.until(ExpectedConditions.invisibilityOf(searchBarWrapper));
     }
 
     public void enterSearchQuery(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            throw new IllegalArgumentException("Search query cannot be null or empty");
+        }
         waitUntilElementVisible(searchField);
         searchField.clear();
         searchField.sendKeys(query);
@@ -81,8 +94,11 @@ public class HeaderSearchComponent extends BaseComponent {
         return searchField.getAttribute("value");
     }
 
+    /**
+     * Checks if search bar is displayed without long waits.
+     * Returns immediately based on current state.
+     */
     public boolean isSearchBarDisplayed() {
-        waitUntilElementVisible(searchBarWrapper);
         return searchBarWrapper.isDisplayed();
     }
 
@@ -90,14 +106,21 @@ public class HeaderSearchComponent extends BaseComponent {
         String value = getSearchFieldValue();
         return value == null || value.isEmpty();
     }
-    
+
+    /**
+     * Checks if search bar is closed without long waits.
+     * Returns immediately based on current state.
+     */
     public boolean isSearchBarClosed() {
-        waitUntilElementInvisible(searchBarWrapper);
-        return true;
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        return shortWait.until(ExpectedConditions.invisibilityOf(searchBarWrapper));
     }
 
+    /**
+     * Checks if search content is visible without long waits.
+     * Returns immediately based on current state.
+     */
     public boolean isSearchContentVisible() {
-        waitUntilElementVisible(searchContentWrapper);
         return searchContentWrapper.isDisplayed();
     }
 }
