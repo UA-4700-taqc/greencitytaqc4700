@@ -1,13 +1,15 @@
 package com.greencity.ui;
 
 import com.greencity.ui.components.SubscriptionSectionComponent;
+
 import com.greencity.ui.testrunners.BaseTestRunner;
+import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SubscriptionSectionTest extends BaseTestRunner {
 
-    @Test(description = "Verify section visibility and static elements")
+    @Test(description = "[case#38]Verify section visibility and static elements")
     public void verifySubscriptionSectionVisibilityAndElements() {
 
         SubscriptionSectionComponent subscriptionSection = new SubscriptionSectionComponent(driver);
@@ -27,5 +29,28 @@ public class SubscriptionSectionTest extends BaseTestRunner {
         Assert.assertEquals(subscriptionSection.getEmailInputPlaceholder(), expectedPlaceholder, "The email field placeholder does not match the expected one.");
 
         Assert.assertTrue(subscriptionSection.getSubscribeButton().isDisplayed(), "The subscribe button should be displayed.");
+    }
+
+    @Test(description = "[case#38] Verify email validation and subscription attempt")
+    public void verifyEmailAttempt() {
+
+        SubscriptionSectionComponent subscriptionSection = new SubscriptionSectionComponent(driver).scrollToSection();
+
+        //enter invalid email
+        subscriptionSection.enterEmail("eco-news");
+        subscriptionSection.clickSubscribeButton();
+
+        String expectedErrorText = "Invalid email";
+
+        Assert.assertTrue(subscriptionSection.isValidationErrorDisplayed());
+        Assert.assertEquals(subscriptionSection.getValidationError(), expectedErrorText);
+
+        //enter valid email
+        subscriptionSection.enterEmail("test@example.com");
+        subscriptionSection.clickSubscribeButton();
+
+        Assert.assertFalse(subscriptionSection.isValidationErrorDisplayed(),
+                "The validation error should disappear after entering a valid email address..");
+
     }
 }
