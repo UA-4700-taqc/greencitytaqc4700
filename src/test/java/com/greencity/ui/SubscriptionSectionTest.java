@@ -5,7 +5,7 @@ import com.greencity.ui.pages.homepage.HomePage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class SubscriptionSectionTest extends BaseTest {
+public class SubscriptionSectionTest extends BaseTestRunner {
 
     @Test(description = "Verify section visibility and static elements")
     public void verifySubscriptionSectionVisibilityAndElements() {
