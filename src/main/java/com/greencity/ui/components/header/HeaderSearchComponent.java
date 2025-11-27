@@ -41,6 +41,10 @@ public class HeaderSearchComponent extends BaseComponent {
         super(driver, rootElement);
     }
 
+    public void waitForSearchBarToClose() {
+        waitUntilElementInvisible(searchBarWrapper);
+    }
+
     public void enterSearchQuery(String query) {
         waitUntilElementVisible(searchField);
         searchField.clear();
@@ -78,12 +82,8 @@ public class HeaderSearchComponent extends BaseComponent {
     }
 
     public boolean isSearchBarDisplayed() {
-        try {
-            waitUntilElementVisible(searchBarWrapper);
-            return searchBarWrapper.isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        waitUntilElementVisible(searchBarWrapper);
+        return searchBarWrapper.isDisplayed();
     }
 
     public boolean isSearchFieldEmpty() {
@@ -92,20 +92,12 @@ public class HeaderSearchComponent extends BaseComponent {
     }
     
     public boolean isSearchBarClosed() {
-        try {
-            waitUntilElementInvisible(searchBarWrapper);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        waitUntilElementInvisible(searchBarWrapper);
+        return true;
     }
 
     public boolean isSearchContentVisible() {
-        try {
-            waitUntilElementVisible(searchContentWrapper);
-            return searchContentWrapper.isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
+        waitUntilElementVisible(searchContentWrapper);
+        return searchContentWrapper.isDisplayed();
     }
 }

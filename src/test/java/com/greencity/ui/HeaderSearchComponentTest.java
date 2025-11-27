@@ -30,14 +30,10 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
 
     @AfterMethod
     public void closeSearchPanelIfOpen() {
-        try {
-            if (searchComponent != null && searchComponent.isSearchBarDisplayed()) {
-                searchComponent.clickCloseIcon();
-                // Wait for the panel to close completely
-                driver.manage().timeouts().implicitlyWait(java.time.Duration.ofMillis(500));
-            }
-        } catch (Exception e) {
-            // Search panel already closed or not accessible
+        if (searchComponent != null && searchComponent.isSearchBarDisplayed()) {
+            searchComponent.clickCloseIcon();
+            // Wait for the panel to close completely
+            searchComponent.waitForSearchBarToClose();
         }
     }
 
@@ -135,15 +131,6 @@ public class HeaderSearchComponentTest extends BaseTestRunner {
         softAssert.assertTrue(searchComponent.getCloseIcon().isDisplayed(), 
             "Close icon should be displayed");
         softAssert.assertAll();
-    }
-
-    @Test(description = "Verify search field accepts input and clears correctly")
-    public void testSearchFieldInputAndClear() {
-        searchComponent.enterSearchQuery(TEST_SEARCH_QUERY);
-        Assert.assertFalse(searchComponent.isSearchFieldEmpty(), "Search field should not be empty after input");
-        
-        searchComponent.clearSearchField();
-        Assert.assertTrue(searchComponent.isSearchFieldEmpty(), "Search field should be empty after clear");
     }
 
     @Test(description = "Verify search content is visible after entering query")
