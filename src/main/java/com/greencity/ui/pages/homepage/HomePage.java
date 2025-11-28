@@ -45,4 +45,9 @@ public class HomePage extends BasePage {
         waitUntilElementVisible(readAllNewsButton);
         return readAllNewsButton;
     }
+
+    public HomePage refresh() {
+        refreshPage();
+        return new HomePage(driver);
+    }
 }
