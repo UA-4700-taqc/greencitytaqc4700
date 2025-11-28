@@ -111,6 +111,18 @@ public abstract class Base {
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
+    public void waitUntilElementInvisibleSafe(WebElement element) {
+        wait.ignoring(org.openqa.selenium.StaleElementReferenceException.class)
+                .until(driver -> {
+                    try {
+                        return !element.isDisplayed();
+                    } catch (org.openqa.selenium.NoSuchElementException |
+                             org.openqa.selenium.StaleElementReferenceException e) {
+                        return true;
+                    }
+                });
+    }
+
     public void waitUntilElementClickable(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }

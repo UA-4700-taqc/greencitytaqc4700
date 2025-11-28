@@ -2,11 +2,8 @@ package com.greencity.ui.components.header;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class HeaderSearchComponent extends BaseComponent {
 
@@ -46,8 +43,11 @@ public class HeaderSearchComponent extends BaseComponent {
      * Waits for the search bar to close completely.
      * Uses a shorter timeout for faster test execution.
      */
+//    public void waitForSearchBarToClose() {
+//        getWait(3).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
+//    }
     public void waitForSearchBarToClose() {
-        getWait(3).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
+        waitUntilElementInvisibleSafe(searchBarWrapper);
     }
     public HeaderSearchComponent waitForSearchBarToOpen() {
         waitUntilElementVisible(searchBarWrapper);
@@ -113,7 +113,7 @@ public class HeaderSearchComponent extends BaseComponent {
      * Returns immediately based on current state.
      */
     public boolean isSearchBarClosed() {
-        return getWait(2).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
+        return !searchBarWrapper.isDisplayed();
     }
 
     /**
