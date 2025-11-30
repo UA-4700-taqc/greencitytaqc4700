@@ -4,6 +4,7 @@ import com.greencity.ui.components.EcoNewsItemComponent;
 import com.greencity.ui.pages.EcoNewsItemPage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
 import com.greencity.ui.utils.NewsTag;
+import com.greencity.utils.TestUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -12,7 +13,7 @@ import org.testng.asserts.SoftAssert;
 public class TestEcoNewsItemPage extends TestRunnerWithUser {
 
     private EcoNewsItemPage ecoNewsItemPage;
-    private static final String newsIdentifier = "news/149";
+    private static final String newsIdentifier = "news/167";
 
     @BeforeMethod
     public void visitPage() {
@@ -97,7 +98,7 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         var oldFirstComment = ecoNewsItemPage.getFirstComment();
         String oldFirstCommentText = oldFirstComment.getCommentBodyText();
 
-        ecoNewsItemPage = ecoNewsItemPage.deleteComment(oldFirstComment);
+        ecoNewsItemPage = ecoNewsItemPage.getFirstComment().deleteComment();
 
         var newFirstComment = ecoNewsItemPage.getFirstComment();
         String newFirstCommentText = newFirstComment.getCommentBodyText();
@@ -136,7 +137,7 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
                 "The comment should not have been deleted.");
 
-        ecoNewsItemPage = ecoNewsItemPage.deleteComment(comment);
+        ecoNewsItemPage = ecoNewsItemPage.getFirstComment().deleteComment();
 
         Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
                 "The comment should have been deleted.");
@@ -162,4 +163,58 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertEquals(ecoNewsItemPage.getCommentsCount(), commentsCountBefore + 3,
                 "Comments count should be: " + commentsCountBefore + 3);
     }
+
+    @Test
+    public void testCommentEditBehaviour() {
+        ecoNewsItemPage = ecoNewsItemPage.addComment(System.currentTimeMillis() + "");
+        String initialCommentText = ecoNewsItemPage.getFirstComment().getCommentBodyText();
+
+        ecoNewsItemPage = ecoNewsItemPage.getFirstComment().editComment(initialCommentText + "edited");
+
+        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), initialCommentText);
+        Assert.assertTrue(ecoNewsItemPage.getFirstComment().isCommentEdited());
+    }
+
+    @Test(description = "[Test Case] 31 - Validation of Comment Input and Comment Button Behavior.")
+    public void testCommentInputAndSubmitCommentButtonBehavior() {
+        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled(),
+                "Submit comment button should be initially disabled");
+
+        ecoNewsItemPage.getCommentInput().sendKeys("   ");
+        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled(),
+                "Submit comment button should be disabled when input contains only spaces");
+
+        ecoNewsItemPage.getCommentInput().sendKeys("q");
+        ecoNewsItemPage.waitSubmitCommentButtonEnabled();
+        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonEnabled(),
+                "Submit comment button should be enabled when input contains valid characters");
+
+        String largeString = TestUtils.randomString(8001);
+        ecoNewsItemPage.typeLargeInput(ecoNewsItemPage.getCommentInput(), largeString);
+        ecoNewsItemPage.waitSubmitCommentButtonDisabled();
+        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled(),
+                "Submit comment button should be disabled when input contains >8000 characters");
+        Assert.assertTrue(ecoNewsItemPage.isErrorMessageDisplayed(),
+                "Error message should be displayed when input contains >8000 characters");
+    }
+
+    @Test(description = "[Test Case] 24 - Verify that changes are not saved without clicking \"Save changes\".")
+    public void testCommentCancelChanges() {
+        ecoNewsItemPage = ecoNewsItemPage.addComment(System.currentTimeMillis() + "");
+
+        var comment = ecoNewsItemPage.getFirstComment();
+        var initialCommentText = comment.getCommentBodyText();
+
+        comment.clickEditCommentButton();
+        comment.getEditCommentInput().sendKeys(" edited");
+
+        driver.navigate().refresh();
+
+        Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), initialCommentText,
+                "The comment should not have been changed when editing interrupted");
+
+        Assert.assertFalse(ecoNewsItemPage.getFirstComment().isCommentEdited(),
+                "Comment should not have 'Changed' label");
+    }
+
 }
