@@ -2,21 +2,18 @@ package com.greencity.ui.pages;
 
 import com.greencity.ui.components.CommentComponent;
 import com.greencity.ui.components.EcoNewsItemComponent;
-import com.greencity.ui.components.InformationModal;
 import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.utils.NewsTag;
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EcoNewsItemPage extends BasePage {
 
+    private static final By COMMENTS_SELECTOR = By.cssSelector("app-comments-list div.comment-body-wrapper");
     @FindBy(css = "div.back-button a")
     private WebElement goBackButton;
 
@@ -70,15 +67,12 @@ public class EcoNewsItemPage extends BasePage {
     @FindBy(css = "p.error-message")
     private WebElement errorMessage;
 
-    private static final By COMMENTS_SELECTOR =
-            By.cssSelector("app-comments-list div.comment-body-wrapper");
+    public EcoNewsItemPage(WebDriver driver) {
+        super(driver);
+    }
 
     private List<WebElement> getCommentRoots() {
         return driver.findElements(COMMENTS_SELECTOR);
-    }
-
-    public EcoNewsItemPage(WebDriver driver) {
-        super(driver);
     }
 
     public NewsPage GoBack() {
@@ -131,16 +125,16 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public EcoNewsItemComponent getRecommendedNewsByOrder(int order) {
-        if (recommendedNewsRoots.isEmpty())
-            return null;
+        if (recommendedNewsRoots.isEmpty()) return null;
         return new EcoNewsItemComponent(driver, recommendedNewsRoots.get(order));
     }
 
     public int getCommentsCount() {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(2))
-                    .until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
-        } catch (TimeoutException ignored) {}
+            getWait(2).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
+        } catch (TimeoutException ignored) {
+            // Expected timeout when no comments exist; safe to ignore.
+        }
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
     }
@@ -198,6 +192,13 @@ public class EcoNewsItemPage extends BasePage {
             return;
         }
 
+        var list = getCommentRoots();
+        var firstElement = list.getFirst();
+
+        waitUntilElementStaleness(firstElement);
+    }
+
+    public void waitForCommentsUpdatedDeletion() {
         var list = getCommentRoots();
         var firstElement = list.getFirst();
 

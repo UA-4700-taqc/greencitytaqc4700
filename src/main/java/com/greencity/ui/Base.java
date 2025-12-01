@@ -27,6 +27,10 @@ public abstract class Base {
         PageFactory.initElements(this.driver, this);
     }
 
+    protected WebDriverWait getWait(long seconds) {
+        return new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    }
+
     @Step("Scroll to the element")
     public void scrollToElement(WebElement element) {
         actions.moveToElement(element).perform();
@@ -105,6 +109,18 @@ public abstract class Base {
 
     public void waitUntilElementInvisible(WebElement element) {
         wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public void waitUntilElementInvisibleSafe(WebElement element) {
+        wait.ignoring(org.openqa.selenium.StaleElementReferenceException.class)
+                .until(driver -> {
+                    try {
+                        return !element.isDisplayed();
+                    } catch (org.openqa.selenium.NoSuchElementException |
+                             org.openqa.selenium.StaleElementReferenceException e) {
+                        return true;
+                    }
+                });
     }
 
     public void waitUntilElementClickable(WebElement element) {
