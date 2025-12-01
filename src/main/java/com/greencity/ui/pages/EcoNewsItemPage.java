@@ -67,6 +67,9 @@ public class EcoNewsItemPage extends BasePage {
     @FindBy(css = "button.primary-global-button")
     private WebElement submitCommentButton;
 
+    @FindBy(css = "p.error-message")
+    private WebElement errorMessage;
+
     private static final By COMMENTS_SELECTOR =
             By.cssSelector("app-comments-list div.comment-body-wrapper");
 
@@ -163,6 +166,21 @@ public class EcoNewsItemPage extends BasePage {
         commentInput.sendKeys(text);
     }
 
+    public boolean isErrorMessageDisplayed() {
+        return errorMessage.isDisplayed();
+    }
+
+    public String getErrorMessageText() {
+        return errorMessage.getText();
+    }
+
+    @Override
+    public void typeLargeInput(WebElement element, String text) {
+        threadJs.executeScript("arguments[0].innerText = arguments[1];", element, text);
+        commentInput.sendKeys(" ");
+        commentInput.sendKeys(Keys.DELETE);
+    }
+
     public EcoNewsItemPage addComment(String text) {
         typeComment(text);
         waitSubmitCommentButtonEnabled();
@@ -186,13 +204,6 @@ public class EcoNewsItemPage extends BasePage {
         waitUntilElementStaleness(firstElement);
     }
 
-    public void waitForCommentsUpdatedDeletion() {
-        var list = getCommentRoots();
-        var firstElement = list.getFirst();
-
-        waitUntilElementStaleness(firstElement);
-    }
-
     public List<CommentComponent> getComments() {
         var commentsRoots = getCommentRoots();
         return commentsRoots
@@ -208,12 +219,4 @@ public class EcoNewsItemPage extends BasePage {
         return list.getFirst();
     }
 
-    public EcoNewsItemPage deleteComment(CommentComponent comment) {
-        InformationModal modal = comment.clickDeleteCommentButton();
-
-        modal.confirm();
-
-        waitForCommentsUpdatedDeletion();
-        return this;
-    }
 }
