@@ -3,7 +3,6 @@ package com.greencity.ui;
 import com.greencity.ui.components.SubscriptionSectionComponent;
 
 import com.greencity.ui.testrunners.BaseTestRunner;
-import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
