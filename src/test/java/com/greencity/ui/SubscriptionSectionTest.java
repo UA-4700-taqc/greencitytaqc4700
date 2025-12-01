@@ -49,7 +49,7 @@ public class SubscriptionSectionTest extends BaseTestRunner {
         subscriptionSection.clickSubscribeButton();
 
         Assert.assertFalse(subscriptionSection.isValidationErrorDisplayed(),
-                "The validation error should disappear after entering a valid email address..");
+                "The validation error should disappear after entering a valid email address.");
 
     }
 }
