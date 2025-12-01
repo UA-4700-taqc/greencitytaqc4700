@@ -1,4 +1,4 @@
-package pages;
+package com.greencity.ui.pages.MySpacePage;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
