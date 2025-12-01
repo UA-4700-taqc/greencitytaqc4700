@@ -92,7 +92,7 @@ public class ProfilePage extends BasePage {
     private WebElement calendarNextWeek;
 
     // Profile Cards section
-    @FindBy(css = ".cart-title")
+    @FindBy(css = ".card-title")
     private WebElement factOfTheDayTitle;
 
     @FindBy(css = ".card-description")
