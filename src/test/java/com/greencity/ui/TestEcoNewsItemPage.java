@@ -217,4 +217,24 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
                 "Comment should not have 'Changed' label");
     }
 
+    @Test(description = "[Test Case] 19 - Verify that deleting a comment removes related replies.")
+    public void testCommentRelatedReplies() {
+        var uniqueTimestamp = System.currentTimeMillis();
+        String firstMessage = uniqueTimestamp * 2 + "";
+        String secondMessage = uniqueTimestamp * 3 + "";
+
+        ecoNewsItemPage = ecoNewsItemPage
+                .addComment(firstMessage)
+                .addComment(secondMessage)
+                .getFirstComment().addReply("test reply1")
+                .getFirstComment().addReply("test reply2")
+                .getFirstComment().addReply("test reply3")
+                .getFirstComment().deleteComment();
+
+        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), secondMessage,
+                "Comment with text" + secondMessage + " should have been deleted");
+        Assert.assertFalse(ecoNewsItemPage.getFirstComment().hasReplies(),
+                "First comment should not have replies");
+    }
+
 }

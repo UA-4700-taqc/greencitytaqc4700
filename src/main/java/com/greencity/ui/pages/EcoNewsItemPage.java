@@ -102,7 +102,7 @@ public class EcoNewsItemPage extends BasePage {
     public EcoNewsItemPage clickLike() {
         String initialLikesCount = likesCount.getText().trim();
         likeButton.click();
-        wait.until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
+        getWait(SHORT_WAIT_TIME).until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
         return this;
     }
 
@@ -131,10 +131,8 @@ public class EcoNewsItemPage extends BasePage {
 
     public int getCommentsCount() {
         try {
-            getWait(2).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
-        } catch (TimeoutException ignored) {
-            // Expected timeout when no comments exist; safe to ignore.
-        }
+            getWait(SHORT_WAIT_TIME).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
+        } catch (TimeoutException ignored) {}
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
     }
@@ -192,13 +190,6 @@ public class EcoNewsItemPage extends BasePage {
             return;
         }
 
-        var list = getCommentRoots();
-        var firstElement = list.getFirst();
-
-        waitUntilElementStaleness(firstElement);
-    }
-
-    public void waitForCommentsUpdatedDeletion() {
         var list = getCommentRoots();
         var firstElement = list.getFirst();
 
