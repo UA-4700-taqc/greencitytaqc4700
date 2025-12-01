@@ -133,6 +133,7 @@ public class EcoNewsItemPage extends BasePage {
         try {
             getWait(2).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
         } catch (TimeoutException ignored) {
+            // Expected timeout when no comments exist; safe to ignore.
         }
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
