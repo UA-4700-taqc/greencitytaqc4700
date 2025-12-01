@@ -25,8 +25,7 @@ public abstract class BasePage extends Base {
     @FindBy(xpath = "//app-header")
     private WebElement headerRoot;
 
-
-//    @FindBy(xpath = "//footer")
+    //    @FindBy(xpath = "//footer")
     private WebElement FooterRoot;
 
     public BasePage(WebDriver driver) {
@@ -42,7 +41,7 @@ public abstract class BasePage extends Base {
     }
 
     public HeaderComponent getHeader() {
-        if(this.header == null){
+        if (this.header == null) {
             this.header = new HeaderComponent(driver, headerRoot);
         }
         return header;
@@ -55,6 +54,11 @@ public abstract class BasePage extends Base {
     public Boolean isElementInvisible(WebElement element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
         return wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public void scrollIntoView(WebElement element) {
+        Objects.requireNonNull(threadJs).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
+        waitUntilElementVisible(element);
     }
 
 

@@ -65,7 +65,7 @@ public class HeaderComponentTest extends BaseTestRunner {
 
     @Test(description = "Verify sign in button is displayed")
     public void testSignInButtonIsDisplayed() {
-        WebElement signInBtn = header.getSignInButton();
+        WebElement signInBtn = header.getSignInButtonIcon();
         Assert.assertTrue(signInBtn.isDisplayed(), "Sign in button should be displayed");
     }
 
@@ -83,8 +83,8 @@ public class HeaderComponentTest extends BaseTestRunner {
     @Test(description = "Verify navigation links count")
     public void testNavigationLinksCount() {
         int actualLinksCount = header.getNavigationLinks().size();
-        Assert.assertEquals(actualLinksCount, EXPECTED_NAVIGATION_LINKS_COUNT, 
-            "Expected " + EXPECTED_NAVIGATION_LINKS_COUNT + " navigation links, but found " + actualLinksCount);
+        Assert.assertEquals(actualLinksCount, EXPECTED_NAVIGATION_LINKS_COUNT,
+                "Expected " + EXPECTED_NAVIGATION_LINKS_COUNT + " navigation links, but found " + actualLinksCount);
     }
 
     @Test(description = "Verify navigation link clicks")

@@ -1,6 +1,7 @@
 package com.greencity.ui.components.tagfilter;
 
 import com.greencity.ui.components.BaseComponent;
+import com.greencity.ui.components.tagfilter.enums.TagFilter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,7 +29,9 @@ public class TagFilterComponent extends BaseComponent {
         return tagButtons;
     }
 
-    public void clickTagByName(String tagName) {
+    public void clickTagByName(TagFilter tagFilter) {
+
+        String tagName = tagFilter.getTagName();
 
         for (WebElement button : tagButtons) {
             WebElement tagTextElement = button.findElement(By.xpath(".//span[@class='text']"));
