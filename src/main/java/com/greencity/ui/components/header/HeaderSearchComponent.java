@@ -4,6 +4,9 @@ import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.time.Duration;
 
 public class HeaderSearchComponent extends BaseComponent {
 
@@ -80,9 +83,14 @@ public class HeaderSearchComponent extends BaseComponent {
     }
 
     public void clickCloseIcon() {
+        System.out.println("  1");
         waitUntilElementClickable(closeIcon);
+        System.out.println("  2");
         closeIcon.click();
-        waitForSearchBarToClose();
+        System.out.println("  3");
+//        waitForSearchBarToClose();
+        isSearchBarClosed();
+        System.out.println("  4");
     }
 
     public String getSearchFieldPlaceholder() {
@@ -113,7 +121,11 @@ public class HeaderSearchComponent extends BaseComponent {
      * Returns immediately based on current state.
      */
     public boolean isSearchBarClosed() {
-        return !searchBarWrapper.isDisplayed();
+        Duration defaultImplicitlyWait = driver.manage().timeouts().getImplicitWaitTimeout();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+        boolean isClosed = getWait(1).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//app-search-popup/section")));
+        driver.manage().timeouts().implicitlyWait(defaultImplicitlyWait);
+        return isClosed;
     }
 
     /**
