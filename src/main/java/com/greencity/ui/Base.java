@@ -158,4 +158,8 @@ public abstract class Base {
     public void waitUntilElementStaleness(WebElement element) {
         wait.until(ExpectedConditions.stalenessOf(element));
     }
+
+    public void typeLargeInput(WebElement element, String text) {
+        threadJs.executeScript("arguments[0].value = arguments[1];", element, text);
+    }
 }
