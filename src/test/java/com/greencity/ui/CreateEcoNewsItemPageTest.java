@@ -3,6 +3,8 @@ package com.greencity.ui;
 import com.greencity.ui.enums.NewsTag;
 import com.greencity.ui.pages.CreateEcoNewsItemPage;
 import com.greencity.ui.pages.CreateEcoNewsPreviewPage;
+import com.greencity.ui.pages.EcoNewsItemPage;
+import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -13,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
@@ -143,6 +146,26 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertAll();
 
 
+    }
+
+    @Test(description = "Verify the validation of the 'Source' field")
+    public void SourceFieldValidation() {
+        String itemTitle = randomString(10);
+        String itemContent = randomString(50);
+        String itemSource = "https://" + randomString(7);
+
+        createNewsPage.content.enterTitle(itemTitle);
+        createNewsPage.content.enterContent(itemContent);
+        createNewsPage.tags.selectTag(NewsTag.getRandomTag());
+        createNewsPage.actions.clickPublish();
+
+        String message = createNewsPage.waitForSuccessMessage();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(message.toLowerCase().contains("success"),"Success message should appear after publish");
+
+
+
+        softAssert.assertAll();
     }
 
 }

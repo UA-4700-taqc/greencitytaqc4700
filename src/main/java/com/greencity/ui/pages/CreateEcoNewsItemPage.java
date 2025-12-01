@@ -2,6 +2,7 @@ package com.greencity.ui.pages;
 
 import com.greencity.ui.components.createnews.*;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -32,6 +33,8 @@ public class CreateEcoNewsItemPage extends BasePage {
     private WebElement metaRoot;
     @FindBy(css = ".submit-buttons")
     private WebElement actionsRoot;
+    @FindBy(xpath = "//div[contains(@class,'success') or contains(@class,'snack') or contains(@class,'notification')]")
+    private WebElement successMessage;
 
     public CreateEcoNewsItemPage(WebDriver driver) {
         super(driver);
@@ -52,6 +55,16 @@ public class CreateEcoNewsItemPage extends BasePage {
             return;
         }
         wait.until(ExpectedConditions.visibilityOf(headerRoot));
+    }
+
+    public String waitForSuccessMessage() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement msg = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//div[contains(@class,'success') or contains(@class,'snack') or contains(@class,'notification')]")
+                )
+        );
+        return msg.getText().trim();
     }
 
 }

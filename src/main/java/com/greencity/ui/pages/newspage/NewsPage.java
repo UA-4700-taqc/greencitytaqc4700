@@ -10,9 +10,7 @@ import org.openqa.selenium.By;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class NewsPage extends BasePage {
 
