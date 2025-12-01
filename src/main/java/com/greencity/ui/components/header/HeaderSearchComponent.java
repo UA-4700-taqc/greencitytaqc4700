@@ -80,14 +80,9 @@ public class HeaderSearchComponent extends BaseComponent {
     }
 
     public void clickCloseIcon() {
-        System.out.println("  1");
         waitUntilElementClickable(closeIcon);
-        System.out.println("  2");
         closeIcon.click();
-        System.out.println("  3");
-//        waitForSearchBarToClose();
         isSearchBarClosed();
-        System.out.println("  4");
     }
 
     public String getSearchFieldPlaceholder() {
