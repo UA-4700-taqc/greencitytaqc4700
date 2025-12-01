@@ -43,9 +43,6 @@ public class HeaderSearchComponent extends BaseComponent {
      * Waits for the search bar to close completely.
      * Uses a shorter timeout for faster test execution.
      */
-//    public void waitForSearchBarToClose() {
-//        getWait(3).until(ExpectedConditions.invisibilityOf(searchBarWrapper));
-//    }
     public void waitForSearchBarToClose() {
         waitUntilElementInvisibleSafe(searchBarWrapper);
     }
