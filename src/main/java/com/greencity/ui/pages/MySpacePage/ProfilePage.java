@@ -101,7 +101,6 @@ public class ProfilePage extends BasePage {
     // Constructor
     public ProfilePage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
     }
 
     // Profile info methods
