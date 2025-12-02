@@ -5,7 +5,7 @@ Feature: Create News - Tag Selection
 
   Background:
     Given the user is logged into the system
-    And the user is on the GreenCity News page at "https://www.greencity.cx.ua/#/greenCity/news"
+    And the user is on the GreenCity News page at "https://www. greencity.cx.ua/#/greenCity/news"
 
   Scenario: Successfully publish news with one tag
     When the user clicks "Create News"
@@ -69,7 +69,7 @@ Feature: Create News - Image Upload Validation
     When the user clicks "Create News"
     And the user uploads a GIF file with size "1MB" in the "Add Image" field
     Then the "Add Image" field should be highlighted in red
-    And the error message "Upload only PNG or JPEG.  File size must be less than 10MB." should be displayed
+    And the error message "Upload only PNG or JPEG. File size must be less than 10MB." should be displayed
 
   Scenario: Reject image exceeding maximum file size
     When the user clicks "Create News"
@@ -84,14 +84,15 @@ Feature: Create News - Image Upload Validation
     And the validation message should be "<message>"
 
     Examples:
-      | format | size  | result  | message                                                                   |
-      | PNG    | 5MB   | success |                                                                           |
-      | JPEG   | 9MB   | success |                                                                           |
-      | JPG    | 10MB  | success |                                                                           |
-      | GIF    | 1MB   | error   | Upload only PNG or JPEG. File size must be less than 10MB.                |
-      | BMP    | 2MB   | error   | Upload only PNG or JPEG. File size must be less than 10MB.                |
-      | PNG    | 11MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.                |
-      | JPEG   | 15MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.                |
+      | format | size  | result  | message                                                     |
+      | PNG    | 5MB   | success |                                                             |
+      | JPEG   | 9MB   | success |                                                             |
+      | JPG    | 9.9MB | success |                                                             |
+      | GIF    | 1MB   | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
+      | BMP    | 2MB   | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
+      | PNG    | 10MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
+      | PNG    | 11MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
+      | JPEG   | 15MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
 
 Feature: Create News - Content Field Validation
   As a logged-in user
@@ -115,6 +116,7 @@ Feature: Create News - Content Field Validation
     And the user fills in the main text field with "63207" characters
     Then the text should be truncated to "63206" characters
     And no error message should appear
+    And the "Publish" button should become enabled
 
   Scenario: Successfully publish news with valid content length
     When the user clicks "Create News"
@@ -134,10 +136,10 @@ Feature: Create News - Content Field Validation
     And the error message display should be "<error_display>"
 
     Examples:
-      | characters | result  | button_state | error_display |
-      | 10         | invalid | disabled     | shown         |
-      | 19         | invalid | disabled     | shown         |
-      | 20         | valid   | enabled      | hidden        |
-      | 100        | valid   | enabled      | hidden        |
-      | 63206      | valid   | enabled      | hidden        |
-      | 63207      | valid   | enabled      | hidden        |
+      | characters | result    | button_state | error_display |
+      | 10         | invalid   | disabled     | shown         |
+      | 19         | invalid   | disabled     | shown         |
+      | 20         | valid     | enabled      | hidden        |
+      | 100        | valid     | enabled      | hidden        |
+      | 63206      | valid     | enabled      | hidden        |
+      | 63207      | truncated | enabled      | hidden        |
