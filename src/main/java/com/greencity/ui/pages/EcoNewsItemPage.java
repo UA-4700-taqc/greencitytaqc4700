@@ -138,19 +138,25 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public boolean isSubmitCommentButtonEnabled() {
-        return submitCommentButton.isEnabled();
+        try {
+            waitUntilElementEnabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public boolean isSubmitCommentButtonDisabled() {
-        return !submitCommentButton.isEnabled();
+        try {
+            waitUntilElementDisabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public void waitSubmitCommentButtonEnabled() {
         waitUntilElementClickable(submitCommentButton);
-    }
-
-    public void waitSubmitCommentButtonDisabled() {
-        waitUntilElementDisabled(submitCommentButton);
     }
 
     public void typeComment(String text) {
@@ -211,4 +217,17 @@ public class EcoNewsItemPage extends BasePage {
         return list.getFirst();
     }
 
-}
+    public CommentComponent getCommentByText(String text) {
+        return getComments().stream()
+                .filter(c -> c.getCommentBodyText().equalsIgnoreCase(text.trim()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Comment not found: " + text));
+    }
+
+    public boolean doesExistCommentByText(String text) {
+        return getComments().stream()
+                .map(CommentComponent::getCommentBodyText)
+                .anyMatch(c -> c.equalsIgnoreCase(text));
+    }
+
+    }

@@ -160,11 +160,11 @@ public abstract class Base {
     }
 
     public void waitUntilElementEnabled(WebElement element) {
-        wait.until(driver -> (element.isEnabled()));
+        getWait(SHORT_WAIT_TIME).until(driver -> (element.isEnabled()));
     }
 
     public void waitUntilElementDisabled(WebElement element) {
-        wait.until(driver -> !(element.isEnabled()));
+        getWait(SHORT_WAIT_TIME).until(driver -> !(element.isEnabled()));
     }
 
     public void waitUntilElementStaleness(WebElement element) {
