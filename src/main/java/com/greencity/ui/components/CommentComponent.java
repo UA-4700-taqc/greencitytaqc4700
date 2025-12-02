@@ -99,7 +99,7 @@ public class CommentComponent extends BaseComponent {
     }
 
     private List<WebElement> getRepliesRoots() {
-        return driver.findElements(REPLY_ITEM_SELECTOR);
+        return commentRoot.findElements(REPLY_ITEM_SELECTOR);
     }
 
     public String getAuthorNameText() {
