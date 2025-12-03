@@ -42,9 +42,9 @@ Feature: [Create News]Display all Fields
     And "Add image" field is displayed
     And "Main text" field is displayed
     And "Author" field is displayed
-    And "Author" field is prefield and can`t be edited
+    And "Author" field is prefield and can't be edited
     And "Date" field is displayed
-    And "Date" field is prefield and can`t be edited
+    And "Date" field is prefield and can't be edited
     And "Source" field is displayed
     And "Cancel" button is displayed
     And "Preview" button is displayed
