@@ -14,8 +14,8 @@ Feature: [Create News]Basic Preview Functionality
     Then remember "Author`s name
     When User clicks "Preview" button
     Then Create News Preview page is opened
-    And the News title equals to appropriate inputed symbols
-    And the Main text equals to appropriate inputed symbols
+    And the News title equals to appropriate input symbols
+    And the Main text equals to appropriate input symbols
     And the Date is current date
     And the Author`s name equals to User`s name
     And "Back to edditing" button is displayed
