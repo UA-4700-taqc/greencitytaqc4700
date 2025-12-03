@@ -74,7 +74,7 @@ Feature: [Create News]Title Field
   Scenario: Verify "Title" field with valid title entered
     When User inputs "Test News" into "Title" field
     Then character counter shows "9/170"
-    And "Title" field's border isn`t highlighted in red
+    And "Title" field's border isn't highlighted in red
     And "Publish" button is disabled
     When User selects any available tag
     And User types at least 20 symbols in "Content" field
