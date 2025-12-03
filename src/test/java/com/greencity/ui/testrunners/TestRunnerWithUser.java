@@ -1,10 +1,12 @@
 package com.greencity.ui.testrunners;
 
+import com.greencity.ui.pages.homepage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import static java.lang.Thread.sleep;
 
@@ -22,8 +24,6 @@ public class TestRunnerWithUser extends BaseTestRunner {
             en.click();
         }
         homePage.getHeader().clickSignIn();
-
-
 
         WebElement emailInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("email")));
         emailInput.clear();
