@@ -9,6 +9,7 @@
         <classes>
             <class name="com.greencity.ui.CreateEcoNewsItemPageTest"/>
             <class name="com.greencity.ui.HeaderComponentTest"/>
+            <class name="com.greencity.ui.HeaderSearchComponentTest"/>
             <class name="com.greencity.ui.HomePageTest"/>
             <class name="com.greencity.ui.NewsPageTest"/>
             <class name="com.greencity.ui.SubscriptionSectionTest"/>
