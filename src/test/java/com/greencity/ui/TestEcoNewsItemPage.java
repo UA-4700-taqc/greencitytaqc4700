@@ -176,7 +176,7 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         comment.clickEditCommentButton();
         comment.getEditCommentInput().sendKeys(" edited");
 
-        driver.navigate().refresh();
+        ecoNewsItemPage = ecoNewsItemPage.reloadPage();
 
         Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), initialCommentText,
                 "The comment should not have been changed when editing interrupted");
