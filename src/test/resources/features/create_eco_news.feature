@@ -61,7 +61,7 @@ Feature: [Create News]Title Field
 
   Scenario: Verify Publish button availability when no symbol is entered
     When User clicks on "Title" field
-    And User inputs no synbol into "Title" field
+    And User inputs no symbol into "Title" field
     Then "Title" field's border is highlighted in red
     And "Publish" button is disabled
     And character counter shows "0/170"
