@@ -27,4 +27,5 @@ Feature: GreenCity Homepage Statistics Verification
       | Link         | "places that make a discount on a drink in your cup"|
 
     And all displayed links are functional
-    And all "Start forming a habit!" buttons behave as expected for unlogged users (i.e., display login form)
+    When the user clicks all "Start forming a habit!" buttons
+    Then the login form is displayed for unlogged users
