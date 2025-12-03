@@ -16,5 +16,5 @@ Feature: GreenCity Statistics Block Interaction
     When the user closes the form
     And the user clicks the "Start forming a habit!" button in the "Cups" section
 
-    Then the system displays the **login or registration form** again
+    Then the system displays the login or registration form again
     And the user is **not redirected** away from the current page
