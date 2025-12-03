@@ -102,7 +102,7 @@ public class EcoNewsItemPage extends BasePage {
     public EcoNewsItemPage clickLike() {
         String initialLikesCount = likesCount.getText().trim();
         likeButton.click();
-        wait.until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
+        getWait(SHORT_WAIT_TIME).until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
         return this;
     }
 
@@ -131,28 +131,32 @@ public class EcoNewsItemPage extends BasePage {
 
     public int getCommentsCount() {
         try {
-            getWait(2).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
-        } catch (TimeoutException ignored) {
-            // Expected timeout when no comments exist; safe to ignore.
-        }
+            getWait(SHORT_WAIT_TIME).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
+        } catch (TimeoutException ignored) {}
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
     }
 
     public boolean isSubmitCommentButtonEnabled() {
-        return submitCommentButton.isEnabled();
+        try {
+            waitUntilElementEnabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public boolean isSubmitCommentButtonDisabled() {
-        return !submitCommentButton.isEnabled();
+        try {
+            waitUntilElementDisabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public void waitSubmitCommentButtonEnabled() {
         waitUntilElementClickable(submitCommentButton);
-    }
-
-    public void waitSubmitCommentButtonDisabled() {
-        waitUntilElementDisabled(submitCommentButton);
     }
 
     public void typeComment(String text) {
@@ -198,13 +202,6 @@ public class EcoNewsItemPage extends BasePage {
         waitUntilElementStaleness(firstElement);
     }
 
-    public void waitForCommentsUpdatedDeletion() {
-        var list = getCommentRoots();
-        var firstElement = list.getFirst();
-
-        waitUntilElementStaleness(firstElement);
-    }
-
     public List<CommentComponent> getComments() {
         var commentsRoots = getCommentRoots();
         return commentsRoots
@@ -220,4 +217,17 @@ public class EcoNewsItemPage extends BasePage {
         return list.getFirst();
     }
 
-}
+    public CommentComponent getCommentByText(String text) {
+        return getComments().stream()
+                .filter(c -> c.getCommentBodyText().equalsIgnoreCase(text.trim()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Comment not found: " + text));
+    }
+
+    public boolean doesExistCommentByText(String text) {
+        return getComments().stream()
+                .map(CommentComponent::getCommentBodyText)
+                .anyMatch(c -> c.equalsIgnoreCase(text));
+    }
+
+    }

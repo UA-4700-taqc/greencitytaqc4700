@@ -26,26 +26,6 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
     }
 
     @Test
-    public void testSubmitCommentButton() {
-        String uniqueTimestamp = System.currentTimeMillis() + "";
-
-        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled());
-
-        ecoNewsItemPage.getCommentInput().sendKeys(uniqueTimestamp);
-        ecoNewsItemPage.waitSubmitCommentButtonEnabled();
-        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonEnabled());
-
-        ecoNewsItemPage.getCommentInput().clear();
-        ecoNewsItemPage.getCommentInput().sendKeys(" ");
-        ecoNewsItemPage.waitSubmitCommentButtonDisabled();
-        Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled());
-
-        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
-        var firstComment = ecoNewsItemPage.getFirstComment();
-        Assert.assertEquals(firstComment.getCommentBodyText(), uniqueTimestamp);
-    }
-
-    @Test
     public void testEcoNewsLikes() {
         int oldLikesCount = ecoNewsItemPage.getLikesCount();
         ecoNewsItemPage.clickLike();
@@ -75,13 +55,8 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
 
     @Test
     public void testCommentCountLabel() {
-        String uniqueTimestamp = System.currentTimeMillis() + "";
         int commentsCountBefore = ecoNewsItemPage.getCommentsCount();
-        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
-
-        var firstComment = ecoNewsItemPage.getFirstComment();
-
-        Assert.assertEquals(firstComment.getCommentBodyText(), uniqueTimestamp);
+        ecoNewsItemPage = ecoNewsItemPage.addComment(System.currentTimeMillis() + "");
 
         int commentsCountAfter = ecoNewsItemPage.getCommentsCount();
         Assert.assertEquals(commentsCountAfter, commentsCountBefore + 1);
@@ -89,21 +64,16 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
 
     @Test(description = "Add 2 new comments, delete one of them, verify successful deletion.")
     public void testAddCommentDeletion() {
-        // add 2 comments
-        String uniqueTimestamp = System.currentTimeMillis() + "";
-        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
-        uniqueTimestamp = System.currentTimeMillis() + "";
-        ecoNewsItemPage = ecoNewsItemPage.addComment(uniqueTimestamp);
+        var uniqueTimestamp = System.currentTimeMillis();
+        String firstMessage = uniqueTimestamp * 2 + "";
+        String secondMessage = uniqueTimestamp * 3 + "";
 
-        var oldFirstComment = ecoNewsItemPage.getFirstComment();
-        String oldFirstCommentText = oldFirstComment.getCommentBodyText();
+        ecoNewsItemPage = ecoNewsItemPage
+                .addComment(firstMessage)
+                .addComment(secondMessage)
+                .getFirstComment().deleteComment();
 
-        ecoNewsItemPage = ecoNewsItemPage.getFirstComment().deleteComment();
-
-        var newFirstComment = ecoNewsItemPage.getFirstComment();
-        String newFirstCommentText = newFirstComment.getCommentBodyText();
-
-        Assert.assertNotEquals(newFirstCommentText, oldFirstCommentText);
+        Assert.assertFalse(ecoNewsItemPage.doesExistCommentByText(secondMessage));
     }
 
     @Test(description = "[Test Case] 29 - Verify Visual Display of a Saved Comment.")
@@ -134,12 +104,12 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
         Assert.assertTrue(modal.getCancelButton().isDisplayed(), "Cancel button should be displayed.");
         modal.cancel();
 
-        Assert.assertEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
+        Assert.assertTrue(ecoNewsItemPage.doesExistCommentByText(uniqueTimestamp),
                 "The comment should not have been deleted.");
 
         ecoNewsItemPage = ecoNewsItemPage.getFirstComment().deleteComment();
 
-        Assert.assertNotEquals(ecoNewsItemPage.getFirstComment().getCommentBodyText(), uniqueTimestamp,
+        Assert.assertFalse(ecoNewsItemPage.doesExistCommentByText(uniqueTimestamp),
                 "The comment should have been deleted.");
     }
 
@@ -185,13 +155,11 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
                 "Submit comment button should be disabled when input contains only spaces");
 
         ecoNewsItemPage.getCommentInput().sendKeys("q");
-        ecoNewsItemPage.waitSubmitCommentButtonEnabled();
         Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonEnabled(),
                 "Submit comment button should be enabled when input contains valid characters");
 
         String largeString = TestUtils.randomString(8001);
         ecoNewsItemPage.typeLargeInput(ecoNewsItemPage.getCommentInput(), largeString);
-        ecoNewsItemPage.waitSubmitCommentButtonDisabled();
         Assert.assertTrue(ecoNewsItemPage.isSubmitCommentButtonDisabled(),
                 "Submit comment button should be disabled when input contains >8000 characters");
         Assert.assertTrue(ecoNewsItemPage.isErrorMessageDisplayed(),
@@ -215,6 +183,26 @@ public class TestEcoNewsItemPage extends TestRunnerWithUser {
 
         Assert.assertFalse(ecoNewsItemPage.getFirstComment().isCommentEdited(),
                 "Comment should not have 'Changed' label");
+    }
+
+    @Test(description = "[Test Case] 19 - Verify that deleting a comment removes related replies.")
+    public void testCommentRelatedReplies() {
+        var uniqueTimestamp = System.currentTimeMillis();
+        String firstMessage = uniqueTimestamp * 2 + "";
+        String secondMessage = uniqueTimestamp * 3 + "";
+
+        ecoNewsItemPage = ecoNewsItemPage
+                .addComment(firstMessage)
+                .addComment(secondMessage)
+                .getFirstComment().addReply("test reply1")
+                .getFirstComment().addReply("test reply2")
+                .getFirstComment().addReply("test reply3")
+                .getFirstComment().deleteComment();
+
+        Assert.assertFalse(ecoNewsItemPage.doesExistCommentByText(secondMessage),
+                "Comment with text" + secondMessage + " should have been deleted");
+        Assert.assertFalse(ecoNewsItemPage.getFirstComment().hasReplies(),
+                "First comment should not have replies");
     }
 
 }

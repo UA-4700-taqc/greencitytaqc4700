@@ -19,6 +19,11 @@ public abstract class Base {
     protected JavascriptExecutor threadJs;
     protected Actions actions;
 
+    public static final long LONG_WAIT_TIME = 10L;
+    public static final long NORMAL_WAIT_TIME = 5L;
+    public static final long SHORT_WAIT_TIME = 2L;
+    public static final long NO_WAIT_TIME = 0L;
+
     public Base(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -108,7 +113,14 @@ public abstract class Base {
     }
 
     public void waitUntilElementInvisible(WebElement element) {
-        wait.until(ExpectedConditions.invisibilityOf(element));
+        Duration originalWait = driver.manage().timeouts().getImplicitWaitTimeout();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(NO_WAIT_TIME));
+
+        try {
+            getWait(NORMAL_WAIT_TIME).until(ExpectedConditions.invisibilityOf(element));
+        } finally {
+            driver.manage().timeouts().implicitlyWait(originalWait);
+        }
     }
 
     public void waitUntilElementInvisibleSafe(WebElement element) {
@@ -148,11 +160,11 @@ public abstract class Base {
     }
 
     public void waitUntilElementEnabled(WebElement element) {
-        wait.until(driver -> (element.isEnabled()));
+        getWait(SHORT_WAIT_TIME).until(driver -> (element.isEnabled()));
     }
 
     public void waitUntilElementDisabled(WebElement element) {
-        wait.until(driver -> !(element.isEnabled()));
+        getWait(SHORT_WAIT_TIME).until(driver -> !(element.isEnabled()));
     }
 
     public void waitUntilElementStaleness(WebElement element) {
@@ -161,5 +173,16 @@ public abstract class Base {
 
     public void typeLargeInput(WebElement element, String text) {
         threadJs.executeScript("arguments[0].value = arguments[1];", element, text);
+    }
+
+    public boolean isVisibleElementLocated(By selector) {
+        Duration originalWait = driver.manage().timeouts().getImplicitWaitTimeout();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(NO_WAIT_TIME));
+
+        try {
+            return !driver.findElements(selector).isEmpty();
+        } finally {
+            driver.manage().timeouts().implicitlyWait(originalWait);
+        }
     }
 }
