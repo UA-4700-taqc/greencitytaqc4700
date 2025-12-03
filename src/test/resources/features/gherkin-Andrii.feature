@@ -5,7 +5,7 @@ Feature: Create News - Tag Selection
 
   Background:
     Given the user is logged into the system
-    And the user is on the GreenCity News page at "https://www. greencity.cx.ua/#/greenCity/news"
+    And the user is on the GreenCity News page at "https://www.greencity.cx.ua/#/greenCity/news"
 
   Scenario: Successfully publish news with one tag
     When the user clicks "Create News"
@@ -143,3 +143,34 @@ Feature: Create News - Content Field Validation
       | 100        | valid     | enabled      | hidden        |
       | 63206      | valid     | enabled      | hidden        |
       | 63207      | truncated | enabled      | hidden        |
+
+Feature: Create News - Cancel Button Behavior
+  As a logged-in user
+  I want to cancel news creation with confirmation
+  So that I can prevent accidental loss of content
+
+  Background:
+    Given the user is logged into the system
+    And the user is on the GreenCity News page at "https://www.greencity.cx.ua/#/greenCity/news"
+
+  Scenario: Cancel news creation and confirm cancellation
+    When the user clicks "Create News"
+    And the user fills in the title field with "Test"
+    And the user fills in the main text field with "Test content with 20 chars"
+    And the user clicks "Cancel"
+    Then a confirmation modal should appear with the message "All created content will be lost. Do you still want to cancel news creating?"
+    When the user clicks "Yes, cancel"
+    Then the form should close
+    And the user should be redirected to the GreenCity News page
+
+  Scenario: Cancel news creation but continue editing
+    When the user clicks "Create News"
+    And the user fills in the title field with "Test"
+    And the user fills in the main text field with "Test content with 20 chars"
+    And the user clicks "Cancel"
+    Then a confirmation modal should appear with the message "All created content will be lost. Do you still want to cancel news creating?"
+    When the user clicks "Continue editing"
+    Then the modal should close
+    And the user should remain on the "Create News" form
+    And the title field should contain "Test"
+    And the main text field should contain "Test content with 20 chars"
