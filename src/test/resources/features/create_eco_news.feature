@@ -51,7 +51,7 @@ Feature: [Create News]Display all Fields
     And "Publish" button is displayed
 
 Feature: [Create News]Title Field
-# Verify the validation of the "Title" field (mandatory, maximum 170 characters) and that the "Publish" button remains disabled until both Title and Main Text (Content) fields are filled and at least one tag is choosed.
+# Verify the validation of the "Title" field (mandatory, maximum 170 characters) and that the "Publish" button remains disabled until both Title and Main Text (Content) fields are filled and at least one tag is chosen.
   Background:
     Given User logged into the system
     And User opened clicks "Eco news" in header
