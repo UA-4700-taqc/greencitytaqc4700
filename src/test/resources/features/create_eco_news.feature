@@ -18,8 +18,8 @@ Feature: [Create News]Basic Preview Functionality
     And the Main text equals to appropriate input symbols
     And the Date is current date
     And the Author`s name equals to User`s name
-    And "Back to edditing" button is displayed
-    And "Back to edditing" button has link
+    And "Back to editing" button is displayed
+    And "Back to editing" button has link
 
 
 Feature: [Create News]Display all Fields
