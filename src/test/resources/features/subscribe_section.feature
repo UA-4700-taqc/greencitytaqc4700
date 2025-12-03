@@ -1,6 +1,7 @@
 Feature: GreenCity Homepage Verification for Unregistered Users
 
-Scenario: Verify "Receive interesting Eco-news" section (Subscription)
+# Subscription section
+Scenario: Verify Receive interesting Eco-news section
 Given the user is not logged in to the GreenCity system
 And the GreenCity Main Page is open
 
