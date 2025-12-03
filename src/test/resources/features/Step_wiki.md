@@ -354,4 +354,210 @@ Next steps (optional)
 ---
 Generated: automated extraction & grouping
 
+## Duplicate analysis and canonical mapping (use only Given/When/Then)
 
+This section lists step texts that appear multiple times across the repository, where they were found, and a proposed canonical formulation that uses only Given / When / Then (no "And"). Use these canonical forms when implementing or refactoring step definitions.
+
+Notes on mapping rules
+- Preconditions / state → use Given
+- User actions (click, type, navigate, upload, select, add, locate) → use When
+- Outcomes / assertions / visibility / messages → use Then
+- Parameterize repeated values (e.g., "<text>", "<email>", "<size>") where helpful.
+
+1) Preconditions / authentication & pages
+
+- Body: "the user is not logged in to the GreenCity system"
+  - Found in: `subscribe_section.feature`, `statistics_button_behavior.feature`, `statistics_block.feature`, `eco_news_section.feature`
+  - Count: 4
+  - Canonical: Given the user is not logged in to the GreenCity system
+
+- Body: "the GreenCity main page is open"
+  - Found in: `subscribe_section.feature`, `statistics_button_behavior.feature`, `statistics_block.feature`, `eco_news_section.feature`, `ad_section.feature`
+  - Count: 5
+  - Canonical: Given the GreenCity main page is open
+
+- Body: "the user is logged into the system" / "the user is logged in"
+  - Found in: `gherkin-Andrii.feature`, `create_eco_news.feature`, `eco_news_item_page.feature`, `Edit Comment/e.feature`, `Edit Comment/comment_metadata_visibility.feature`
+  - Count: multiple
+  - Canonical: Given the user is logged in
+
+- Body: "the user is in the state: <Status>"
+  - Found in: `ad_section.feature`
+  - Count: 1
+  - Canonical: Given the user is in the state: <Status>
+
+2) Navigation / visibility
+
+- Body: "the user scrolls down to the \"Receive interesting Eco-news\" section"
+  - Found in: `subscribe_section.feature`
+  - Canonical: When the user scrolls down to the "Receive interesting Eco-news" section
+
+- Body: "the user scrolls down to the Statistics section" / "the user scrolls down until the Statistics section becomes visible"
+  - Found in: `statistics_button_behavior.feature`, `statistics_block.feature`
+  - Canonical: When the user scrolls down until the Statistics section becomes visible
+
+- Body: "the user navigates to the advertising section at the top of the page"
+  - Found in: `ad_section.feature`
+  - Canonical: When the user navigates to the advertising section at the top of the page
+
+3) Clicks / UI actions (make these When)
+
+- Body: "the user clicks \"Create News\""
+  - Found in: `gherkin-Andrii.feature`, `create_eco_news.feature`, many scenarios
+  - Canonical: When the user clicks "Create News"
+
+- Body: "the user clicks \"Publish\""
+  - Found in: `gherkin-Andrii.feature`, `create_eco_news.feature`
+  - Canonical: When the user clicks "Publish"
+
+- Body: "the user clicks \"Cancel\""
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: When the user clicks "Cancel"
+
+- Body: "the user clicks the \"Start forming a habit!\" button in the \"Eco Bag\" section"
+  - Found in: `statistics_button_behavior.feature`
+  - Canonical: When the user clicks the "Start forming a habit!" button in the "Eco Bag" section
+
+- Body: "the user clicks the \"Start forming a habit!\" button in the \"Cups\" section"
+  - Found in: `statistics_button_behavior.feature`
+  - Canonical: When the user clicks the "Start forming a habit!" button in the "Cups" section
+
+- Body: "the user clicks the \"Start forming a habit!\" button"
+  - Found in: `ad_section.feature`, `statistics_block.feature` (variants)
+  - Canonical: When the user clicks the "Start forming a habit!" button
+
+- Body: "the user clicks on the \"Start forming a habit!\" button"
+  - Found in: `statistics_button_behavior.feature` (variant)
+  - Canonical: When the user clicks the "Start forming a habit!" button
+
+- Body: "the user clicks the \"Preview\" button"
+  - Found in: `create_eco_news.feature`
+  - Canonical: When the user clicks the "Preview" button
+
+- Body: "the user clicks the "Delete" icon on the comment"
+  - Found in: `eco_news_item_page.feature`
+  - Canonical: When the user clicks the "Delete" icon on the comment
+
+- Body: "the user clicks "Edit" on a comment"
+  - Found in: `eco_news_item_page.feature`, `Edit Comment/e.feature`
+  - Canonical: When the user clicks "Edit" on a comment
+
+- Body: "the user clicks "Yes" / "No" on the confirmation modal"
+  - Found in: `eco_news_item_page.feature`, `gherkin-Andrii.feature`
+  - Canonical: When the user clicks "Yes" on the confirmation modal
+    - When the user clicks "No" on the confirmation modal
+
+4) Typing / filling / selecting (use When)
+
+- Body: "the user fills in the title field with "Test""
+  - Found in: `gherkin-Andrii.feature`, `create_eco_news.feature`
+  - Canonical: When the user fills in the title field with "Test"
+
+- Body: "the user fills in the main text field with "Test content with 20 chars""
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: When the user fills in the main text field with "Test content with 20 chars"
+
+- Body: "the user types at least 20 symbols in the "Content" field"
+  - Found in: `create_eco_news.feature`
+  - Canonical: When the user types at least 20 symbols in the "Content" field
+
+- Body: "the user enters an invalid email such as "eco-news""
+  - Found in: `subscribe_section.feature`
+  - Canonical: When the user enters an invalid email such as "eco-news"
+
+- Body: "the user enters a valid email such as "test@example.com""
+  - Found in: `subscribe_section.feature`
+  - Canonical: When the user enters a valid email such as "test@example.com"
+
+- Body: "the user uploads a PNG/JPEG/GIF file with size "…"" in the "Add Image" field"
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: When the user uploads a <format> file with size "<size>" in the "Add Image" field
+
+- Body: "the user selects the tag "News"" / "the user selects the following tags:" (table)
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: When the user selects the tag "News"
+    - When the user selects the following tags:  (use DataTable)
+
+5) Outcomes / assertions (use Then)
+
+- Body: "validation prevents the form from being submitted"
+  - Found in: `subscribe_section.feature`
+  - Canonical: Then validation prevents the form from being submitted
+
+- Body: "a success message or confirmation appears indicating the email was accepted"
+  - Found in: `subscribe_section.feature`
+  - Canonical: Then a success message or confirmation appears indicating the email was accepted
+
+- Body: "the system displays the login or registration form" / "the login form is displayed for unlogged users"
+  - Found in: `statistics_button_behavior.feature`, `statistics_block.feature`
+  - Canonical: Then the login or registration form is displayed
+
+- Body: "the news should be published successfully"
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: Then the news should be published successfully
+
+- Body: "the image should upload successfully without errors"
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: Then the image should upload successfully without errors
+
+- Body: "the "Add Image" field should be highlighted in red"
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: Then the "Add Image" field should be highlighted in red
+
+- Body: "the error message "Upload only PNG or JPEG. File size must be less than 10MB." should be displayed"
+  - Found in: `gherkin-Andrii.feature`
+  - Canonical: Then the error message "Upload only PNG or JPEG. File size must be less than 10MB." should be displayed
+
+- Body: "the comment should be deleted"
+  - Found in: `eco_news_item_page.feature`
+  - Canonical: Then the comment should be deleted
+
+- Body: "the comments should appear in reverse chronological order"
+  - Found in: `eco_news_item_page.feature`
+  - Canonical: Then the comments should appear in reverse chronological order
+
+- Body: "the submit comment button should be disabled / remain disabled / become enabled"
+  - Found in: `eco_news_item_page.feature`
+  - Canonical forms:
+    - Then the submit comment button should be disabled
+    - Then the submit comment button should remain disabled
+    - Then the submit comment button should become enabled
+
+6) Tables / section content
+
+- Body: "the "Eco Bag" section contains:" (table)
+  - Found in: `statistics_block.feature`
+  - Canonical: Then the "Eco Bag" section contains:  (use a DataTable of expected element/label rows)
+
+- Body: "the "Cups" section contains:" (table)
+  - Found in: `statistics_block.feature`
+  - Canonical: Then the "Cups" section contains:  (use a DataTable)
+
+7) Misc / visual placement
+
+- Body: "the "Eco news" title is centered on the page"
+  - Found in: `eco_news_section.feature`
+  - Canonical: Then the "Eco news" title is centered on the page
+
+- Body: "the "Read all news" button is located directly below the section title"
+  - Found in: `eco_news_section.feature`
+  - Canonical: Then the "Read all news" button is located directly below the section title
+
+
+Recommendations for refactoring
+- Replace every occurrence of a step that begins with "And" by the canonical step with an explicit Given/When/Then according to the mapping above.
+- Implement parameterized step-definitions (regex) for repeating patterns like clicks, typing, uploads, and table-based selections.
+- Keep a small set of canonical steps in a central 'Steps' file or README to ensure new feature files reuse the same phrasing.
+
+Example canonical regex suggestions (Java Cucumber)
+- @Given("^the user is logged in$")
+- @Given("^the GreenCity main page is open$")
+- @When("^the user clicks "([^\"]+)"$")
+- @When("^the user fills in the ([^\"]+) field with "([^\"]+)"$")
+- @Then("^the (?:.+) should be displayed$")
+
+If you want, I can now:
+- (A) Update every .feature to replace "And" lines with their canonical Given/When/Then forms automatically, or
+- (B) Produce a patch (diff) that shows where replacements should be made so you can review before applying.
+
+Choose A to apply the changes to all files now, or B to get a safe review diff first.
