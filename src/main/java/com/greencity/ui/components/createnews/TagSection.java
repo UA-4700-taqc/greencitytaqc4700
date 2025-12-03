@@ -38,12 +38,16 @@ public class TagSection extends BaseComponent {
     }
 
     public void selectTag(NewsTag tag) {
-        switch (tag) {
-            case NEWS -> tagNewsBtn.click();
-            case EVENTS -> tagEventsBtn.click();
-            case EDUCATION -> tagEducationBtn.click();
-            case INITIATIVES -> tagInitiativesBtn.click();
-            case ADVERTISING -> tagAdvertisingBtn.click();
-        }
+        getTagElement(tag).click();
+    }
+
+    public WebElement getTagElement(NewsTag tag) {
+        return switch (tag) {
+            case NEWS -> tagNewsBtn;
+            case EVENTS -> tagEventsBtn;
+            case EDUCATION -> tagEducationBtn;
+            case INITIATIVES -> tagInitiativesBtn;
+            case ADVERTISING -> tagAdvertisingBtn;
+        };
     }
 }
