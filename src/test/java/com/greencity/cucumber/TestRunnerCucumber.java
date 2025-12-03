@@ -13,7 +13,6 @@ public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
 
     @BeforeClass
     public void setUpClass() {
-
         testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
     }
 

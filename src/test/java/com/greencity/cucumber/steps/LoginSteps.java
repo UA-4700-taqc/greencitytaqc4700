@@ -4,19 +4,18 @@ import com.greencity.ui.components.auth.SignInModal;
 import com.greencity.ui.pages.homepage.HomePage;
 import io.cucumber.java.en.Given;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginSteps {
 
-    private Hooks hooks;
+    private final Hooks hooks;
     private HomePage homePage;
 
     public LoginSteps(Hooks hooks) {
-       this.hooks = hooks;
-
+        this.hooks = hooks;
     }
+
     @Given("the user is logged into the system")
     public void given_the_user_is_logged_into_system() {
         WebDriverWait wait = new WebDriverWait(hooks.getDriver(), java.time.Duration.ofSeconds(20));

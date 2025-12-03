@@ -22,17 +22,12 @@ import java.nio.file.Files;
 import java.time.Duration;
 
 
-
-
 public class Hooks {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Getter
-    private WebDriver driver;
-
     @Getter
     private final TestValueProvider testValueProvider = new TestValueProvider();
-
+    @Getter
+    private WebDriver driver;
     @Getter
     private SoftAssert softAssert;
 
