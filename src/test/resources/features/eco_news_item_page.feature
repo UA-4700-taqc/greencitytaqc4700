@@ -4,7 +4,7 @@ Feature: Comment input validation
     Given the user is logged in
     And the user is on the Eco News Item page
 
-  Scenario: Validation of Comment Input and Submit Comment button behavior
+  Scenario: Validation of comment input and submit comment button behavior
     When the user leaves the comment field empty
     Then the submit comment button should be disabled
 
@@ -19,7 +19,6 @@ Feature: Comment input validation
     And an error message should be displayed
 
 
-
 Feature: Comment order and count
 
   Background:
@@ -30,7 +29,6 @@ Feature: Comment order and count
     When the user adds three comments
     Then the comments should appear in reverse chronological order
     And the total number of comments should increase by three
-
 
 
 Feature: Comment deletion confirmation
@@ -47,7 +45,6 @@ Feature: Comment deletion confirmation
     When the user clicks the "Delete" icon on the comment again
     And the user clicks "Yes" on the confirmation modal
     Then the comment should be deleted
-
 
 
 Feature: Comment component visual elements
@@ -67,7 +64,6 @@ Feature: Comment component visual elements
     And the reply comment button should be visible
 
 
-
 Feature: Comment editing without saving
 
   Background:
@@ -80,7 +76,6 @@ Feature: Comment editing without saving
     And the user refreshes the page
     Then the comment should remain unchanged
     And the comment should not have an edit label
-
 
 
 Feature: Deleting a comment with replies

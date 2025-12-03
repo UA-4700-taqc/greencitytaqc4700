@@ -46,6 +46,7 @@ Feature: Create News - Tag Selection
     And the user fills in the main text field with "Test content with 20 chars"
     Then the user must select at least one tag to publish
 
+
 Feature: Create News - Image Upload Validation
   As a logged-in user
   I want to upload images with proper format and size validation
@@ -93,6 +94,7 @@ Feature: Create News - Image Upload Validation
       | PNG    | 10MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
       | PNG    | 11MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
       | JPEG   | 15MB  | error   | Upload only PNG or JPEG. File size must be less than 10MB.  |
+
 
 Feature: Create News - Content Field Validation
   As a logged-in user
@@ -144,6 +146,7 @@ Feature: Create News - Content Field Validation
       | 63206      | valid     | enabled      | hidden        |
       | 63207      | truncated | enabled      | hidden        |
 
+
 Feature: Create News - Cancel Button Behavior
   As a logged-in user
   I want to cancel news creation with confirmation
@@ -174,3 +177,4 @@ Feature: Create News - Cancel Button Behavior
     And the user should remain on the "Create News" form
     And the title field should contain "Test"
     And the main text field should contain "Test content with 20 chars"
+
