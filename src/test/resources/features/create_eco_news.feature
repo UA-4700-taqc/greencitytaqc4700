@@ -69,7 +69,7 @@ Feature: [Create News]Title Field
   Scenario: Verify "Title" field when too long title is entered
     When User inputs 171-character-long string into "Title" field
     Then entered text is truncated to 170 characters
-    And character counter counter is highlighted in red
+    And character counter is highlighted in red
 
   Scenario: Verify "Title" field with valid title entered
     When User inputs "Test News" into "Title" field
