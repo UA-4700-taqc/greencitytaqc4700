@@ -13,7 +13,7 @@ Feature: [Create News]Basic Preview Functionality
     And User types Source address starting with "https://"
     Then remember "Author`s name
     When User clicks "Preview" button
-    Then Create News Prewiew page is opened
+    Then Create News Preview page is opened
     And the News title equals to appropriate inputed symbols
     And the Main text equals to appropriate inputed symbols
     And the Date is current date
