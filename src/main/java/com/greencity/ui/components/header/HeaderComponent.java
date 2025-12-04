@@ -172,4 +172,13 @@ public class HeaderComponent extends BaseComponent {
             default -> throw new IllegalArgumentException("Unknown navigation link: " + linkName);
         };
     }
+
+
+    public HeaderComponent changeLanguageToUk() {
+        if (languageSwitcher.getText().equals("En")) {
+            clickLanguageOption();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@aria-label='Uk']"))).click();
+        }
+        return this;
+    }
 }

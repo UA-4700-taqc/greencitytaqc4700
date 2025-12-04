@@ -12,7 +12,7 @@ import java.time.Duration;
 
 public class AdSectionComponent extends BaseComponent {
 
-    private static final Duration CLICKABLE_WAIT_TIMEOUT = Duration.ofSeconds(20);
+    private static final Long CLICKABLE_WAIT_TIMEOUT = 20L;
 
     @FindBy(xpath = "//div[@id='main-content']/h1")
     private WebElement title;
@@ -24,12 +24,10 @@ public class AdSectionComponent extends BaseComponent {
     private WebElement illustrationImage;
 
     @FindBy(xpath = ".//button[contains(normalize-space(.), 'Почати формувати звичку!')]")
-
     private WebElement startFormingHabitButton;
 
     public AdSectionComponent(WebDriver driver, WebElement adSectionRoot) {
         super(driver, adSectionRoot);
-        PageFactory.initElements(adSectionRoot, this);
     }
 
     public boolean isAdSectionVisible() {
@@ -53,14 +51,14 @@ public class AdSectionComponent extends BaseComponent {
     }
 
     public String getButtonText() {
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(startFormingHabitButton));
+        getWait(5L).until(ExpectedConditions.visibilityOf(startFormingHabitButton));
         return startFormingHabitButton.getText().trim();
     }
 
     public void clickStartFormingHabitButton() {
-        WebDriverWait wait = new WebDriverWait(driver, CLICKABLE_WAIT_TIMEOUT);
-        wait.until(ExpectedConditions.elementToBeClickable(startFormingHabitButton));
+        getWait(CLICKABLE_WAIT_TIMEOUT).until(ExpectedConditions.elementToBeClickable(startFormingHabitButton));
         startFormingHabitButton.click();
+        sleep(1000);
     }
 
 }

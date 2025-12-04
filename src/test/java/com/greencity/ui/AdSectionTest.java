@@ -1,6 +1,7 @@
 package com.greencity.ui;
 
 import com.greencity.ui.components.AdSectionComponent;
+import com.greencity.ui.components.auth.SignInModal;
 import com.greencity.ui.testrunners.BaseTestRunner;
 
 import org.openqa.selenium.By;
@@ -19,12 +20,11 @@ public class AdSectionTest extends BaseTestRunner {
     private static final String EXPECTED_BUTTON_TEXT = "Почати формувати звичку!";
 
     private static final String EXPECTED_INFO_TEXT_PARTIAL = "еко-сумку";
-    private static final String LOGIN_MODAL_ID = "email";
 
 
     @Test(description = "[#37]Verify Ad section display and Login Form opening for unlogged user")
     public void verifyAdSectionAndLoginFormOpening() {
-
+        homePage.getHeader().changeLanguageToUk();
         AdSectionComponent adSection = homePage.getAdSectionComponent();
 
         // Verify that the advertising section is visible at the top of the page.
@@ -56,7 +56,8 @@ public class AdSectionTest extends BaseTestRunner {
 
         adSection.clickStartFormingHabitButton();
 
-        boolean isLoginFormDisplayed = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_MODAL_ID))).isDisplayed();
+        boolean isLoginFormDisplayed = new SignInModal(driver).isDisplayed();
+
 
         Assert.assertTrue(isLoginFormDisplayed,
                 "Verification failed: Clicking the button did not open the login form for unlogged user.");

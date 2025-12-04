@@ -109,7 +109,14 @@ public abstract class Base {
     }
 
     public void waitUntilElementVisible(WebElement element) {
-        wait.until(ExpectedConditions.visibilityOf(element));
+        Duration originalWait = driver.manage().timeouts().getImplicitWaitTimeout();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(NO_WAIT_TIME));
+
+        try {
+            getWait(NORMAL_WAIT_TIME).until(ExpectedConditions.visibilityOf(element));
+        } finally {
+            driver.manage().timeouts().implicitlyWait(originalWait);
+        }
     }
 
     public void waitUntilElementInvisible(WebElement element) {
