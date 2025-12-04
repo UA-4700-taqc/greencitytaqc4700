@@ -71,6 +71,12 @@ public class EcoNewsItemPage extends BasePage {
         super(driver);
     }
 
+    @Override
+    public EcoNewsItemPage reloadPage() {
+        refreshPage();
+        return new EcoNewsItemPage(driver);
+    }
+
     private List<WebElement> getCommentRoots() {
         return driver.findElements(COMMENTS_SELECTOR);
     }

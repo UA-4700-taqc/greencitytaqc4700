@@ -59,5 +59,10 @@ public abstract class BasePage extends Base {
         waitUntilElementVisible(element);
     }
 
+    public BasePage reloadPage() {
+        refreshPage();
+        return new BasePage(driver) {};
+    }
+
 
 }
