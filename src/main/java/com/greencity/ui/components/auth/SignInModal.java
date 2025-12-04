@@ -2,6 +2,7 @@ package com.greencity.ui.components.auth;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -76,6 +77,9 @@ public class SignInModal extends BaseComponent {
         this.modalRootElement = rootElement;
         waitUntilElementVisible(this.modalRootElement);
     }
+    public SignInModal(WebDriver driver) {
+        super(driver, driver.findElement(By.xpath("//app-auth-modal")));
+    }
 
     // ===== Methods =====
 
@@ -117,6 +121,10 @@ public class SignInModal extends BaseComponent {
         enterPassword(password);
         clickSignIn();
     }
+    public boolean isDisplayed() {
+        return rootElement.isDisplayed();
+    }
+
     public boolean isModalVisible() {
         try {
             getWait(5).until(ExpectedConditions.visibilityOf(modalRootElement));
