@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.util.List;
+
 public class CreateNewsPageSteps {
     public static String itemTitle = randomString(10);
     public static String itemContent = randomString(50);
@@ -79,7 +81,8 @@ public class CreateNewsPageSteps {
 
             WebElement element = createNewsPage.tags.getTagElement(tag);
 
-            Assert.assertTrue(element.isDisplayed(), "Tag button '" + tagName + "' should be displayed");
+            Assert.assertTrue(element.isDisplayed(),
+                    "Tag button '" + tagName + "' should be displayed");
         }
     }
 
@@ -133,7 +136,8 @@ public class CreateNewsPageSteps {
 
     @Then("the title field border is highlighted in red")
     public void theTitleFieldBorderIsHighlightedInRed() {
-        Assert.assertTrue(createNewsPage.content.getTitleInput().getCssValue("border-color").contains("255, 0, 0"), "Title input border is not red");
+        Assert.assertTrue(createNewsPage.content.getTitleInput().getCssValue("border-color")
+                .contains("255, 0, 0"), "Title input border is not red");
     }
 
     @Then("the 'Publish' button is disabled")
