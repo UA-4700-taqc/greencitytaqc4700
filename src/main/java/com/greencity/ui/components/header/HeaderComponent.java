@@ -73,7 +73,7 @@ public class HeaderComponent extends BaseComponent {
     private WebElement languageOption;
 
     @Getter
-    @FindBy(css = "a.ubs-header-sign-in")
+    @FindBy(css = "a.header_sign-in-link")
     private WebElement signInButtonText;
 
     @Getter
