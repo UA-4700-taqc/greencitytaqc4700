@@ -1,11 +1,13 @@
 package com.greencity.ui.components.header;
 
 import com.greencity.ui.components.BaseComponent;
+import com.greencity.ui.components.auth.SignInModal;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.List;
 
 public class HeaderComponent extends BaseComponent {
@@ -71,12 +73,16 @@ public class HeaderComponent extends BaseComponent {
     private WebElement languageOption;
 
     @Getter
+    @FindBy(css = "a.ubs-header-sign-in")
+    private WebElement signInButtonText;
+
+    @Getter
     @FindBy(css = "[alt='sing in button']")
     private WebElement signInButtonIcon;
 
-    @Getter
-    @FindBy(className = "header_sign-in-link")
-    private WebElement signInButtonLink;
+    //@Getter
+    //@FindBy(className = "header_sign-in-link")
+    //private WebElement signInButtonLink;
 
     @Getter
     @FindBy(className = "header_sign-up-link")
@@ -85,6 +91,8 @@ public class HeaderComponent extends BaseComponent {
     @Getter
     @FindBy(className = "header_burger-btn")
     private WebElement burgerMenuButton;
+
+    private final String SEARCH_ROOT_TAG = "app-search-popup";
 
     public HeaderComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
@@ -104,8 +112,18 @@ public class HeaderComponent extends BaseComponent {
         clickElement(headerLogo);
     }
 
-    public void clickSearchIcon() {
-        clickElement(searchIcon);
+    public HeaderSearchComponent clickSearchIcon() {
+        waitUntilElementClickable(searchIcon);
+        try {
+            searchIcon.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            // Fallback to JavaScript click if element is intercepted
+            clickDynamicElement(searchIcon);
+        }
+        WebElement searchRoot = getWait(5).until(
+                ExpectedConditions.presenceOfElementLocated(By.tagName(SEARCH_ROOT_TAG))
+        );
+        return new HeaderSearchComponent(driver, searchRoot);
     }
 
     public void clickLanguageOption() {
@@ -117,13 +135,21 @@ public class HeaderComponent extends BaseComponent {
             clickElement(signInButtonIcon);
             return;
         }
-        if(signInButtonLink.isDisplayed()){
-            clickElement(signInButtonLink);
+        if(signInButtonText.isDisplayed()){
+            clickElement(signInButtonText);
         }
     }
 
     public void clickSignUp() {
         clickElement(signUpButton);
+    }
+
+    public SignInModal openSignInModal() {
+        clickSignIn();
+        WebElement modalRoot = getWait(10).until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("app-auth-modal"))
+        );
+        return new SignInModal(driver, modalRoot);
     }
 
     public void clickBurgerMenu() {
