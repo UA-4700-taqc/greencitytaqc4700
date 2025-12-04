@@ -57,7 +57,7 @@ Feature: Eco News Item Page Comments Behaviour Validation
 
 
   Scenario: Deleting a comment removes all related replies
-    Given the user has at least one comment
+    Given the user has a comment with at least one reply
     When the user clicks "Delete" icon on the comment
     And the user clicks 'Yes' on the confirmation modal
     Then the comment should be deleted

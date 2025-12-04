@@ -42,6 +42,16 @@ public class EcoNewsItemPageSteps {
         comment = ecoNewsItemPage.getFirstComment();
     }
 
+    @Given("the user has a comment with at least one reply")
+    public void the_user_has_a_comment_with_at_least_one_reply() {
+        ecoNewsItemPage = ecoNewsItemPage
+                .addComment(System.currentTimeMillis() + "")
+                .getFirstComment().addReply("test reply1")
+                .getFirstComment().addReply("test reply2")
+                .getFirstComment().addReply("test reply3");
+        commentText = ecoNewsItemPage.getFirstComment().getCommentBodyText();
+    }
+
     @When("the user leaves the comment field empty")
     public void the_user_leaves_the_comment_field_empty() {
         ecoNewsItemPage.getCommentInput().click();
