@@ -1,16 +1,17 @@
 package com.greencity.cucumber;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.testng.*;
-import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-@CucumberOptions(features = "src/test/resources/features", glue = "com.greencity.cucumber.steps")
+@CucumberOptions(
+        features = "src/test/resources/features",
+        glue = {"com.greencity.cucumber.steps"})
 public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
 
     private TestNGCucumberRunner testNGCucumberRunner;
-    protected SoftAssert softAssert;
 
     @BeforeClass
     public void setUpClass() {
@@ -34,16 +35,4 @@ public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
     public void tearDownClass() {
         testNGCucumberRunner.finish();
     }
-
-    @Before
-    public void beforeScenario() {
-        softAssert = new SoftAssert();
-    }
-
-    @After
-    public void afterScenario() {
-        softAssert.assertAll();
-    }
-
-
 }

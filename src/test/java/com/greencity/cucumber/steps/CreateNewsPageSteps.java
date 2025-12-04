@@ -8,17 +8,14 @@ import io.cucumber.java.en.When;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
-
-import java.util.List;
 
 public class CreateNewsPageSteps {
-    private final Hooks hooks;
-    private CreateEcoNewsItemPage createNewsPage;
     public static String itemTitle = randomString(10);
     public static String itemContent = randomString(50);
     public static String itemSource = "https://" + randomString(7);
     public static String itemAuthor;
+    private final Hooks hooks;
+    private CreateEcoNewsItemPage createNewsPage;
 
     public CreateNewsPageSteps(Hooks hooks) {
         this.hooks = hooks;
@@ -60,7 +57,7 @@ public class CreateNewsPageSteps {
     @Then("remember the author name")
     public String rememberTheAuthorName() {
         itemAuthor = createNewsPage.meta.getName();
-        return  itemAuthor;
+        return itemAuthor;
     }
 
     @When("the user clicks the 'Preview' button")
@@ -70,7 +67,7 @@ public class CreateNewsPageSteps {
 
     @Then("the title field is displayed")
     public void theTitleFieldIsDisplayed() {
-        Assert.assertTrue(createNewsPage.content.getTitleInput().isDisplayed(), "Title field should be displayed");
+        hooks.getSoftAssert().assertTrue(createNewsPage.content.getTitleInput().isDisplayed(), "Title field should be displayed");
     }
 
     @Then("five tag buttons are displayed:")
@@ -82,8 +79,7 @@ public class CreateNewsPageSteps {
 
             WebElement element = createNewsPage.tags.getTagElement(tag);
 
-            Assert.assertTrue(element.isDisplayed(),
-                    "Tag button '" + tagName + "' should be displayed");
+            Assert.assertTrue(element.isDisplayed(), "Tag button '" + tagName + "' should be displayed");
         }
     }
 
@@ -128,6 +124,7 @@ public class CreateNewsPageSteps {
     public void thePublishButtonIsDisplayed() {
         Assert.assertTrue(createNewsPage.actions.getPublishBtn().isDisplayed(), "Publish button should be displayed");
     }
+
     @When("the user inputs no symbol into the 'Title' field")
     public void theUserInputsNoSymbolIntoTheTitleField() {
         createNewsPage.content.enterTitle(randomString(0));
@@ -136,8 +133,7 @@ public class CreateNewsPageSteps {
 
     @Then("the title field border is highlighted in red")
     public void theTitleFieldBorderIsHighlightedInRed() {
-        Assert.assertTrue(createNewsPage.content.getTitleInput().getCssValue("border-color")
-                .contains("255, 0, 0"), "Title input border is not red");
+        Assert.assertTrue(createNewsPage.content.getTitleInput().getCssValue("border-color").contains("255, 0, 0"), "Title input border is not red");
     }
 
     @Then("the 'Publish' button is disabled")
@@ -146,7 +142,7 @@ public class CreateNewsPageSteps {
     }
 
     @Then("the character counter shows '0-170'")
-    public  void theCharacterCounterShows0() {
+    public void theCharacterCounterShows0() {
         Assert.assertEquals(createNewsPage.content.getTitleSymbolCount().getText(), "0/170", "Some symbols have been already entered");
     }
 
@@ -183,11 +179,6 @@ public class CreateNewsPageSteps {
     @When("the user selects any available tag")
     public void theUserSelectsAnyAvailableTag() {
         createNewsPage.tags.selectTag(NewsTag.getRandomTag());
-    }
-
-    @When("the user types at least 20 symbols in the 'Content' field")
-    public void theUserTypesAtLeast20SymbolsInTheContent() {
-        createNewsPage.content.enterContent(randomString(20));
     }
 
     @Then("the 'Publish' button is enabled")

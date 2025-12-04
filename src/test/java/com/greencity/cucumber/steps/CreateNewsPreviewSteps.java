@@ -46,7 +46,7 @@ public class CreateNewsPreviewSteps {
 
     @Then("the Create News preview page is opened")
     public void theCreateNewsPreviewPageIsOpened() {
-        //createNewsPreviewPage = new CreateEcoNewsPreviewPage(hooks.getDriver());
+        createNewsPreviewPage = new CreateEcoNewsPreviewPage(hooks.getDriver());
         createNewsPreviewPage.waitForPageToLoad(50);
     }
 
