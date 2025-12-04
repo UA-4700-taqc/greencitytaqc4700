@@ -27,7 +27,7 @@ public class AdSectionTest extends BaseTestRunner {
 
         AdSectionComponent adSection = homePage.getAdSectionComponent();
 
-        //  Verify that the advertising section is visible at the top of the page.
+        // Verify that the advertising section is visible at the top of the page.
         Assert.assertTrue(adSection.isAdSectionVisible(),
                 "Verification failed: The main Ad section is not displayed.");
 
