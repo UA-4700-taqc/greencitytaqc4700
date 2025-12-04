@@ -14,10 +14,10 @@ public class EcoNewsItemPageSteps {
     private final Hooks hooks;
     private EcoNewsItemPage ecoNewsItemPage;
     private static final String newsIdentifier = "news/167";
-    int initialCommentsCount;
-    CommentComponent comment;
-    String commentText;
-    InformationModal modal;
+    private int initialCommentsCount;
+    private CommentComponent comment;
+    private String commentText;
+    private InformationModal modal;
 
     public EcoNewsItemPageSteps(Hooks hooks) {
         this.hooks = hooks;
