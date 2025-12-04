@@ -2,9 +2,13 @@ package com.greencity.ui.components.auth;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.Objects;
 
 public class SignInModal extends BaseComponent {
 
@@ -68,6 +72,9 @@ public class SignInModal extends BaseComponent {
     public SignInModal(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
     }
+    public SignInModal(WebDriver driver) {
+        super(driver, driver.findElement(By.xpath("//app-auth-modal")));
+    }
 
     // ===== Methods =====
 
@@ -104,5 +111,8 @@ public class SignInModal extends BaseComponent {
         enterEmail(email);
         enterPassword(password);
         clickSignIn();
+    }
+    public boolean isDisplayed() {
+        return rootElement.isDisplayed();
     }
 }

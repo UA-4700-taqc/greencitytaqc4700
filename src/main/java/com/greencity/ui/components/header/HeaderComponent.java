@@ -73,7 +73,7 @@ public class HeaderComponent extends BaseComponent {
     private WebElement languageOption;
 
     @Getter
-    @FindBy(css = "a.ubs-header-sign-in")
+    @FindBy(css = "a.header_sign-in-link")
     private WebElement signInButtonText;
 
     @Getter
@@ -171,5 +171,14 @@ public class HeaderComponent extends BaseComponent {
             case "ubs courier", "ubscourier", "ubs" -> ubsCourierLink;
             default -> throw new IllegalArgumentException("Unknown navigation link: " + linkName);
         };
+    }
+
+
+    public HeaderComponent changeLanguageToUk() {
+        if (languageSwitcher.getText().equals("En")) {
+            clickLanguageOption();
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//li[@aria-label='Uk']"))).click();
+        }
+        return this;
     }
 }
