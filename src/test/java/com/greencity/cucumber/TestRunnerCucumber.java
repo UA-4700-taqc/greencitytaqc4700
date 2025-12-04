@@ -7,7 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 @CucumberOptions(
-        features = "src/test/resources/features",
+        features = "src/test/resources/features/ready",
         glue = {"com.greencity.cucumber.steps"})
 public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
 
