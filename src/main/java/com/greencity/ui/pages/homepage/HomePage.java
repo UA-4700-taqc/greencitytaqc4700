@@ -39,6 +39,7 @@ public class HomePage extends BasePage {
         wait.until(ExpectedConditions.visibilityOf(headerRoot));
     }
 
+    @Override
     public HeaderComponent getHeader() {
         return new HeaderComponent(driver, headerRoot);
     }
