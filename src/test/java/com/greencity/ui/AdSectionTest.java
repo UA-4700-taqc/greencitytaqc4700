@@ -56,8 +56,6 @@ public class AdSectionTest extends BaseTestRunner {
 
         adSection.clickStartFormingHabitButton();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
         boolean isLoginFormDisplayed = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(LOGIN_MODAL_ID))).isDisplayed();
 
         Assert.assertTrue(isLoginFormDisplayed,
