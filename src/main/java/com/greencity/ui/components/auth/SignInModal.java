@@ -2,11 +2,17 @@ package com.greencity.ui.components.auth;
 
 import com.greencity.ui.components.BaseComponent;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SignInModal extends BaseComponent {
+
+    public static final String MODAL_ROOT_CSS = "app-auth-modal";
+
+    private final WebElement modalRootElement;
 
     // ===== HEADER / CLOSE =====
     @Getter
@@ -63,10 +69,13 @@ public class SignInModal extends BaseComponent {
     @FindBy(xpath = ".//a[contains(text(),'Sign up')]")
     private WebElement signUpLink;
 
+
     // ===== Constructor =====
 
     public SignInModal(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
+        this.modalRootElement = rootElement;
+        waitUntilElementVisible(this.modalRootElement);
     }
 
     // ===== Methods =====
@@ -98,11 +107,24 @@ public class SignInModal extends BaseComponent {
 
     public void clickGoogleLogin() { clickElement(googleSignInButton); }
 
-    public void close() { clickElement(closeButton); }
+    public void close() {
+        waitUntilElementClickable(closeButton);
+        closeButton.click();
+        getWait(10).until(ExpectedConditions.invisibilityOf(modalRootElement));
+    }
 
     public void login(String email, String password) {
         enterEmail(email);
         enterPassword(password);
         clickSignIn();
     }
+    public boolean isModalVisible() {
+        try {
+            getWait(5).until(ExpectedConditions.visibilityOf(modalRootElement));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
