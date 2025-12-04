@@ -12,7 +12,7 @@ public class SignInModal extends BaseComponent {
 
     public static final String MODAL_ROOT_CSS = "app-auth-modal";
 
-    private final WebElement modalRootElement;
+    private WebElement modalRootElement;
 
     // ===== HEADER / CLOSE =====
     @Getter
@@ -78,7 +78,9 @@ public class SignInModal extends BaseComponent {
         waitUntilElementVisible(this.modalRootElement);
     }
     public SignInModal(WebDriver driver) {
-        super(driver, driver.findElement(By.xpath("//app-auth-modal")));
+        super(driver,
+                driver.findElement(By.xpath("//app-auth-modal"))
+        );
     }
 
     // ===== Methods =====

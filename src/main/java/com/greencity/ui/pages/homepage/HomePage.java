@@ -1,22 +1,19 @@
 package com.greencity.ui.pages.homepage;
 
+import com.greencity.ui.components.AdSectionComponent;
 import com.greencity.ui.components.auth.SignInModal;
+import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.pages.BasePage;
-import com.greencity.ui.pages.MySpacePage.ProfilePage;
 import com.greencity.ui.pages.newspage.NewsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import com.greencity.ui.components.AdSectionComponent;
-import com.greencity.ui.components.header.HeaderComponent;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
 public class HomePage extends BasePage {
 
     private static final Duration AD_SECTION_LOAD_TIMEOUT = Duration.ofSeconds(20);
@@ -60,6 +57,7 @@ public class HomePage extends BasePage {
         scrollIntoView(ecoNewsSection);
         return this;
     }
+
     public AdSectionComponent getAdSectionComponent() {
         WebDriverWait explicitWait = new WebDriverWait(driver, AD_SECTION_LOAD_TIMEOUT);
         WebElement freshRootElement = explicitWait.until(ExpectedConditions.visibilityOf(adSectionRoot));
@@ -98,9 +96,7 @@ public class HomePage extends BasePage {
 
         // 3. Динамічний пошук кореневого елемента модального вікна
         By modalBy = By.cssSelector(SignInModal.MODAL_ROOT_CSS);
-        WebElement modalRoot = getWait(10)
-                .until(ExpectedConditions
-                        .visibilityOfElementLocated(modalBy));
+        WebElement modalRoot = getWait(10).until(ExpectedConditions.visibilityOfElementLocated(modalBy));
 
         return new SignInModal(driver, modalRoot);
     }
@@ -109,9 +105,7 @@ public class HomePage extends BasePage {
         scrollToEcoNewsSection();
         ctaCupsButton.click();
         By modalBy = By.cssSelector(SignInModal.MODAL_ROOT_CSS);
-        WebElement modalRoot = getWait(10)
-                .until(ExpectedConditions
-                        .visibilityOfElementLocated(modalBy));
+        WebElement modalRoot = getWait(10).until(ExpectedConditions.visibilityOfElementLocated(modalBy));
 
         return new SignInModal(driver, modalRoot);
     }
