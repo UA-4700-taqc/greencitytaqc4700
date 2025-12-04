@@ -17,7 +17,7 @@ import java.util.Locale;
 public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
 
-    private static final String[] DATE_FORMATS = {"MMM dd, yyyy",        // Nov 26, 2025
+    public static final String[] DATE_FORMATS = {"MMM dd, yyyy",        // Nov 26, 2025
             "LLL dd, yyyy 'р.'",   // лист. 26, 2025 р.
             "dd.MM.yyyy",          // 26.11.2025
             "yyyy-MM-dd"           // 2025-11-26
@@ -113,7 +113,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         softAssert.assertEquals(createNewsPage.meta.getAuthorName().getTagName(), "span", "Creation date should not be an editable input");
         softAssert.assertTrue(createNewsPage.content.getSourceInput().isDisplayed(), "Source field should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getExitBtn().isDisplayed(), "Cancel button should be displayed");
-        softAssert.assertTrue(createNewsPage.actions.getReviewBtn().isDisplayed(), "Review button should be displayed");
+        softAssert.assertTrue(createNewsPage.actions.getPreviewBtn().isDisplayed(), "Review button should be displayed");
         softAssert.assertTrue(createNewsPage.actions.getPublishBtn().isDisplayed(), "Publish button should be displayed");
         softAssert.assertAll();
     }
@@ -129,7 +129,7 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
         createNewsPage.content.enterSource(itemSource);
         String itemAuthor = createNewsPage.meta.getName();
         String itemDate = createNewsPage.meta.getDate();
-        createNewsPage.actions.clickReview();
+        createNewsPage.actions.clickPreview();
         CreateEcoNewsPreviewPage createNewsPagePreview = new CreateEcoNewsPreviewPage(driver);
 
         SoftAssert softAssert = new SoftAssert();

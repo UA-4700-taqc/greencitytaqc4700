@@ -20,6 +20,7 @@ public class LoginSteps {
     public void given_the_user_is_logged_into_system() {
         WebDriverWait wait = new WebDriverWait(hooks.getDriver(), java.time.Duration.ofSeconds(20));
         homePage = new HomePage(hooks.getDriver());
+
         wait.until(ExpectedConditions.visibilityOf(homePage.getHeader().getHeaderContainer()));
 
         if (homePage.getHeader().getLanguageSwitcher().getText().equals("En")) {

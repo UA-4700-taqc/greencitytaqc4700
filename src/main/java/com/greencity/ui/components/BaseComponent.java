@@ -21,6 +21,11 @@ public abstract class BaseComponent extends Base {
         this.rootElement = rootElement;
     }
 
+    protected void reInit(WebElement newRootElement){
+        this.rootElement = newRootElement;
+        PageFactory.initElements(new DefaultElementLocatorFactory(newRootElement), this);
+    }
+
     @Override
     public boolean isVisibleElementLocated(By selector) {
         Duration originalWait = driver.manage().timeouts().getImplicitWaitTimeout();

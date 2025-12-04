@@ -1,5 +1,6 @@
 package com.greencity.cucumber.steps;
 
+import com.greencity.ui.pages.homepage.HomePage;
 import com.greencity.utils.TestValueProvider;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -40,6 +41,8 @@ public class Hooks {
 
         softAssert = new SoftAssert();
         driver.get(testValueProvider.getBaseUIUrl());
+        HomePage homePage = new HomePage(driver);
+        homePage.waitForPageToLoad(10);
     }
 
     @Step("init ChromeDriver")
@@ -64,12 +67,11 @@ public class Hooks {
     @After
     public void tearDown() {
         saveImageAttach("PICTURE Test Name");
+        softAssert.assertAll();
         if (driver != null) {
             driver.quit();
         }
         logger.info("Driver closed");
-
-        softAssert.assertAll();
     }
 
     @Attachment(value = "Image name = {0}", type = "image/png")
