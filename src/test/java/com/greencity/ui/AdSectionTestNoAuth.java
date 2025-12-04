@@ -3,7 +3,6 @@ package com.greencity.ui;
 import com.greencity.ui.testrunners.BaseTestRunner;
 import com.greencity.ui.components.auth.SignInModal;
 import com.greencity.ui.pages.homepage.HomePage;
-import com.greencity.ui.testrunners.BaseTestRunner;
 import io.qameta.allure.Step;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
