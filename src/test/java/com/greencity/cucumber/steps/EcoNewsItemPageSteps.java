@@ -209,7 +209,6 @@ public class EcoNewsItemPageSteps {
     @Then("the edit comment button should be visible")
     public void the_edit_comment_button_should_be_visible() {
         Assert.assertTrue(comment.getEditCommentButton().isDisplayed(), "Edit comment button should be displayed");
-
     }
 
     @Then("the delete comment button should be visible")
