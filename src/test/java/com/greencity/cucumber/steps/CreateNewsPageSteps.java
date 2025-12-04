@@ -152,6 +152,7 @@ public class CreateNewsPageSteps {
 
     @When("the user inputs a 171-character-long string into the 'Title' field")
     public void theUserInputsA171CharacterLongIntoTheTitleField() {
+        createNewsPage = new CreateEcoNewsItemPage(hooks.getDriver());
         createNewsPage.content.enterTitle(randomString(171));
     }
 

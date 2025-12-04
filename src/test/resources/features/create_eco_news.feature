@@ -31,7 +31,7 @@ Scenario: Create News form displays required fields
     | Events      |
     | Education   |
     | Initiatives |
-    | Ads         |
+    | Advertising |
   And the 'Add image' field is displayed
   And the 'Main text' field is displayed
   And the 'Author' field is displayed and prefilled and cannot be edited

@@ -67,12 +67,11 @@ public class Hooks {
     @After
     public void tearDown() {
         saveImageAttach("PICTURE Test Name");
+        softAssert.assertAll();
         if (driver != null) {
             driver.quit();
         }
         logger.info("Driver closed");
-
-        softAssert.assertAll();
     }
 
     @Attachment(value = "Image name = {0}", type = "image/png")
