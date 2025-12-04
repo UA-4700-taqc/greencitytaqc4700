@@ -2,21 +2,18 @@ package com.greencity.ui.pages;
 
 import com.greencity.ui.components.CommentComponent;
 import com.greencity.ui.components.EcoNewsItemComponent;
-import com.greencity.ui.components.InformationModal;
 import com.greencity.ui.pages.newspage.NewsPage;
 import com.greencity.ui.utils.NewsTag;
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EcoNewsItemPage extends BasePage {
 
+    private static final By COMMENTS_SELECTOR = By.cssSelector("app-comments-list div.comment-body-wrapper");
     @FindBy(css = "div.back-button a")
     private WebElement goBackButton;
 
@@ -67,15 +64,15 @@ public class EcoNewsItemPage extends BasePage {
     @FindBy(css = "button.primary-global-button")
     private WebElement submitCommentButton;
 
-    private static final By COMMENTS_SELECTOR =
-            By.cssSelector("app-comments-list div.comment-body-wrapper");
-
-    private List<WebElement> getCommentRoots() {
-        return driver.findElements(COMMENTS_SELECTOR);
-    }
+    @FindBy(css = "p.error-message")
+    private WebElement errorMessage;
 
     public EcoNewsItemPage(WebDriver driver) {
         super(driver);
+    }
+
+    private List<WebElement> getCommentRoots() {
+        return driver.findElements(COMMENTS_SELECTOR);
     }
 
     public NewsPage GoBack() {
@@ -105,7 +102,7 @@ public class EcoNewsItemPage extends BasePage {
     public EcoNewsItemPage clickLike() {
         String initialLikesCount = likesCount.getText().trim();
         likeButton.click();
-        wait.until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
+        getWait(SHORT_WAIT_TIME).until(driver -> !(likesCount.getText().trim().equals(initialLikesCount)));
         return this;
     }
 
@@ -128,39 +125,58 @@ public class EcoNewsItemPage extends BasePage {
     }
 
     public EcoNewsItemComponent getRecommendedNewsByOrder(int order) {
-        if (recommendedNewsRoots.isEmpty())
-            return null;
+        if (recommendedNewsRoots.isEmpty()) return null;
         return new EcoNewsItemComponent(driver, recommendedNewsRoots.get(order));
     }
 
     public int getCommentsCount() {
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(2))
-                    .until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
+            getWait(SHORT_WAIT_TIME).until(driver -> !(totalCommentsCountLabel.getText().trim().equals("0")));
         } catch (TimeoutException ignored) {}
 
         return Integer.parseInt(totalCommentsCountLabel.getText().trim());
     }
 
     public boolean isSubmitCommentButtonEnabled() {
-        return submitCommentButton.isEnabled();
+        try {
+            waitUntilElementEnabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public boolean isSubmitCommentButtonDisabled() {
-        return !submitCommentButton.isEnabled();
+        try {
+            waitUntilElementDisabled(submitCommentButton);
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 
     public void waitSubmitCommentButtonEnabled() {
         waitUntilElementClickable(submitCommentButton);
     }
 
-    public void waitSubmitCommentButtonDisabled() {
-        waitUntilElementDisabled(submitCommentButton);
-    }
-
     public void typeComment(String text) {
         commentInput.clear();
         commentInput.sendKeys(text);
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        return errorMessage.isDisplayed();
+    }
+
+    public String getErrorMessageText() {
+        return errorMessage.getText();
+    }
+
+    @Override
+    public void typeLargeInput(WebElement element, String text) {
+        threadJs.executeScript("arguments[0].innerText = arguments[1];", element, text);
+        commentInput.sendKeys(" ");
+        commentInput.sendKeys(Keys.DELETE);
     }
 
     public EcoNewsItemPage addComment(String text) {
@@ -186,13 +202,6 @@ public class EcoNewsItemPage extends BasePage {
         waitUntilElementStaleness(firstElement);
     }
 
-    public void waitForCommentsUpdatedDeletion() {
-        var list = getCommentRoots();
-        var firstElement = list.getFirst();
-
-        waitUntilElementStaleness(firstElement);
-    }
-
     public List<CommentComponent> getComments() {
         var commentsRoots = getCommentRoots();
         return commentsRoots
@@ -208,12 +217,17 @@ public class EcoNewsItemPage extends BasePage {
         return list.getFirst();
     }
 
-    public EcoNewsItemPage deleteComment(CommentComponent comment) {
-        InformationModal modal = comment.clickDeleteCommentButton();
-
-        modal.confirm();
-
-        waitForCommentsUpdatedDeletion();
-        return this;
+    public CommentComponent getCommentByText(String text) {
+        return getComments().stream()
+                .filter(c -> c.getCommentBodyText().equalsIgnoreCase(text.trim()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Comment not found: " + text));
     }
-}
+
+    public boolean doesExistCommentByText(String text) {
+        return getComments().stream()
+                .map(CommentComponent::getCommentBodyText)
+                .anyMatch(c -> c.equalsIgnoreCase(text));
+    }
+
+    }
