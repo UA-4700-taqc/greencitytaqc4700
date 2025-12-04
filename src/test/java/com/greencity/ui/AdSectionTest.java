@@ -49,9 +49,10 @@ public class AdSectionTest extends BaseTestRunner {
         Assert.assertTrue(adSection.isButtonDisplayed(),
                 "Verification failed: 'Start forming a habit!' button is not displayed.");
 
-        Assert.assertTrue(adSection.getStartFormingHabitButton().getText().trim().contains(EXPECTED_BUTTON_TEXT),
+        String actualButtonText = adSection.getButtonText();
+        Assert.assertTrue(actualButtonText.contains(EXPECTED_BUTTON_TEXT),
                 String.format("Verification failed: Button text is incorrect. Actual: %s, Expected: %s",
-                        adSection.getStartFormingHabitButton().getText().trim(), EXPECTED_BUTTON_TEXT));
+                        actualButtonText, EXPECTED_BUTTON_TEXT));
 
         adSection.clickStartFormingHabitButton();
 

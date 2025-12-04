@@ -16,8 +16,7 @@ import java.time.Duration;
 
 public class HomePage extends BasePage {
 
-    @FindBy(xpath = "//button[contains(text(), 'Почати формувати звичку!')]")
-    private WebElement startHabitButton;
+    private static final Duration AD_SECTION_LOAD_TIMEOUT = Duration.ofSeconds(20);
 
     @FindBy(xpath = "//header")
     private WebElement headerRoot;
@@ -37,18 +36,11 @@ public class HomePage extends BasePage {
 
     public HomePage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.visibilityOf(headerRoot));
+        wait.until(ExpectedConditions.visibilityOf(headerRoot));
     }
 
     public HeaderComponent getHeader() {
         return new HeaderComponent(driver, headerRoot);
-    }
-    public ProfilePage clickStartHabitButton() {
-        waitUntilElementClickable(startHabitButton);
-        startHabitButton.click();
-        return new ProfilePage(driver);
     }
 
     public HomePage scrollToEcoNewsSection() {
@@ -56,7 +48,7 @@ public class HomePage extends BasePage {
         return this;
     }
     public AdSectionComponent getAdSectionComponent() {
-        WebDriverWait explicitWait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        WebDriverWait explicitWait = new WebDriverWait(driver, AD_SECTION_LOAD_TIMEOUT);
         WebElement freshRootElement = explicitWait.until(ExpectedConditions.visibilityOf(adSectionRoot));
         return new AdSectionComponent(driver, freshRootElement);
     }

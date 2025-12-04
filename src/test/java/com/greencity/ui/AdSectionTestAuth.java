@@ -1,5 +1,6 @@
 package com.greencity.ui;
 
+import com.greencity.ui.components.AdSectionComponent;
 import com.greencity.ui.pages.MySpacePage.ProfilePage;
 import com.greencity.ui.pages.homepage.HomePage;
 import com.greencity.ui.testrunners.TestRunnerWithUser;
@@ -17,9 +18,12 @@ public class AdSectionTestAuth extends TestRunnerWithUser {
     public void verifyAdSectionRedirectsToMySpace() {
 
         this.homePage.getHeader().clickHeaderLogo();
-        this.homePage = new HomePage(driver);
 
-        ProfilePage profilePage = this.homePage.clickStartHabitButton();
+        AdSectionComponent adSectionComponent = this.homePage.getAdSectionComponent();
+
+        adSectionComponent.clickStartFormingHabitButton();
+
+        ProfilePage profilePage = new ProfilePage(driver);
 
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue(currentUrl.contains(EXPECTED_HABITS_PAGE_URL_PARTIAL),
