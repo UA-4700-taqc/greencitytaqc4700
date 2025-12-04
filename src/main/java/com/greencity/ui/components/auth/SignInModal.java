@@ -8,9 +8,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.Objects;
-
 public class SignInModal extends BaseComponent {
+
+    public static final String MODAL_ROOT_CSS = "app-auth-modal";
+
+    private WebElement modalRootElement;
 
     // ===== HEADER / CLOSE =====
     @Getter
@@ -67,13 +69,18 @@ public class SignInModal extends BaseComponent {
     @FindBy(xpath = ".//a[contains(text(),'Sign up')]")
     private WebElement signUpLink;
 
+
     // ===== Constructor =====
 
     public SignInModal(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
+        this.modalRootElement = rootElement;
+        waitUntilElementVisible(this.modalRootElement);
     }
     public SignInModal(WebDriver driver) {
-        super(driver, driver.findElement(By.xpath("//app-auth-modal")));
+        super(driver,
+                driver.findElement(By.xpath("//app-auth-modal"))
+        );
     }
 
     // ===== Methods =====
@@ -105,7 +112,11 @@ public class SignInModal extends BaseComponent {
 
     public void clickGoogleLogin() { clickElement(googleSignInButton); }
 
-    public void close() { clickElement(closeButton); }
+    public void close() {
+        waitUntilElementClickable(closeButton);
+        closeButton.click();
+        getWait(10).until(ExpectedConditions.invisibilityOf(modalRootElement));
+    }
 
     public void login(String email, String password) {
         enterEmail(email);
@@ -115,4 +126,14 @@ public class SignInModal extends BaseComponent {
     public boolean isDisplayed() {
         return rootElement.isDisplayed();
     }
+
+    public boolean isModalVisible() {
+        try {
+            getWait(5).until(ExpectedConditions.visibilityOf(modalRootElement));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
