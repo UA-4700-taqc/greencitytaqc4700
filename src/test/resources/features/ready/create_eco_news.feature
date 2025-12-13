@@ -50,11 +50,15 @@ Scenario: Publish button disabled when title is empty
   And the character counter shows '0-170'
 
 Scenario: Title is truncated when too long
+  When the user clicks 'Create news'
+  Then the Create News page is loaded
   When the user inputs a 171-character-long string into the 'Title' field
   Then the entered text is truncated to 170 characters
   And the character counter is highlighted in red
 
 Scenario: Valid title allows publish when other requirements met
+  When the user clicks 'Create news'
+  Then the Create News page is loaded
   When the user inputs 'Test News' into the 'Title' field
   Then the character counter shows '9-170'
   And the title field border is not highlighted in red
