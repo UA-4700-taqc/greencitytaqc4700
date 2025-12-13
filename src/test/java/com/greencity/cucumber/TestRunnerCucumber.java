@@ -6,16 +6,18 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@CucumberOptions(features = "src/test/resources/features", glue = "com.greencity.cucumber.steps")
+@CucumberOptions(
+        features = "src/test/resources/features/ready",
+        glue = {"com.greencity.cucumber.steps"})
 public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
 
     private TestNGCucumberRunner testNGCucumberRunner;
 
     @BeforeClass
     public void setUpClass() {
-
         testNGCucumberRunner = new TestNGCucumberRunner(this.getClass());
     }
+
 
     @Test(description = "Example of BDD suite", dataProvider = "scenarios")
     public void scenario(PickleWrapper pickle, FeatureWrapper feature) {
@@ -33,5 +35,4 @@ public class TestRunnerCucumber extends AbstractTestNGCucumberTests {
     public void tearDownClass() {
         testNGCucumberRunner.finish();
     }
-
 }

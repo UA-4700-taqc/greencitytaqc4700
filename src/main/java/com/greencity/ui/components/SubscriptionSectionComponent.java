@@ -80,8 +80,12 @@ public class SubscriptionSectionComponent extends BasePage {
     }
 
     public boolean isValidationErrorDisplayed() {
-        waitUntilElementVisible(validationError);
-        return validationError.isDisplayed();
+        try {
+            return validationError.isDisplayed();
+        } catch (org.openqa.selenium.NoSuchElementException | org.openqa.selenium.StaleElementReferenceException e)
+        {
+            return false;
+        }
     }
 
     public WebElement getValidationErrorElement() {

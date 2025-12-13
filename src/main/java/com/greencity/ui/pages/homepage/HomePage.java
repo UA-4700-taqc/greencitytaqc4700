@@ -1,12 +1,28 @@
 package com.greencity.ui.pages.homepage;
 
+import com.greencity.ui.components.AdSectionComponent;
+import com.greencity.ui.components.auth.SignInModal;
+import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.pages.BasePage;
 import com.greencity.ui.pages.newspage.NewsPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePage extends BasePage {
+
+    private static final Duration AD_SECTION_LOAD_TIMEOUT = Duration.ofSeconds(20);
+
+    @FindBy(xpath = "//header")
+    private WebElement headerRoot;
+
+    @FindBy(id = "main-content")
+    private WebElement adSectionRoot;
 
     @FindBy(xpath = "//section[@id='events']")
     private WebElement ecoNewsSection;
@@ -17,13 +33,35 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "//section[@id='events']//a[contains(text(), 'Read all news')]")
     private WebElement readAllNewsButton;
 
+
+    @FindBy(xpath = "//app-stat-row[contains(., 'пакетів')]//button[normalize-space(text())='Почати формувати звичку!']")
+    private WebElement ctaEcoBagButton;
+
+    @FindBy(xpath = "//app-stat-row[contains(., 'склянок')]//button[normalize-space(text())='Почати формувати звичку!']")
+    private WebElement ctaCupsButton;
+
+    @FindBy(id = "stats")
+    private WebElement statsSection;
+
     public HomePage(WebDriver driver) {
         super(driver);
+        wait.until(ExpectedConditions.visibilityOf(headerRoot));
+    }
+
+    @Override
+    public HeaderComponent getHeader() {
+        return new HeaderComponent(driver, headerRoot);
     }
 
     public HomePage scrollToEcoNewsSection() {
         scrollIntoView(ecoNewsSection);
         return this;
+    }
+
+    public AdSectionComponent getAdSectionComponent() {
+        WebDriverWait explicitWait = new WebDriverWait(driver, AD_SECTION_LOAD_TIMEOUT);
+        WebElement freshRootElement = explicitWait.until(ExpectedConditions.visibilityOf(adSectionRoot));
+        return new AdSectionComponent(driver, freshRootElement);
     }
 
     public String getEcoNewsTitleText() {
@@ -44,5 +82,53 @@ public class HomePage extends BasePage {
     public WebElement getReadAllNewsButton() {
         waitUntilElementVisible(readAllNewsButton);
         return readAllNewsButton;
+    }
+
+    public HomePage refresh() {
+        refreshPage();
+        return new HomePage(driver);
+    }
+
+    public SignInModal clickCtaEcoBag() {
+        scrollToStatsSection();
+        getWait(10).until(ExpectedConditions.elementToBeClickable(ctaEcoBagButton));
+        ctaEcoBagButton.click();
+
+        // 3. Динамічний пошук кореневого елемента модального вікна
+        By modalBy = By.cssSelector(SignInModal.MODAL_ROOT_CSS);
+        WebElement modalRoot = getWait(10).until(ExpectedConditions.visibilityOfElementLocated(modalBy));
+
+        return new SignInModal(driver, modalRoot);
+    }
+
+    public SignInModal clickCtaCups() {
+        scrollToEcoNewsSection();
+        ctaCupsButton.click();
+        By modalBy = By.cssSelector(SignInModal.MODAL_ROOT_CSS);
+        WebElement modalRoot = getWait(10).until(ExpectedConditions.visibilityOfElementLocated(modalBy));
+
+        return new SignInModal(driver, modalRoot);
+    }
+
+    public HomePage scrollToStatsSection() {
+        getWait(10).until(ExpectedConditions.visibilityOf(statsSection));
+        scrollIntoView(statsSection);
+        return this;
+    }
+
+
+    public HomePage clickCtaEcoBagButton() {
+        scrollToStatsSection();
+        getWait(10).until(ExpectedConditions.elementToBeClickable(ctaEcoBagButton));
+        ctaEcoBagButton.click();
+        return this;
+    }
+
+    public HomePage clickCtaCupsButton() {
+        scrollToStatsSection();
+        getWait(10).until(ExpectedConditions.elementToBeClickable(ctaCupsButton));
+
+        ctaCupsButton.click();
+        return this;
     }
 }

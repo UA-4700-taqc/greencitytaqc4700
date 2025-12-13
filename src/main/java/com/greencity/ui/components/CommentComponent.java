@@ -1,9 +1,14 @@
 package com.greencity.ui.components;
 
+import com.greencity.ui.pages.EcoNewsItemPage;
 import lombok.Getter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.time.Duration;
+import java.util.List;
 
 public class CommentComponent extends BaseComponent {
     @Getter
@@ -31,14 +36,14 @@ public class CommentComponent extends BaseComponent {
     private WebElement bottomLikeButton;
 
     @Getter
-    @FindBy(css = "app-reply-comment")
+    @FindBy(css = "app-reply-comment button")
     private WebElement replyCommentButton;
 
     @Getter
     @FindBy(css = "div.comment-textarea")
-    private WebElement replyBody;
+    private WebElement replyInput;
 
-    @FindBy(css = "primary-global-button__reply")
+    @FindBy(css = "button.primary-global-button__reply")
     private WebElement sendReplyButton;
 
     @Getter
@@ -53,8 +58,48 @@ public class CommentComponent extends BaseComponent {
     @FindBy(css = "div.profile-avatar")
     private WebElement profileAvatar;
 
+    @Getter
+    @FindBy(css = "div[contenteditable='true']")
+    private WebElement editCommentInput;
+
+    @FindBy(css = "button.save-edit")
+    private WebElement saveEditButton;
+
+    @FindBy(css = "button.cancel-edit")
+    private WebElement cancelEditButton;
+
+    @Getter
+    @FindBy(css = "span.edited")
+    private WebElement editedCommentLabel;
+
+    @Getter
+    @FindBy(css = "app-view-replies button")
+    private WebElement viewRepliesButton;
+
+    @FindBy(css = "div.comment-body-wrapper.wrapper-reply")
+    private WebElement replyItem;
+
+    private static final By SHOW_REPLIES_BUTTON_SELECTOR =
+            By.cssSelector("app-view-replies button");
+
+    private static final By COMMENT_EDITED_LABEL_SELECTOR =
+            By.cssSelector("span.edited");
+
+    private static final By REPLY_INPUT_SELECTOR =
+            By.cssSelector("div.comment-textarea");
+
+    private static final By REPLY_ITEM_SELECTOR =
+            By.cssSelector("div.comment-body-wrapper.wrapper-reply");
+
+    private WebElement commentRoot;
+
     public CommentComponent(WebDriver driver, WebElement rootElement) {
         super(driver, rootElement);
+        commentRoot = rootElement;
+    }
+
+    private List<WebElement> getRepliesRoots() {
+        return commentRoot.findElements(REPLY_ITEM_SELECTOR);
     }
 
     public String getAuthorNameText() {
@@ -90,20 +135,95 @@ public class CommentComponent extends BaseComponent {
     }
 
     public void fillReplyBody(String text) {
-        replyBody.clear();
-        replyBody.sendKeys(text);
+        replyInput.clear();
+        replyInput.sendKeys(text);
     }
 
     public String getReplyBodyText() {
-        return replyBody.getText().trim();
+        return replyInput.getText().trim();
     }
 
     public void clickSendReplyButton() {
         sendReplyButton.click();
     }
 
+    public void waitSendReplyButtonEnabled() {
+        waitUntilElementClickable(sendReplyButton);
+    }
+
     public InformationModal clickDeleteCommentButton() {
         deleteCommentButton.click();
         return new InformationModal(driver);
     }
+
+    public void clickEditCommentButton() {
+        editCommentButton.click();
+    }
+
+    public void clickSaveEditButton() {
+        saveEditButton.click();
+    }
+
+    public InformationModal clickCancelEditButton() {
+        cancelEditButton.click();
+        return new InformationModal(driver);
+    }
+
+    public boolean isCommentEdited() {
+        return isVisibleElementLocated(COMMENT_EDITED_LABEL_SELECTOR);
+    }
+
+    public boolean hasReplies() {
+        return isVisibleElementLocated(SHOW_REPLIES_BUTTON_SELECTOR);
+    }
+
+    public void waitForCommentDeletion() {
+        waitUntilElementStaleness(commentRoot);
+    }
+
+    public void waitForCommentEdit() {
+        waitUntilElementInvisible(editCommentInput);
+    }
+
+    public void waitForCommentReply() {
+        if (isVisibleElementLocated(REPLY_ITEM_SELECTOR)) {
+            int initialSize = getRepliesRoots().size();
+            getWait(SHORT_WAIT_TIME).until(driver -> (getRepliesRoots().size() > initialSize));
+            return;
+        }
+
+        waitUntilElementVisible(replyItem);
+    }
+
+    public EcoNewsItemPage deleteComment() {
+        clickDeleteCommentButton().confirm();
+
+        waitForCommentDeletion();
+        return new EcoNewsItemPage(driver);
+    }
+
+    public EcoNewsItemPage editComment(String text) {
+        clickEditCommentButton();
+
+        editCommentInput.clear();
+        editCommentInput.sendKeys(text);
+
+        clickSaveEditButton();
+        waitForCommentEdit();
+        return new EcoNewsItemPage(driver);
+    }
+
+    public EcoNewsItemPage addReply(String text) {
+        if (!isVisibleElementLocated(REPLY_INPUT_SELECTOR)) {
+            clickReplyButton();
+        }
+
+        fillReplyBody(text);
+        waitSendReplyButtonEnabled();
+        clickSendReplyButton();
+
+        waitForCommentReply();
+        return new EcoNewsItemPage(driver);
+    }
+
 }

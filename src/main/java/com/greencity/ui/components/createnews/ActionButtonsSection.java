@@ -15,7 +15,7 @@ public class ActionButtonsSection extends BaseComponent {
 
     @Getter
     @FindBy(xpath = ".//button[contains(@class,'secondary-global-button')]")
-    private WebElement reviewBtn;
+    private WebElement previewBtn;
 
     @Getter
     @FindBy(xpath = ".//button[contains(@class,'tertiary-global-button')]")
@@ -29,9 +29,9 @@ public class ActionButtonsSection extends BaseComponent {
         publishBtn.click();
     }
 
-    public CreateEcoNewsPreviewPage clickReview() {
+    public CreateEcoNewsPreviewPage clickPreview() {
 
-        reviewBtn.click();
+        previewBtn.click();
         return new CreateEcoNewsPreviewPage(driver);
     }
 
