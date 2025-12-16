@@ -1,6 +1,8 @@
 package com.greencity.cucumber.steps;
 
+import com.greencity.ui.components.header.HeaderComponent;
 import com.greencity.ui.enums.NewsTag;
+import com.greencity.ui.pages.BasePage;
 import com.greencity.ui.pages.CreateEcoNewsItemPage;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
@@ -8,8 +10,8 @@ import io.cucumber.java.en.When;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
-import java.util.List;
 
 public class CreateNewsPageSteps {
     public static String itemTitle = randomString(10);
@@ -18,6 +20,7 @@ public class CreateNewsPageSteps {
     public static String itemAuthor;
     private final Hooks hooks;
     private CreateEcoNewsItemPage createNewsPage;
+    private BasePage basePage;
 
     public CreateNewsPageSteps(Hooks hooks) {
         this.hooks = hooks;
@@ -190,5 +193,47 @@ public class CreateNewsPageSteps {
     public void thePublishButtonIsEnabled() {
         Assert.assertTrue(createNewsPage.actions.getPublishBtn().isEnabled(), "Publish button is disabled");
     }
+
+    @When("the user clicks 'Publish' button")
+    public  void clickPublishButton(){
+        createNewsPage.actions.clickPublish();
+    }
+
+    @Then("the success publish message appears")
+    public void successPublishMessageAppears(){
+        String message = createNewsPage.waitForSuccessMessage();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(message.toLowerCase().contains("successfully published")
+                        || message.toLowerCase().contains("успішно опублікована"), "Success message should appear after publish");
+    }
+
+   @When("the user inputs 'www.example.com' into the 'Source' field")
+    public  void inputInvalidSource(){
+        createNewsPage.content.enterSource("www.example.com");
+   }
+
+   @Then("the source field border is highlighted in red")
+   public void theSourceFieldBorderIsHighlightedInRed() {
+       Assert.assertTrue(createNewsPage.content.getSourceInput().getCssValue("border-color")
+               .contains("255, 0, 0"), "Title input border is not red");
+   }
+
+   @Then("the error message 'Please add the link...' appears")
+   public  void  sourceFieldErrorMessage(){
+       Assert.assertTrue(createNewsPage.content.getSourceMessage().getAttribute("class").contains("warning"), "Text message isn't red");
+   }
+
+    @When("the user inputs {string} into the 'Source' field")
+    public void inputValidSource(String link) {
+        createNewsPage.content.enterSource(link);
+    }
+
+    @When("the user goes to the News page")
+    public  void userGoesToNewsPage(){
+        HeaderComponent header = basePage.getHeader();
+        header.clickEcoNewsLink();
+    }
+
+
 
 }

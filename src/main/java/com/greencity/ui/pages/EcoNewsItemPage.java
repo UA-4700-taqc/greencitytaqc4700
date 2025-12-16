@@ -67,6 +67,10 @@ public class EcoNewsItemPage extends BasePage {
     @FindBy(css = "p.error-message")
     private WebElement errorMessage;
 
+    @Getter
+    @FindBy(css = "div.edit-news")
+    private WebElement editNewsBtn;
+
     public EcoNewsItemPage(WebDriver driver) {
         super(driver);
     }
@@ -235,5 +239,10 @@ public class EcoNewsItemPage extends BasePage {
                 .map(CommentComponent::getCommentBodyText)
                 .anyMatch(c -> c.equalsIgnoreCase(text));
     }
+
+    public  void  clickEditBtn(){
+      //  getEditNewsBtn().click();
+    }
+
 
     }

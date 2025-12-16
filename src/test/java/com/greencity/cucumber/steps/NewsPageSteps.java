@@ -26,5 +26,8 @@ public class NewsPageSteps {
         newsPage.clickCreateNewsButton();
     }
 
-
+    @When("the user clicks the latest news")
+    public  void theUserClicksLatestNews(){
+        newsPage.clickLatestNews();
+    }
 }

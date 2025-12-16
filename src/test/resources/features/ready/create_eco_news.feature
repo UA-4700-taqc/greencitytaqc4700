@@ -66,3 +66,43 @@ Scenario: Valid title allows publish when other requirements met
   When the user selects any available tag
   And the user types at least 20 symbols in the 'Content' field
   Then the 'Publish' button is enabled
+
+Scenario: Verify the validation of the 'Source' field (empty)
+  When the user clicks 'Create news'
+  Then the Create News page is loaded
+  When the user inputs 'Test News' into the 'Title' field
+  And the user types at least 20 symbols in the 'Content' field
+  And the user selects any available tag
+  And the user clicks 'Publish' button
+  Then the success publish message appears
+
+ Scenario: Verify the validation of the 'Source' field (negative)
+  When the user clicks 'Create news'
+  Then the Create News page is loaded
+  When the user inputs 'Test News' into the 'Title' field
+  And the user types at least 20 symbols in the 'Content' field
+  And the user selects any available tag
+  And the user inputs 'www.example.com' into the 'Source' field
+  Then the 'Publish' button is disabled
+  And the source field border is highlighted in red
+  And the error message 'Please add the link...' appears
+
+  Scenario Outline: Verify the validation of the 'Source' field (positive)
+    When the user clicks 'Create news'
+    Then the Create News page is loaded
+    When the user inputs 'Test News' into the 'Title' field
+    And the user types at least 20 symbols in the 'Content' field
+    And the user selects any available tag
+    And the user inputs '<link>' into the 'Source' field
+    Then the 'Publish' button is enabled
+
+    When the user clicks 'Publish' button
+    Then the success publish message appears
+
+    When the user goes to the News page
+    And the user clicks the latest news
+    Then the user is on the Eco News Item page
+    And the link equals to '<link>'
+  Examples:
+    | link                |
+    | https://example.com |

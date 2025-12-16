@@ -14,11 +14,15 @@ public class ContentSection extends BaseComponent {
     private WebElement sourceInput;
 
     @Getter
+    @FindBy(css = "div.source-block span.field-info")
+    private WebElement sourceMessage;
+
+    @Getter
     @FindBy(xpath = ".//textarea[@formcontrolname='title']")
     private WebElement titleInput;
 
     @Getter
-    @FindBy(xpath = ".//span[contains(@class,'field-info')]")
+    @FindBy(css = "div.title-block span.field-info")
     private WebElement titleSymbolCount;
 
     @Getter

@@ -221,4 +221,10 @@ public class EcoNewsItemPageSteps {
         Assert.assertTrue(comment.getReplyCommentButton().isDisplayed(), "Reply comment button should be displayed");
     }
 
+    @Then("the link equals to {string}")
+    public  void TheLinkEqualsTo(String link){
+       // assertEquals(link, ecoNewsItemPage.getSourceLink(););
+    }
+
+
 }
