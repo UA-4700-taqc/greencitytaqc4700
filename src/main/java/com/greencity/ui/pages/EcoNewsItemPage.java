@@ -240,8 +240,9 @@ public class EcoNewsItemPage extends BasePage {
                 .anyMatch(c -> c.equalsIgnoreCase(text));
     }
 
-    public  void clickEditBtn(){
-        getEditNewsBtn().click();
+    public  void  clickEditBtn(){
+      //  getEditNewsBtn().click();
     }
+
 
     }

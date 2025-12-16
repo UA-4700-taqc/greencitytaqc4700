@@ -224,7 +224,7 @@ public class CreateNewsPageSteps {
    }
 
     @When("the user inputs {string} into the 'Source' field")
-    public  void inputValidSource(String link){
+    public void inputValidSource(String link) {
         createNewsPage.content.enterSource(link);
     }
 

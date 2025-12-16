@@ -87,7 +87,7 @@ Scenario: Verify the validation of the 'Source' field (empty)
   And the source field border is highlighted in red
   And the error message 'Please add the link...' appears
 
-  Scenario: Verify the validation of the 'Source' field (positive)
+  Scenario Outline: Verify the validation of the 'Source' field (positive)
     When the user clicks 'Create news'
     Then the Create News page is loaded
     When the user inputs 'Test News' into the 'Title' field
@@ -104,6 +104,6 @@ Scenario: Verify the validation of the 'Source' field (empty)
     Then the user is on the Eco News Item page
     And the link equals to <link>
 
-Example:
+Examples:
   | link                |
   | https://example.com |
