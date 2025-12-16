@@ -93,7 +93,7 @@ Scenario: Verify the validation of the 'Source' field (empty)
     When the user inputs 'Test News' into the 'Title' field
     And the user types at least 20 symbols in the 'Content' field
     And the user selects any available tag
-    And the user inputs <link> into the 'Source' field
+    And the user inputs '<link>' into the 'Source' field
     Then the 'Publish' button is enabled
 
     When the user clicks 'Publish' button
@@ -102,8 +102,7 @@ Scenario: Verify the validation of the 'Source' field (empty)
     When the user goes to the News page
     And the user clicks the latest news
     Then the user is on the Eco News Item page
-    And the link equals to <link>
-
-Examples:
-  | link                |
-  | https://example.com |
+    And the link equals to '<link>'
+  Examples:
+    | link                |
+    | https://example.com |
