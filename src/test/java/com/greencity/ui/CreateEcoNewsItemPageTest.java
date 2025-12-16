@@ -161,8 +161,17 @@ public class CreateEcoNewsItemPageTest extends TestRunnerWithUser {
 
         String message = createNewsPage.waitForSuccessMessage();
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(message.toLowerCase().contains("success"),"Success message should appear after publish");
-
+        softAssert.assertTrue(
+                message.toLowerCase().contains("successfully published")
+                        || message.toLowerCase().contains("успішно опублікована"),
+                "Success message should appear after publish"
+        );
+        NewsPage newsPage = new NewsPage(driver);
+        newsPage.clickLatestNews();
+        EcoNewsItemPage itemNews = new EcoNewsItemPage(driver);
+        itemNews.clickEditBtn();
+        createNewsPage.content.enterSource("www.example.com");
+        softAssert.assertFalse(createNewsPage.actions.getPublishBtn().isEnabled());
 
 
         softAssert.assertAll();

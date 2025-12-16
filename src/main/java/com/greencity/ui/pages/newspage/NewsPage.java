@@ -49,6 +49,10 @@ public class NewsPage extends BasePage {
     @FindBy(xpath = "//a[contains(@class , \"create \")]")
     private WebElement createNewsButton;
 
+    @FindBy(xpath = "//ul[@aria-label='news list']/li[1]")
+    private WebElement theLatestNews;
+
+
     private final By NEWS_ITEM_DATE_LOCATOR = By.xpath(".//p[contains(@class, 'user-data-text-date')]//span");
 
     private final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH);
@@ -150,5 +154,9 @@ public class NewsPage extends BasePage {
 
     public WebElement getListViewButton() {
         return listViewButton;
+    }
+
+    public void clickLatestNews(){
+        clickDynamicElement(theLatestNews);
     }
 }
